@@ -179,7 +179,7 @@ void utilizareaAplicatiei()
                  viewCounterStanga++;
                  afisareFoldere(nrdiscStanga, discuri_localeStanga, viewCounterStanga, false);
               }
-              else if(viewCounterDreapta+1<nrdiscDreapta) {
+              else if(careFereastra==true && viewCounterDreapta+1<nrdiscDreapta) {
                   viewCounterDreapta++;
                   afisareFoldere(nrdiscDreapta, discuri_localeDreapta, viewCounterDreapta, true);
               }
@@ -193,7 +193,7 @@ void utilizareaAplicatiei()
                  viewCounterStanga--;
                  afisareFoldere(nrdiscStanga, discuri_localeStanga, viewCounterStanga, false);
               }
-              else if(viewCounterDreapta-1>=0) {
+              else if(careFereastra==true && viewCounterDreapta-1>=0) {
                   viewCounterDreapta--;
                   afisareFoldere(nrdiscDreapta, discuri_localeDreapta, viewCounterDreapta, true);
               }
