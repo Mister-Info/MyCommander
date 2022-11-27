@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1669565709 source:f:\anul1\introducere_in_programare\mycommander\mycommander\main.cpp
+	<iostream>
+	<cstdlib>
+	<stdlib.h>
+	<cstring>
+	<windows.h>
+	<graphics.h>
+	<winbgim.h>
+
