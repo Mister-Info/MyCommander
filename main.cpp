@@ -9,11 +9,10 @@
 
 using namespace std;
 
-void indexare_foldere_fisiere(char p[], WIN32_FIND_DATA cautare, char foldere[101][257], char fisiere[101][257], int &nr_foldere, int &nr_fisiere)///functia asta gaseste folderele si fisierele
+void indexare_foldere_fisiere(char p[], WIN32_FIND_DATA cautare, char foldere[101][257],
+                              char fisiere[101][257], int &nr_foldere, int &nr_fisiere)
+                              ///functia asta gaseste folderele si fisierele
 {
-
-
-
     nr_fisiere=nr_foldere=0;
 
     HANDLE director=FindFirstFile(p,&cautare);
@@ -33,110 +32,15 @@ void indexare_foldere_fisiere(char p[], WIN32_FIND_DATA cautare, char foldere[10
     }
 }
 
-
-void refresh()
-{
-    return ;
-}
-
-void update()
-{
-    return ;
-}
-
-void Change()///cand apesi TAB, schimbi fereastra
-{
-    return ;
-}
-
-
-
-
-bool verif=false;
-void Up_Arrow_stanga()///alegerea precedenta
-{
-    if (GetKeyState(VK_UP) & 0x8000)
-    {
-        if(!verif)
+void afisareFoldere(int nrdisc, char discuri_locale[101][257], int pozitiaCurenta, bool stangaDreapta){
+     int x;
+     if (stangaDreapta==false) x=15;
+     else
+        x=542;
+     int y=110;
+     for(int i=0; i<nrdisc; i++)
         {
-            verif=true;
-            cout<<"da";
-        }
-    }
-    else
-    {
-
-        verif=false;
-    }
-
-
-}
-
-void Down_Arrow_stanga()///alegerea ulterioara
-{
-    if (GetKeyState(VK_DOWN) & 0x8000)
-    {
-        if(!verif)
-        {
-            verif=true;
-            cout<<"da";
-        }
-    }
-    else
-    {
-
-        verif=false;
-    }
-}
-
-
-void Fixed_Option()///fisierul/folderul selectat
-{
-    return ;
-}
-
-
-void cautare_stanga_start()
-{
-    char foldere[101][257], fisiere[101][257], discuri_locale[101][257];///le voi optimiza mai tarziu
-    int nr_foldere, nr_fisiere;
-
-    WIN32_FIND_DATA cautare;///pentru cautare
-    char p[255];
-    int nrdisc=0;
-
-    for(char c='A'; c<='Z'; c++)
-    {
-        char disk[1];
-        disk[0]=c;
-        disk[1]=NULL;
-        strcpy(p,disk);
-        strcat(p,":");///pentru viitoarele local discuri
-        strcat(p,"\\*");
-        nr_foldere=nr_fisiere=0;
-
-
-        HANDLE director=FindFirstFile(p,&cautare);///directorul explicit
-
-        if(director!=INVALID_HANDLE_VALUE)///practic daca directorul ala nu are nimic
-        {
-            char pcopie[1];
-            pcopie[0]=p[0];
-            pcopie[1]=NULL;
-            strcat(discuri_locale[nrdisc]," Local disk: ");///11
-            strcat(discuri_locale[nrdisc++],pcopie);
-            strcat(discuri_locale[nrdisc-1], " ");
-
-        }
-
-
-
-        int x=15;
-        int y=110;
-
-        for(int i=0; i<nrdisc; i++)
-        {
-            if(i==0)
+            if(i==pozitiaCurenta)
             {
                 setcolor(BLACK);
                 setbkcolor(COLOR(149, 159, 255));
@@ -151,8 +55,35 @@ void cautare_stanga_start()
                 y+=20;
             }
         }
+}
 
 
+void cautare_start(char foldere[101][257], char fisiere[101][257],char discuri_locale[101][257],
+                          int &nr_foldere, int &nr_fisiere, WIN32_FIND_DATA cautare, char p[255], int &nrdisc, bool stangaDreapta)
+{
+    for(char c='A'; c<='Z'; c++)
+    {
+        char disk[1];
+        disk[0]=c;
+        disk[1]=NULL;
+        strcpy(p,disk);
+        strcat(p,":");///pentru viitoarele local discuri
+        strcat(p,"\\*");
+        nr_foldere=nr_fisiere=0;
+
+        HANDLE director=FindFirstFile(p,&cautare);///directorul explicit
+
+        if(director!=INVALID_HANDLE_VALUE)///practic daca directorul ala nu are nimic
+        {
+            char pcopie[1];
+            pcopie[0]=p[0];
+            pcopie[1]=NULL;
+            strcat(discuri_locale[nrdisc]," Local disk: ");///11
+            strcat(discuri_locale[nrdisc++],pcopie);
+            strcat(discuri_locale[nrdisc-1], " ");
+
+        }
+        afisareFoldere(nrdisc, discuri_locale, 0, stangaDreapta);
         for (int i=0; i<nrdisc; i++)
             indexare_foldere_fisiere(p, cautare,  foldere, fisiere, nr_foldere, nr_fisiere);
 
@@ -224,14 +155,52 @@ void HUD()
 }
 
 void utilizareaAplicatiei()
-{
-    bool loop=true, mousePress=false, tastaEsc=false, tastaTab=false,
+{   char foldereStanga[101][257], fisiereStanga[101][257], discuri_localeStanga[101][257];///le voi optimiza mai tarziu
+    int nr_foldereStanga, nr_fisiereStanga;
+    char foldereDreapta[101][257], fisiereDreapta[101][257], discuri_localeDreapta[101][257];///le voi optimiza mai tarziu
+    int nr_foldereDreapta, nr_fisiereDreapta;
+    WIN32_FIND_DATA cautare;///pentru cautare
+    char pStanga[255], pDreapta[255];
+    int nrdiscStanga=0, nrdiscDreapta=0;
+    cautare_start(foldereStanga, fisiereStanga,discuri_localeStanga, nr_foldereStanga,
+                  nr_fisiereStanga, cautare, pStanga, nrdiscStanga, false);
+    cautare_start(foldereDreapta, fisiereDreapta,discuri_localeDreapta, nr_foldereDreapta,
+                  nr_fisiereDreapta, cautare, pDreapta, nrdiscDreapta, true);
+    bool loop=true, mousePress=false, tastaEsc=false, tastaTab=false, tastaDown=false, tastaUp=false,
          careFereastra=false; ///false e stanga si true e dreapta
-    int viewCounterStanga=1, viewCounterDreapta=1; ///variabile de contorizare a adancimii fisierelor
+    int depthStanga=0, depthDreapta=0; ///variabile de contorizare a adancimii fisierelor
+    int viewCounterStanga=0, viewCounterDreapta=0; ///variabile de contorizare a adancimii fisierelor
     int clickX, clickY;///coordonate mouse
     while (loop)
     {
-
+        if (GetAsyncKeyState(VK_DOWN)){
+           if (!tastaDown){ tastaDown=true;
+              if (careFereastra==false && viewCounterStanga+1<nrdiscStanga){
+                 viewCounterStanga++;
+                 afisareFoldere(nrdiscStanga, discuri_localeStanga, viewCounterStanga, false);
+              }
+              else if(viewCounterDreapta+1<nrdiscDreapta) {
+                  viewCounterDreapta++;
+                  afisareFoldere(nrdiscDreapta, discuri_localeDreapta, viewCounterDreapta, true);
+              }
+           }
+           tastaDown=false;
+           Sleep(300);
+        }
+        if (GetAsyncKeyState(VK_UP)){
+           if (!tastaUp){ tastaUp=true;
+              if (careFereastra==false && viewCounterStanga-1>=0){
+                 viewCounterStanga--;
+                 afisareFoldere(nrdiscStanga, discuri_localeStanga, viewCounterStanga, false);
+              }
+              else if(viewCounterDreapta-1>=0) {
+                  viewCounterDreapta--;
+                  afisareFoldere(nrdiscDreapta, discuri_localeDreapta, viewCounterDreapta, true);
+              }
+           }
+           tastaUp=false;
+           Sleep(300);
+        }
         if (GetAsyncKeyState(VK_LBUTTON))
         {
             if (!mousePress)
@@ -282,7 +251,6 @@ int main()
 {
     initwindow(1024, 768);
     HUD();
-    cautare_stanga_start();
     utilizareaAplicatiei();
     closegraph();
     return 0;
