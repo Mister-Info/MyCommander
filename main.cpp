@@ -25,6 +25,10 @@ void clear_stanga()
     setcolor(BLACK);
     setbkcolor(COLOR(233, 236, 255));
     outtextxy(15, 85, "Name");
+
+    setcolor(COLOR(255, 0, 0));
+    rectangle(10, 80,  496, 687);
+
 }
 
 void clear_dreapta()
@@ -41,6 +45,12 @@ void clear_dreapta()
     setcolor(BLACK);
     setbkcolor(COLOR(233, 236, 255));
     outtextxy(542, 85, "Name");
+
+    setcolor(COLOR(255, 0, 0));
+    rectangle(537, 80, 1013, 687);
+
+
+
 }
 
 void indexare_foldere_fisiere(char cale[],char **foldere, char **fisiere, int &nr_foldere, int &nr_fisiere)
@@ -60,7 +70,10 @@ void indexare_foldere_fisiere(char cale[],char **foldere, char **fisiere, int &n
 
         if(cautare.dwFileAttributes&FILE_ATTRIBUTE_DIRECTORY)
         {
-            strcpy(foldere[nr_foldere++],cautare.cFileName);
+           if(!(cautare.dwFileAttributes&FILE_ATTRIBUTE_SYSTEM))///sunt foldere de sistem si le ignoram
+            {
+                strcpy(foldere[nr_foldere++],cautare.cFileName);
+            }
         }
         else
         {
@@ -73,7 +86,6 @@ void indexare_foldere_fisiere(char cale[],char **foldere, char **fisiere, int &n
 void afisare( char **foldere,char **fisiere, int nr_foldere,int nr_fisiere,int pozitiaCurenta,int x)
 {
     int y=110;
-
 
     for(int i=0; i<nr_foldere; i++)
     {
@@ -246,6 +258,7 @@ char** init_lista(int n, int m)
     return lista;
 }
 
+
 void utilizareaAplicatiei()
 {
     ///marimile sunt hardcodate, dar pe viitor voi creste dinamic in functie de numarul de foldere
@@ -292,8 +305,20 @@ void utilizareaAplicatiei()
                     ///am selectat un fisier
                     if(viewCounterStanga>=nr_foldereStanga)
                     {
-                        ///enter pe un fisier
-                        ///TODO: de implementat
+                        char *fisier= (char*)malloc(256);
+                        strcpy(fisier,"\"");
+                        strcat(fisier,caleStanga);
+
+                        char *nume_fisier=fisiereStanga[viewCounterStanga-nr_foldereStanga];
+
+                        strcat(fisier,"\\");
+                        strcat(fisier,nume_fisier);
+                        strcat(fisier,"\"");
+
+                        printf("%s %s",caleStanga,nume_fisier);
+                        system(fisier);
+                        free(fisier);
+
                     }
                     else
                     {
@@ -316,7 +341,19 @@ void utilizareaAplicatiei()
                     if(viewCounterDreapta>=nr_foldereDreapta)
                     {
                         ///enter pe un fisier
-                        ///TODO: de implementat
+                        char *fisier= (char*)malloc(256);
+                        strcpy(fisier,"\"");
+                        strcat(fisier,caleDreapta);
+
+                        char *nume_fisier=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
+
+                        strcat(fisier,"\\");
+                        strcat(fisier,nume_fisier);
+                        strcat(fisier,"\"");
+
+                        printf("%s %s",caleDreapta,nume_fisier);
+                        system(fisier);
+                        free(fisier);
                     }
                     else
                     {
@@ -453,6 +490,11 @@ void utilizareaAplicatiei()
             tastaTab=false;
         }
     }
+
+
+
+
+
 
     ///Eliberam memoria
     free(foldereStanga);
