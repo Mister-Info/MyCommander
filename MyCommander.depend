@@ -1,14 +1,5 @@
 # depslib dependency file v1.0
-1669579272 source:f:\anul1\introducere_in_programare\mycommander\mycommander\main.cpp
-	<iostream>
-	<cstdlib>
-	<stdlib.h>
-	<cstring>
-	<windows.h>
-	<graphics.h>
-	<winbgim.h>
-
-1670008876 source:c:\users\admin\desktop\my commander\mycommander\main.cpp
+1670180750 source:f:\anul1\introducere_in_programare\mycommander\mycommander\main.cpp
 	<iostream>
 	<cstdlib>
 	<stdlib.h>

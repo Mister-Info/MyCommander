@@ -194,16 +194,17 @@ void HUD()
     line(0, 70, 1024, 70);
     setfillstyle(SOLID_FILL, COLOR(94, 53, 248));
     bar(0, 0, 1024, 30);
+
     ///Titlul Aplicatiei
     setcolor(COLOR(255, 0, 0));
     setbkcolor(COLOR(94, 53, 248));
-    outtextxy(10, 10, "<");
+    outtextxy(10, 8, "<");
     setcolor(WHITE);
-    outtextxy(20, 10, "MY COMMANDER");
+    outtextxy(460, 8, "MY COMMANDER");
     setcolor(COLOR(255, 0, 0));
-    outtextxy(138, 10, ">");
+    outtextxy(1004, 8, ">");
 
-    ///Informatii despre fisiere (nume, extensia, marimea, data)
+    ///Numele fisierelor
     setcolor(COLOR(157, 157, 195));
     setfillstyle(SOLID_FILL, COLOR(233, 236, 255));
     bar3d(10, 80, 497, 105, 0, 0);
@@ -211,10 +212,22 @@ void HUD()
     setcolor(BLACK);
     setbkcolor(COLOR(233, 236, 255));
     outtextxy(15, 85, "Name");
-    outtextxy(542, 85, "Name");    ///urmeaza sa pun si ext, size si date
-
+    outtextxy(542, 85, "Name");
+    setcolor(COLOR(157, 157, 195));
+    bar3d(496, 80, 516, 688, 0, 0);
+    bar3d(518, 80, 538, 688, 0, 0);
 
     ///Butoanele aplicatiei
+    ///Up Stanga
+    setcolor(BLACK);
+    setbkcolor(COLOR(233, 236, 255));
+    outtextxy(498, 84, " /\\ ");
+    ///Down Stanga
+    outtextxy(498, 668, " \\/ ");
+    ///Up Dreapta
+    outtextxy(520, 84, " /\\ ");
+    ///Down Dreapta
+    outtextxy(520, 668, " \\/ ");
     ///Go backwards
     setcolor(BLACK);
     setbkcolor(WHITE);
@@ -235,11 +248,67 @@ void HUD()
     outtextxy(555, 740, " [F8] Delete ");
     ///ESC iesirea din program
     outtextxy(665, 740, " [ESC] Exit ");
+
+    ///SORTARE ASCENDING
+    setbkcolor(COLOR(220, 220, 220));
+    outtextxy(90, 42, " Sort by (Asc.): ");
+    ///Buton Sort by name
+    setcolor(COLOR(86, 89, 252));
+    setbkcolor(COLOR(255, 135, 19));
+    outtextxy(195, 42, "    Name    ");
+    ///Buton Sort by ext
+    setcolor(COLOR(90, 252, 86));
+    setbkcolor(COLOR(255, 68, 68));
+    outtextxy(277, 42, "  Extension  ");
+    ///Buton Sort by size
+    setcolor(COLOR(255, 255, 68));
+    setbkcolor(COLOR(252, 86, 249));
+    outtextxy(371, 42, "    Size    ");
+    ///buton Sort by date
+    setcolor(COLOR(255, 93, 50));
+    setbkcolor(COLOR(86, 252, 252));
+    outtextxy(445, 42, "    Date    ");
+
+    ///SORTARE ASCENDING
+    setcolor(BLACK);
+    setbkcolor(COLOR(220, 220, 220));
+    outtextxy(527, 42, " Sort by (Desc.): ");
+    ///Buton Sort by name
+    setcolor(COLOR(255, 135, 19));
+    setbkcolor(COLOR(86, 89, 252));
+    outtextxy(642, 42, "    Name    ");
+    ///Buton Sort by ext
+    setcolor(COLOR(255, 68, 68));
+    setbkcolor(COLOR(90, 252, 86));
+    outtextxy(724, 42, "  Extension  ");
+    ///Buton Sort by size
+    setcolor(COLOR(252, 86, 249));
+    setbkcolor(COLOR(255, 255, 68));
+    outtextxy(818, 42, "    Size    ");
+    ///Buton Sort by date
+    setcolor(COLOR(86, 252, 252));
+    setbkcolor(COLOR(255, 93, 50));
+    outtextxy(892, 42, "    Date    ");
+
+    ///Buton de help
+    setcolor(BLACK);
+    setbkcolor(WHITE);
+    outtextxy(975, 42, " Help ");
+
     ///Fereastra de inceput pe care ma focusez este cu rosu iar cealalta cu gri
     setcolor(COLOR(255, 0, 0));
     rectangle(10, 80,  496, 687);
     setcolor(DARKGRAY);
     rectangle(537, 80, 1013, 687);
+
+    /// Path bars
+    setcolor(BLACK);
+    setfillstyle(SOLID_FILL, WHITE);
+    bar3d(10, 689, 497, 709, 0, 0);
+    bar3d(537, 689, 1014, 709, 0, 0);
+
+    /// Info Bar
+    bar3d(750, 738, 1014, 758, 0, 0);
 }
 
 /// Aloca memorie pentru o matrice NxM
