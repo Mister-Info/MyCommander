@@ -6,9 +6,20 @@
 ///windows.h este folosit pentru a lista fisierele
 #include <graphics.h>
 #include <winbgim.h>
-
+#include "macro.h"
 
 using namespace std;
+
+
+bool fisiere_exista(const char* fisier)
+{
+    FILE *f=fopen(fisier,"r");
+    if(!f)
+        return false;
+    fclose(f);
+    return true;
+
+}
 
 void afisare( char **listaIntreaga, int deUndeAfisez, int panaUndeAfisez, int pozitiaCurenta, int x)
 {
@@ -35,28 +46,35 @@ void afisare( char **listaIntreaga, int deUndeAfisez, int panaUndeAfisez, int po
 }
 
 
-void initializareVectorDeNumeFoldereFisiere(char **intreagaLista,char ** foldere,char ** fisiere,int nr_foldere,int nr_fisiere){
-int lgLista=0, i, lg=0;
-for (i=0; i<nr_foldere; i++){lg=strlen(foldere[i]);
-    if (lg>60){
-       strncpy(intreagaLista[lgLista], foldere[i], 54);
-       intreagaLista[lgLista][54]=0;
-       strcat(intreagaLista[lgLista], "...");
-       lgLista++;
+void initializareVectorDeNumeFoldereFisiere(char **intreagaLista,char ** foldere,char ** fisiere,int nr_foldere,int nr_fisiere)
+{
+    int lgLista=0, i, lg=0;
+    for (i=0; i<nr_foldere; i++)
+    {
+        lg=strlen(foldere[i]);
+        if (lg>60)
+        {
+            strncpy(intreagaLista[lgLista], foldere[i], 54);
+            intreagaLista[lgLista][54]=0;
+            strcat(intreagaLista[lgLista], "...");
+            lgLista++;
+        }
+        else
+            strcpy(intreagaLista[lgLista], foldere[i]), lgLista++;
     }
-    else
-    strcpy(intreagaLista[lgLista], foldere[i]), lgLista++;
+    for (i=0; i<nr_fisiere; i++)
+    {
+        lg=strlen(fisiere[i]);
+        if (lg>60)
+        {
+            strncpy(intreagaLista[lgLista], fisiere[i], 54);
+            intreagaLista[lgLista][54]=0;
+            strcat(intreagaLista[lgLista], "...");
+            lgLista++;
+        }
+        else
+            strcpy(intreagaLista[lgLista], fisiere[i]), lgLista++;
     }
-for (i=0; i<nr_fisiere; i++){lg=strlen(fisiere[i]);
-    if (lg>60){
-       strncpy(intreagaLista[lgLista], fisiere[i], 54);
-       intreagaLista[lgLista][54]=0;
-       strcat(intreagaLista[lgLista], "...");
-       lgLista++;
-    }
-    else
-    strcpy(intreagaLista[lgLista], fisiere[i]), lgLista++;
-}
 }
 
 void clear_stanga()
@@ -118,7 +136,7 @@ void indexare_foldere_fisiere(char cale[],char **foldere, char **fisiere, int &n
 
         if(cautare.dwFileAttributes&FILE_ATTRIBUTE_DIRECTORY)
         {
-           if(!(cautare.dwFileAttributes&FILE_ATTRIBUTE_SYSTEM))///sunt foldere de sistem si le ignoram
+            if(!(cautare.dwFileAttributes&FILE_ATTRIBUTE_SYSTEM))///sunt foldere de sistem si le ignoram
             {
                 strcpy(foldere[nr_foldere++],cautare.cFileName);
             }
@@ -351,9 +369,11 @@ void utilizareaAplicatiei()
 
     ///tastele apasate
     bool loop=true, mousePress=false, tastaEsc=false, tastaTab=false, tastaDown=false, tastaUp=false,tastaEnter=false,careFereastra=false; ///false e stanga si true e dreapta
+    bool copiere=false;
+    bool tasta_stergere=false;
     int nrFoldereFisiereStanga, nrFoldereFisiereDreapta,
         deUndeAfisezStanga[7], panaUndeAfisezStanga[7], nivStivaStanga=0,
-        deUndeAfisezDreapta[7], panaUndeAfisezDreapta[7], nivStivaDreapta=0;
+                                                        deUndeAfisezDreapta[7], panaUndeAfisezDreapta[7], nivStivaDreapta=0;
     int viewCounterStanga=0, viewCounterDreapta=0; ///folderul/fisierul selectat
     int clickX, clickY;///coordonate mouse
     char caleStanga[257], caleDreapta[257];
@@ -370,13 +390,246 @@ void utilizareaAplicatiei()
     initializareVectorDeNumeFoldereFisiere(intreagaDreapta,foldereDreapta,fisiereDreapta,nr_foldereDreapta,nr_fisiereDreapta);
 
     ///afisam discurile
-    deUndeAfisezStanga[0]=0; panaUndeAfisezStanga[0]=nr_fisiereStanga+nr_foldereStanga;
+
+    deUndeAfisezStanga[0]=0;
+    panaUndeAfisezStanga[0]=nr_fisiereStanga+nr_foldereStanga;
     afisare(intreagaStanga, deUndeAfisezStanga[0], panaUndeAfisezStanga[0], 0, 15);
-    deUndeAfisezDreapta[0]=0; panaUndeAfisezDreapta[0]=nr_fisiereDreapta+nr_foldereDreapta;
+    deUndeAfisezDreapta[0]=0;
+    panaUndeAfisezDreapta[0]=nr_fisiereDreapta+nr_foldereDreapta;
     afisare(intreagaDreapta, deUndeAfisezDreapta[0], panaUndeAfisezDreapta[0], 0, 542);
+
 
     while (loop)
     {
+        ///copiere
+        if(GetAsyncKeyState(VK_F5))
+        {
+            if(!copiere)
+            {
+                copiere=true;///implementare
+                if(careFereastra==false)
+                {
+
+                    if(viewCounterStanga<nr_foldereStanga)
+                    {
+                        ///TODO pentru foldere
+                    }
+
+
+                    ///fisiere
+                    else
+                    {
+                        char *fisier= (char*)malloc(256);
+                        char *copie=(char*)malloc(256);
+
+                        strcpy(fisier,caleStanga);
+
+                        char *nume_fisier=fisiereStanga[viewCounterStanga-nr_foldereStanga];
+
+                        strcat(fisier,"\\");
+                        strcat(fisier,nume_fisier);
+
+                        ///copiaza fisier la cale dreapta + / + nume fisier
+                        strcpy(copie,caleDreapta);
+                        strcat(copie,"\\");
+                        strcat(copie,nume_fisier);
+
+
+                        bool ok=false;
+                        if(fisiere_exista(copie))
+                        {
+                            int msgboxID = MessageBoxA(NULL,
+                                                        "File already exists.\nDo you want to overwrite it?", "Copy file",
+                                                       MB_ICONEXCLAMATION | MB_YESNO);
+
+                            if (msgboxID == IDYES)
+                            {
+                                ok = true;
+                            }
+                        }
+                        else
+                        {
+                            ok=true;
+                        }
+                        if(ok)
+                        {
+                            ///citeste din fisier si scrie in copie
+                            FILE *sursa=fopen(fisier,"rb");
+
+                            FILE *destinatie=fopen(copie,"wb");
+
+                            if(sursa && destinatie)
+                            {
+
+                                char buffer[16*1024];///16 kb, mai eficient decat daca as citi cate 1 byte
+                                int n; /// Cati bytes s-au citit din fisierul sursa
+
+                                ///Citim maxim 16kb; fread() va returna numarul de bytes cititi,
+                                ///indiferent daca sunt 16kb sau mai putini
+                                while ((n = fread(buffer, sizeof(char), sizeof(buffer), sursa)) > 0)
+                                {
+                                    if (fwrite(buffer, sizeof(char), n, destinatie) != n)
+                                    {
+                                        ///nu a putut sa se scrie in fisier
+                                        printf("eroare");
+                                        ///va trebui sa facem o functie pentru erori
+                                        break;
+                                    }
+                                }
+
+
+                                fclose(sursa);
+                                fclose(destinatie);
+
+                                reindexare_Dreapta();
+
+                            }
+                            free(fisier);
+                            free(copie);
+                        }
+                    }
+                }
+
+                else
+                {
+                    if(viewCounterDreapta<nr_foldereDreapta)
+                    {
+                        ///TODO pentru foldere
+                    }
+
+                    if(viewCounterDreapta>=nr_foldereDreapta)
+                    {
+                        char *fisier= (char*)malloc(256);
+                        char *copie=(char*)malloc(256);
+
+                        strcpy(fisier,caleDreapta);
+
+                        char *nume_fisier=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
+
+                        strcat(fisier,"\\");
+                        strcat(fisier,nume_fisier);
+
+                        ///copiaza fisier la cale dreapta + / + nume fisier
+                        strcpy(copie,caleStanga);
+                        strcat(copie,"\\");
+                        strcat(copie,nume_fisier);
+
+
+                        bool ok=false;
+                        if(fisiere_exista(copie))
+                        {
+                            int msgboxID = MessageBoxA(NULL,
+                                                        "File already exists.\nDo you want to overwrite it?", "Copy file",
+                                                       MB_ICONEXCLAMATION | MB_YESNO);
+
+                            if (msgboxID == IDYES)
+                            {
+                                ok = true;
+                            }
+                        }
+                        else
+                        {
+                            ok=true;
+                        }
+                        if(ok)
+                        {
+                            ///citeste din fisier si scrie in copie
+                            FILE *sursa=fopen(fisier,"rb");
+
+                            FILE *destinatie=fopen(copie,"wb");
+
+                            if(sursa && destinatie)
+                            {
+
+                                char buffer[16*1024];///16 kb, mai eficient decat daca as citi cate 1 byte
+                                int n; /// Cati bytes s-au citit din fisierul sursa
+
+                                ///Citim maxim 16kb; fread() va returna numarul de bytes cititi,
+                                ///indiferent daca sunt 16kb sau mai putini
+                                while ((n = fread(buffer, sizeof(char), sizeof(buffer), sursa)) > 0)
+                                {
+                                    if (fwrite(buffer, sizeof(char), n, destinatie) != n)
+                                    {
+                                        ///nu a putut sa se scrie in fisier
+                                        printf("eroare");
+                                        ///va trebui sa facem o functie pentru erori
+                                        break;
+                                    }
+                                }
+
+
+                                fclose(sursa);
+                                fclose(destinatie);
+
+                                reindexare_Stanga();
+
+                            }
+
+                            free(fisier);
+                            free(copie);
+                        }
+                    }
+                }
+            }
+        }
+
+        else
+        {
+            copiere=false;
+        }
+
+
+        ///stergerea
+        ///era cat pe ce sa raman fara laptop dupa functia asta
+        if(GetAsyncKeyState(VK_F8))
+        {
+                    if(!tasta_stergere)
+                    {
+                        tasta_stergere=true;
+
+
+                       if(careFereastra==false){
+                        char *fisier= (char*)malloc(256);
+
+                        strcpy(fisier,caleStanga);
+
+                        char *nume_fisier=fisiereStanga[viewCounterStanga-nr_foldereStanga];
+
+                        strcat(fisier,"\\");
+                        strcat(fisier,nume_fisier);
+                        DeleteFileA(fisier);
+                        free(fisier);
+                        reindexare_Stanga();
+                        reindexare_Dreapta();
+
+
+                       }
+                       else
+                       {
+                           char *fisier= (char*)malloc(256);
+
+                        strcpy(fisier,caleDreapta);
+
+                        char *nume_fisier=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
+
+                        strcat(fisier,"\\");
+                        strcat(fisier,nume_fisier);
+                        DeleteFileA(fisier);
+                        free(fisier);
+                        reindexare_Dreapta();
+                        reindexare_Stanga();
+
+                       }
+
+
+                    }
+        }
+        else{
+
+            tasta_stergere=false;
+        }
+
+
         ///Enter
         if(GetAsyncKeyState(VK_RETURN))
         {
@@ -387,6 +640,8 @@ void utilizareaAplicatiei()
 
                 if (careFereastra==false)///stanga
                 {
+
+
                     ///am selectat un fisier
                     if(viewCounterStanga>=nr_foldereStanga)
                     {
@@ -400,7 +655,7 @@ void utilizareaAplicatiei()
                         strcat(fisier,nume_fisier);
                         strcat(fisier,"\"");
 
-                        printf("%s %s",caleStanga,nume_fisier);
+                        ///printf("%s %s",caleStanga,nume_fisier); pentru testare
                         system(fisier);
                         free(fisier);
 
@@ -414,16 +669,7 @@ void utilizareaAplicatiei()
                         }
                         strcat(caleStanga,foldereStanga[viewCounterStanga]);
 
-                        viewCounterStanga = 0;
-                        reindex(caleStanga,foldereStanga,fisiereStanga,nr_fisiereStanga,nr_foldereStanga);
-                        nivStivaStanga=0;
-                        deUndeAfisezStanga[nivStivaStanga]=0;
-                        nrFoldereFisiereStanga=nr_fisiereStanga+nr_foldereStanga;
-                        initializareVectorDeNumeFoldereFisiere(intreagaStanga,foldereStanga,fisiereStanga,nr_foldereStanga,nr_fisiereStanga);
-                        clear_stanga();
-                        if(nrFoldereFisiereStanga>29) panaUndeAfisezStanga[nivStivaStanga]=29;
-                        else panaUndeAfisezStanga[nivStivaStanga]=nrFoldereFisiereStanga;
-                        afisare(intreagaStanga, deUndeAfisezStanga[nivStivaStanga], panaUndeAfisezStanga[nivStivaStanga], viewCounterStanga,15);
+                        reindexare_Stanga();
                     }
                 }
                 else if(careFereastra==true)
@@ -454,17 +700,7 @@ void utilizareaAplicatiei()
                         }
                         strcat(caleDreapta,foldereDreapta[viewCounterDreapta]);
 
-                        viewCounterDreapta = 0;
-
-                        reindex(caleDreapta,foldereDreapta,fisiereDreapta,nr_fisiereDreapta,nr_foldereDreapta);
-                        nivStivaDreapta=0;
-                        deUndeAfisezDreapta[nivStivaDreapta]=0;
-                        nrFoldereFisiereDreapta=nr_fisiereDreapta+nr_foldereDreapta;
-                        initializareVectorDeNumeFoldereFisiere(intreagaDreapta,foldereDreapta,fisiereDreapta,nr_foldereDreapta,nr_fisiereDreapta);
-                        clear_dreapta();
-                        if(nrFoldereFisiereDreapta>29) panaUndeAfisezDreapta[nivStivaDreapta]=29;
-                        else panaUndeAfisezDreapta[nivStivaDreapta]=nrFoldereFisiereDreapta;
-                        afisare(intreagaDreapta,deUndeAfisezDreapta[nivStivaDreapta], panaUndeAfisezDreapta[nivStivaDreapta], viewCounterDreapta, 542);
+                        reindexare_Dreapta();
                     }
                 }
             }
@@ -484,12 +720,17 @@ void utilizareaAplicatiei()
                 if (careFereastra==false && viewCounterStanga+1<nr_foldereStanga+nr_fisiereStanga)
                 {
                     viewCounterStanga++;
-                    if (viewCounterStanga==panaUndeAfisezStanga[nivStivaStanga]){
-                       if (panaUndeAfisezStanga[nivStivaStanga]+29<nrFoldereFisiereStanga) nivStivaStanga++,panaUndeAfisezStanga[nivStivaStanga]=panaUndeAfisezStanga[nivStivaStanga-1]+29;
-                       else
+                    if (viewCounterStanga==panaUndeAfisezStanga[nivStivaStanga])
+                    {
+                        if (panaUndeAfisezStanga[nivStivaStanga]+29<nrFoldereFisiereStanga)
+                        {
+                            nivStivaStanga++;
+                            panaUndeAfisezStanga[nivStivaStanga]=panaUndeAfisezStanga[nivStivaStanga-1]+29;
+                        }
+                        else
                             nivStivaStanga++,panaUndeAfisezStanga[nivStivaStanga]=nrFoldereFisiereStanga;
-                       deUndeAfisezStanga[nivStivaStanga]=viewCounterStanga;
-                       clear_stanga();
+                        deUndeAfisezStanga[nivStivaStanga]=viewCounterStanga;
+                        clear_stanga();
                     }
                     afisare(intreagaStanga, deUndeAfisezStanga[nivStivaStanga], panaUndeAfisezStanga[nivStivaStanga], viewCounterStanga, 15);
 
@@ -497,12 +738,17 @@ void utilizareaAplicatiei()
                 else if(careFereastra==true && viewCounterDreapta+1<nr_foldereDreapta+nr_fisiereDreapta)
                 {
                     viewCounterDreapta++;
-                   if (viewCounterDreapta==panaUndeAfisezDreapta[nivStivaDreapta]){
-                       if (panaUndeAfisezDreapta[nivStivaDreapta]+29<nrFoldereFisiereDreapta) nivStivaDreapta++, panaUndeAfisezDreapta[nivStivaDreapta]=panaUndeAfisezDreapta[nivStivaDreapta-1]+29;
-                       else
+                    if (viewCounterDreapta==panaUndeAfisezDreapta[nivStivaDreapta])
+                    {
+                        if (panaUndeAfisezDreapta[nivStivaDreapta]+29<nrFoldereFisiereDreapta)
+                        {
+                            nivStivaDreapta++;
+                            panaUndeAfisezDreapta[nivStivaDreapta]=panaUndeAfisezDreapta[nivStivaDreapta-1]+29;
+                        }
+                        else
                             nivStivaDreapta++, panaUndeAfisezDreapta[nivStivaDreapta]=nrFoldereFisiereDreapta;
-                       deUndeAfisezDreapta[nivStivaDreapta]=viewCounterDreapta;
-                       clear_dreapta();
+                        deUndeAfisezDreapta[nivStivaDreapta]=viewCounterDreapta;
+                        clear_dreapta();
                     }
                     afisare(intreagaDreapta, deUndeAfisezDreapta[nivStivaDreapta], panaUndeAfisezDreapta[nivStivaDreapta], viewCounterDreapta, 542);
 
@@ -524,18 +770,20 @@ void utilizareaAplicatiei()
                 if (careFereastra==false && viewCounterStanga-1>=0)
                 {
                     viewCounterStanga--;
-                    if (nivStivaStanga>0 && viewCounterStanga==deUndeAfisezStanga[nivStivaStanga]-1){
-                       nivStivaStanga--;
-                       clear_stanga();
+                    if (nivStivaStanga>0 && viewCounterStanga==deUndeAfisezStanga[nivStivaStanga]-1)
+                    {
+                        nivStivaStanga--;
+                        clear_stanga();
                     }
                     afisare(intreagaStanga, deUndeAfisezStanga[nivStivaStanga], panaUndeAfisezStanga[nivStivaStanga], viewCounterStanga, 15);
                 }
                 else if(careFereastra==true && viewCounterDreapta-1>=0)
                 {
                     viewCounterDreapta--;
-                    if (nivStivaDreapta>0 && viewCounterDreapta==deUndeAfisezDreapta[nivStivaDreapta]-1){
-                       nivStivaDreapta--;
-                       clear_dreapta();
+                    if (nivStivaDreapta>0 && viewCounterDreapta==deUndeAfisezDreapta[nivStivaDreapta]-1)
+                    {
+                        nivStivaDreapta--;
+                        clear_dreapta();
                     }
                     afisare(intreagaDreapta, deUndeAfisezDreapta[nivStivaDreapta], panaUndeAfisezDreapta[nivStivaDreapta], viewCounterDreapta, 542);
                 }
@@ -608,11 +856,6 @@ void utilizareaAplicatiei()
             tastaTab=false;
         }
     }
-
-
-
-
-
 
     ///Eliberam memoria
     free(foldereStanga);
