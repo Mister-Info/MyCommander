@@ -130,48 +130,6 @@ void indexare_foldere_fisiere(char cale[],char **foldere, char **fisiere, int &n
 
     }
 }
-/// char **p este un vector de vectori
-void afisare_start( char **foldere,char **fisiere, int nr_foldere,int nr_fisiere,int pozitiaCurenta,int x)
-{
-    int y=110;
-
-    for(int i=0; i<nr_foldere; i++)
-    {
-        if(i==pozitiaCurenta)///select
-        {
-            setcolor(BLACK);
-            setbkcolor(COLOR(149, 159, 255));
-            outtextxy(x,y,foldere[i]);
-            y+=20;
-
-        }
-        else
-        {
-            setcolor(BLACK);
-            setbkcolor(WHITE);
-            outtextxy(x,y,foldere[i]);
-            y+=20;
-        }
-    }
-    for(int i=0; i<nr_fisiere; i++)
-    {
-        if(i+nr_foldere==pozitiaCurenta)///fisierele sunt afisate dupa foldere
-        {
-            setcolor(BLACK);
-            setbkcolor(COLOR(149, 159, 255));
-            outtextxy(x,y,fisiere[i]);
-            y+=20;
-
-        }
-        else
-        {
-            setcolor(BLACK);
-            setbkcolor(WHITE);
-            outtextxy(x,y,fisiere[i]);
-            y+=20;
-        }
-    }
-}
 
 ///indexarea pentru discuri
 void cautare_start(char **foldere,int &nr_foldere, int &nr_fisiere)
@@ -410,6 +368,7 @@ void utilizareaAplicatiei()
 
     initializareVectorDeNumeFoldereFisiere(intreagaStanga,foldereStanga,fisiereStanga,nr_foldereStanga,nr_fisiereStanga);
     initializareVectorDeNumeFoldereFisiere(intreagaDreapta,foldereDreapta,fisiereDreapta,nr_foldereDreapta,nr_fisiereDreapta);
+
     ///afisam discurile
     deUndeAfisezStanga[0]=0; panaUndeAfisezStanga[0]=nr_fisiereStanga+nr_foldereStanga;
     afisare(intreagaStanga, deUndeAfisezStanga[0], panaUndeAfisezStanga[0], 0, 15);
@@ -660,6 +619,8 @@ void utilizareaAplicatiei()
     free(fisiereStanga);
     free(foldereDreapta);
     free(fisiereDreapta);
+    free(intreagaStanga);
+    free(intreagaDreapta);
 }
 
 int main()
