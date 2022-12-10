@@ -10,6 +10,11 @@
 
 using namespace std;
 
+void splashScreen()
+{
+    readimagefile("SplashArt.jpg", 0, 0, 1024, 768);
+    delay(1500);
+}
 
 bool fisiere_exista(const char* fisier)
 {
@@ -24,7 +29,6 @@ bool fisiere_exista(const char* fisier)
 void afisare( char **listaIntreaga, int deUndeAfisez, int panaUndeAfisez, int pozitiaCurenta, int x)
 {
     int y=110;
-
     for(int i=deUndeAfisez; i<panaUndeAfisez; i++)
     {
         if(i==pozitiaCurenta)///select
@@ -434,7 +438,7 @@ void utilizareaAplicatiei()
                         strcat(copie,"\\");
                         strcat(copie,nume_fisier);
 
-
+                        ///daca se suprascrie
                         bool ok=false;
                         if(fisiere_exista(copie))
                         {
@@ -472,7 +476,7 @@ void utilizareaAplicatiei()
                                     {
                                         ///nu a putut sa se scrie in fisier
                                         printf("eroare");
-                                        ///va trebui sa facem o functie pentru erori
+                                        ///va trebui sa facem o functie de afisare pentru erori
                                         break;
                                     }
                                 }
@@ -519,8 +523,8 @@ void utilizareaAplicatiei()
                         if(fisiere_exista(copie))
                         {
                             int msgboxID = MessageBoxA(NULL,
-                                                        "File already exists.\nDo you want to overwrite it?", "Copy file",
-                                                       MB_ICONEXCLAMATION | MB_YESNO);
+                                           "File already exists.\nDo you want to overwrite it?", "Copy file",
+                                           MB_ICONEXCLAMATION | MB_YESNO);
 
                             if (msgboxID == IDYES)
                             {
@@ -578,7 +582,6 @@ void utilizareaAplicatiei()
             copiere=false;
         }
 
-
         ///stergerea
         ///era cat pe ce sa raman fara laptop dupa functia asta
         if(GetAsyncKeyState(VK_F8))
@@ -597,7 +600,21 @@ void utilizareaAplicatiei()
 
                         strcat(fisier,"\\");
                         strcat(fisier,nume_fisier);
-                        DeleteFileA(fisier);
+
+
+                        if(fisiere_exista(fisier))
+                        {
+                            int msgboxID = MessageBoxA(NULL,
+                                           "Do you want to delete it?", "Delete file",
+                                           MB_ICONEXCLAMATION | MB_YESNO);
+                                if(msgboxID==IDYES)
+                                    {
+                                        DeleteFileA(fisier);
+                                    }
+                        }
+
+
+
                         free(fisier);
                         reindexare_Stanga();
                         reindexare_Dreapta();
@@ -614,7 +631,21 @@ void utilizareaAplicatiei()
 
                         strcat(fisier,"\\");
                         strcat(fisier,nume_fisier);
-                        DeleteFileA(fisier);
+
+
+
+                        if(fisiere_exista(fisier))
+                        {
+                            int msgboxID = MessageBoxA(NULL,
+                                           "Do you want to delete it?", "Delete file",
+                                           MB_ICONEXCLAMATION | MB_YESNO);
+                                if(msgboxID==IDYES)
+                                    {
+                                        DeleteFileA(fisier);
+                                    }
+                        }
+
+
                         free(fisier);
                         reindexare_Dreapta();
                         reindexare_Stanga();
@@ -868,7 +899,8 @@ void utilizareaAplicatiei()
 
 int main()
 {
-    initwindow(1024, 768);
+    initwindow(1024, 768, "My Commander");
+    ///splashScreen();
     HUD();
     utilizareaAplicatiei();
     closegraph();
