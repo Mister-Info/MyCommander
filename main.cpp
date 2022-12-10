@@ -8,12 +8,17 @@
 #include <winbgim.h>
 #include "macro.h"
 
+
+///TODO redenumire ,functii foldere(copie, stergere, mutare, redenumire, newfolder), edit(.txt)
+///TODO selectare
+
+
 using namespace std;
 
 void splashScreen()
 {
     readimagefile("SplashArt.jpg", 0, 0, 1024, 768);
-    delay(1500);
+    delay(350);
 }
 
 bool fisiere_exista(const char* fisier)
@@ -206,7 +211,6 @@ void reindex(char cale[], char **foldere, char **fisiere, int &nr_fisiere, int &
     }
 }
 
-
 ///Heads Up Display
 void HUD()
 {
@@ -375,6 +379,8 @@ void utilizareaAplicatiei()
     bool loop=true, mousePress=false, tastaEsc=false, tastaTab=false, tastaDown=false, tastaUp=false,tastaEnter=false,careFereastra=false; ///false e stanga si true e dreapta
     bool copiere=false;
     bool tasta_stergere=false;
+    bool deplasare=false;
+    bool valid=true;
     int nrFoldereFisiereStanga, nrFoldereFisiereDreapta,
         deUndeAfisezStanga[7], panaUndeAfisezStanga[7], nivStivaStanga=0,
                                                         deUndeAfisezDreapta[7], panaUndeAfisezDreapta[7], nivStivaDreapta=0;
@@ -443,7 +449,7 @@ void utilizareaAplicatiei()
                         if(fisiere_exista(copie))
                         {
                             int msgboxID = MessageBoxA(NULL,
-                                                        "File already exists.\nDo you want to overwrite it?", "Copy file",
+                                                       "File already exists.\nDo you want to overwrite it?", "Copy file",
                                                        MB_ICONEXCLAMATION | MB_YESNO);
 
                             if (msgboxID == IDYES)
@@ -523,8 +529,8 @@ void utilizareaAplicatiei()
                         if(fisiere_exista(copie))
                         {
                             int msgboxID = MessageBoxA(NULL,
-                                           "File already exists.\nDo you want to overwrite it?", "Copy file",
-                                           MB_ICONEXCLAMATION | MB_YESNO);
+                                                       "File already exists.\nDo you want to overwrite it?", "Copy file",
+                                                       MB_ICONEXCLAMATION | MB_YESNO);
 
                             if (msgboxID == IDYES)
                             {
@@ -586,13 +592,104 @@ void utilizareaAplicatiei()
         ///era cat pe ce sa raman fara laptop dupa functia asta
         if(GetAsyncKeyState(VK_F8))
         {
-                    if(!tasta_stergere)
+            if(!tasta_stergere)
+            {
+                tasta_stergere=true;
+
+
+                if(careFereastra==false)
+                {
+                    char *fisier= (char*)malloc(256);
+
+                    strcpy(fisier,caleStanga);
+
+                    char *nume_fisier=fisiereStanga[viewCounterStanga-nr_foldereStanga];
+
+                    strcat(fisier,"\\");
+                    strcat(fisier,nume_fisier);
+
+
+                    if(fisiere_exista(fisier))
                     {
-                        tasta_stergere=true;
+                        int msgboxID = MessageBoxA(NULL,
+                                                   "Do you want to delete it?", "Delete file",
+                                                   MB_ICONEXCLAMATION | MB_YESNO);
+                        if(msgboxID==IDYES)
+                        {
+                            DeleteFileA(fisier);
+                        }
+                    }
 
 
-                       if(careFereastra==false){
+
+                    free(fisier);
+                    reindexare_Stanga();
+                    reindexare_Dreapta();
+
+
+                }
+                else
+                {
+                    char *fisier= (char*)malloc(256);
+
+                    strcpy(fisier,caleDreapta);
+
+                    char *nume_fisier=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
+
+                    strcat(fisier,"\\");
+                    strcat(fisier,nume_fisier);
+
+
+
+                    if(fisiere_exista(fisier))
+                    {
+                        int msgboxID = MessageBoxA(NULL,
+                                                   "Do you want to delete it?", "Delete file",
+                                                   MB_ICONEXCLAMATION | MB_YESNO);
+                        if(msgboxID==IDYES)
+                        {
+                            DeleteFileA(fisier);
+                        }
+                    }
+
+
+                    free(fisier);
+                    reindexare_Dreapta();
+                    reindexare_Stanga();
+
+                }
+
+
+            }
+        }
+        else
+        {
+
+            tasta_stergere=false;
+        }
+
+
+        ///Move
+        if(GetAsyncKeyState(VK_F6))
+        {
+            if(!deplasare)
+            {
+                deplasare=true;
+
+                if(careFereastra==false)
+                {
+
+                    if(viewCounterStanga<nr_foldereStanga)
+                    {
+                        ///TODO pentru foldere
+                    }
+
+
+                    ///fisiere
+                    else
+                    {
                         char *fisier= (char*)malloc(256);
+                        char *copie=(char*)malloc(256);
 
                         strcpy(fisier,caleStanga);
 
@@ -601,29 +698,89 @@ void utilizareaAplicatiei()
                         strcat(fisier,"\\");
                         strcat(fisier,nume_fisier);
 
+                        ///copiaza fisier la cale dreapta + / + nume fisier
+                        strcpy(copie,caleDreapta);
+                        strcat(copie,"\\");
+                        strcat(copie,nume_fisier);
 
-                        if(fisiere_exista(fisier))
+                        ///daca se suprascrie
+                        bool ok=false;
+                        if(fisiere_exista(copie))
                         {
                             int msgboxID = MessageBoxA(NULL,
-                                           "Do you want to delete it?", "Delete file",
-                                           MB_ICONEXCLAMATION | MB_YESNO);
-                                if(msgboxID==IDYES)
-                                    {
-                                        DeleteFileA(fisier);
-                                    }
+                                                       "File already exists.", "Move file",
+                                                       MB_ICONEXCLAMATION | MB_OK);
+
+                            if (msgboxID == IDOK)
+                            {
+                                ok = false;
+                            }
                         }
+                        else
+                        {
+                            ok=true;
+                        }
+                        if(ok)
+                        {
+                            ///citeste din fisier si scrie in copie
+                            FILE *sursa=fopen(fisier,"rb");
+
+                            FILE *destinatie=fopen(copie,"wb");
+
+                            if(sursa && destinatie)
+                            {
+
+                                char buffer[16*1024];///16 kb, mai eficient decat daca as citi cate 1 byte
+                                int n; /// Cati bytes s-au citit din fisierul sursa
+
+                                ///Citim maxim 16kb; fread() va returna numarul de bytes cititi,
+                                ///indiferent daca sunt 16kb sau mai putini
 
 
+                                while ((n = fread(buffer, sizeof(char), sizeof(buffer), sursa)) > 0)
+                                {
+                                    if (fwrite(buffer, sizeof(char), n, destinatie) != n)
+                                    {
+                                        ///nu a putut sa se scrie in fisier
+                                        printf("eroare");
+                                        valid=false;
+                                        ///va trebui sa facem o functie de afisare pentru erori
+                                        break;
+                                    }
+                                }
 
-                        free(fisier);
-                        reindexare_Stanga();
-                        reindexare_Dreapta();
+
+                                fclose(sursa);
+                                fclose(destinatie);
+
+                                reindexare_Dreapta();
+
+                                if(valid)
+                                    DeleteFileA(fisier);
+
+                                reindexare_Stanga();
+
+                            }
+
+                            free(fisier);
+                            free(copie);
+                        }
+                    }
+                }
+
+                else
+                {
+                    if(viewCounterDreapta<nr_foldereDreapta)
+                    {
+                        ///TODO pentru foldere
+                    }
 
 
-                       }
-                       else
-                       {
-                           char *fisier= (char*)malloc(256);
+                    ///fisiere
+                    else
+                    {
+                        char *fisier= (char*)malloc(256);
+                        char *copie=(char*)malloc(256);
 
                         strcpy(fisier,caleDreapta);
 
@@ -632,32 +789,83 @@ void utilizareaAplicatiei()
                         strcat(fisier,"\\");
                         strcat(fisier,nume_fisier);
 
+                        ///copiaza fisier la cale dreapta + / + nume fisier
+                        strcpy(copie,caleStanga);
+                        strcat(copie,"\\");
+                        strcat(copie,nume_fisier);
 
-
-                        if(fisiere_exista(fisier))
+                        ///daca se suprascrie
+                        bool ok=false;
+                        if(fisiere_exista(copie))
                         {
                             int msgboxID = MessageBoxA(NULL,
-                                           "Do you want to delete it?", "Delete file",
-                                           MB_ICONEXCLAMATION | MB_YESNO);
-                                if(msgboxID==IDYES)
-                                    {
-                                        DeleteFileA(fisier);
-                                    }
+                                                       "File already exists.", "Move file",
+                                                       MB_ICONEXCLAMATION | MB_OK);
+
+                            if (msgboxID == IDOK)
+                            {
+                                ok = false;
+                            }
                         }
+                        else
+                        {
+                            ok=true;
+                        }
+                        if(ok)
+                        {
+                            ///citeste din fisier si scrie in copie
+                            FILE *sursa=fopen(fisier,"rb");
+
+                            FILE *destinatie=fopen(copie,"wb");
+
+                            if(sursa && destinatie)
+                            {
+
+                                char buffer[16*1024];///16 kb, mai eficient decat daca as citi cate 1 byte
+                                int n; /// Cati bytes s-au citit din fisierul sursa
+
+                                ///Citim maxim 16kb; fread() va returna numarul de bytes cititi,
+                                ///indiferent daca sunt 16kb sau mai putini
 
 
-                        free(fisier);
-                        reindexare_Dreapta();
-                        reindexare_Stanga();
+                                while ((n = fread(buffer, sizeof(char), sizeof(buffer), sursa)) > 0)
+                                {
+                                    if (fwrite(buffer, sizeof(char), n, destinatie) != n)
+                                    {
+                                        ///nu a putut sa se scrie in fisier
+                                        printf("eroare");
+                                        valid=false;
+                                        ///va trebui sa facem o functie de afisare pentru erori
+                                        break;
+                                    }
+                                }
 
-                       }
 
+                                fclose(sursa);
+                                fclose(destinatie);
 
+                                reindexare_Stanga();
+
+                                if(valid)
+                                    DeleteFileA(fisier);
+
+                                reindexare_Dreapta();
+
+                            }
+
+                            free(fisier);
+                            free(copie);
+                        }
                     }
-        }
-        else{
+                }
 
-            tasta_stergere=false;
+
+
+            }
+        }
+        else
+        {
+            deplasare=false;
         }
 
 
@@ -900,7 +1108,7 @@ void utilizareaAplicatiei()
 int main()
 {
     initwindow(1024, 768, "My Commander");
-    ///splashScreen();
+    splashScreen();
     HUD();
     utilizareaAplicatiei();
     closegraph();
