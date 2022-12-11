@@ -104,8 +104,13 @@ void clear_stanga()
     setbkcolor(COLOR(233, 236, 255));
     outtextxy(15, 85, "Name");
 
+
     setcolor(COLOR(255, 0, 0));
     rectangle(10, 80,  496, 687);
+    setcolor(DARKGRAY);
+    rectangle(537, 80, 1013, 687);
+
+
 
 }
 
@@ -124,9 +129,11 @@ void clear_dreapta()
     setbkcolor(COLOR(233, 236, 255));
     outtextxy(542, 85, "Name");
 
+
+    setcolor(DARKGRAY);
+    rectangle(10, 80,  496, 687);
     setcolor(COLOR(255, 0, 0));
     rectangle(537, 80, 1013, 687);
-
 
 
 }
@@ -674,8 +681,8 @@ void utilizareaAplicatiei()
                     if(ok)
                     {
                         stergere(folder);
-                        reindexare_Stanga();
                         reindexare_Dreapta();
+                        reindexare_Stanga();
                     }
                     free(folder);
 
@@ -967,7 +974,7 @@ void utilizareaAplicatiei()
                 tastaEnter=false;
             }
 
-
+            ///Edit
             if(GetAsyncKeyState(VK_F3))
             {
                 if(!vizualizare)
@@ -998,7 +1005,7 @@ void utilizareaAplicatiei()
                         {
                             ///edit pe un folder
                             int msgboxID = MessageBoxA(NULL,
-                                                   "Please select a file", "Edit",
+                                                   "Please select a file", "View",
                                                    MB_ICONEXCLAMATION | MB_OK);
 
                         }
@@ -1025,7 +1032,7 @@ void utilizareaAplicatiei()
                         {
                             ///edit pe un folder
                             int msgboxID = MessageBoxA(NULL,
-                                                   "Please select a file", "Edit",
+                                                   "Please select a file", "View",
                                                    MB_ICONEXCLAMATION | MB_OK);
                         }
                     }
@@ -1156,6 +1163,7 @@ void utilizareaAplicatiei()
                 tastaEsc = false;
             }
 
+            ///TAB
             if (GetAsyncKeyState(VK_TAB))
             {
                 if (!tastaTab)
