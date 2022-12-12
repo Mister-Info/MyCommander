@@ -8,7 +8,6 @@
 #include <winbgim.h>
 #include "macro.h"
 
-///TODO functii foldere(newfolder)
 
 using namespace std;
 
@@ -523,6 +522,7 @@ void utilizareaAplicatiei()
     bool valid=true;
     bool vizualizare=false;
     bool editare=false;
+    bool newfolder=false;
     int nrFoldereFisiereStanga, nrFoldereFisiereDreapta,
         deUndeAfisezStanga[7], panaUndeAfisezStanga[7], nivStivaStanga=0,
                                                         deUndeAfisezDreapta[7], panaUndeAfisezDreapta[7], nivStivaDreapta=0;
@@ -633,6 +633,58 @@ void utilizareaAplicatiei()
         {
             copiere=false;
         }
+
+
+
+        if(GetAsyncKeyState(VK_F7))
+        {
+            if(!newfolder)
+            {
+                newfolder=true;
+
+                if(careFereastra==false)
+                {
+                    char *folder =(char*) malloc(256);
+
+                    strcpy(folder,caleStanga);
+                    strcat(folder,"\\");
+                    strcat(folder,"NewFolder");
+
+                    CreateDirectoryA(folder,NULL);
+
+                    reindexare_Dreapta();
+                    reindexare_Stanga();
+
+
+                    free(folder);
+
+                }
+                else{
+                    char *folder =(char*) malloc(256);
+
+                    strcpy(folder,caleDreapta);
+                    strcat(folder,"\\");
+                    strcat(folder,"NewFolder");
+
+                    CreateDirectoryA(folder,NULL);
+
+                    reindexare_Stanga();
+                    reindexare_Dreapta();
+
+                    free(folder);
+                }
+
+
+
+            }
+        }
+        else {
+
+            newfolder=false;
+        }
+
+
+
 
         ///stergerea
         if(GetAsyncKeyState(VK_F8))
