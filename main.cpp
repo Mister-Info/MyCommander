@@ -1,3 +1,31 @@
+/// 888b     d888            .d8888b.                                                              888
+/// 8888b   d8888           d88P  Y88b                                                             888
+/// 88888b.d88888           888    888                                                             888
+/// 888Y88888P888 888  888  888         .d88b.  88888b.d88b.  88888b.d88b.   8888b.  88888b.   .d88888  .d88b.  888d888
+/// 888 Y888P 888 888  888  888        d88""88b 888 "888 "88b 888 "888 "88b     "88b 888 "88b d88" 888 d8P  Y8b 888P"
+/// 888  Y8P  888 888  888  888    888 888  888 888  888  888 888  888  888 .d888888 888  888 888  888 88888888 888
+/// 888   "   888 Y88b 888  Y88b  d88P Y88..88P 888  888  888 888  888  888 888  888 888  888 Y88b 888 Y8b.     888
+/// 888       888  "Y88888   "Y8888P"   "Y88P"  888  888  888 888  888  888 "Y888888 888  888  "Y88888  "Y8888  888
+///                    888
+///               Y8b d88P
+///                "Y88P"
+
+
+///*** SECTIUNE DE BUGURI ***
+
+///Atunci cand apas down, up, left, right se scrie in casuta de rename chiar daca nu e deschisa :(
+///Cand incerc sa sortez cu quicksort pocneste tot, am pus provizoriu un bubble amarat
+///Cand deschizi cu mouse-ul view-ul se tot deschid ferestre
+///Scrolul de pe mouse trebuie conditionat sa nu mearga atunci cand te vezi local discurile
+///To be contiuned... Avem nevoie de testeri
+
+
+///*** TO DO ***
+///Sa vedem cum facem cu extensiile, size-ul si date-ul
+///Selectarea a mai multor fisiere foldere
+///Functionalitatea butonului help, leftArrow, rightArrow
+
+
 #include <iostream>
 #include <cstdlib>
 #include <stdlib.h>
@@ -10,11 +38,89 @@
 
 
 using namespace std;
+/*
+int divideQuickSortAsc(char ** arr, int st, int en){
+char pivot[201], temp[201];
+for (int i=0; i<201; i++) pivot[i]=0, temp[201]=0;
+strcpy(pivot, arr[en]);
+int index=st;
+for (int i=st; i<en; i++){
+    if (strcmp(arr[i], pivot)<0){
+       strcpy(temp, arr[i]);
+       strcpy(arr[i], arr[index]);
+       strcpy(arr[index], temp);
+       index++;
+    }
+}
+strcpy(temp, arr[en]);
+strcpy(arr[en], arr[index]);
+strcpy(arr[index], temp);
+
+return index;
+}
+
+void sortareDupaNumeAsc(char ** arr, int st, int en){
+int d;
+if (st<en){
+   d=divideQuickSortAsc(arr, st, en);
+   sortareDupaNumeAsc(arr, st, (d-1));
+   sortareDupaNumeAsc(arr, (d-1), en);
+}
+}
+*/
+
+void sortareDupaNumeAsc(char **arr, int lgArray)
+{
+    int i;
+    char temp[201];
+    bool sortat;
+    do
+    {
+        sortat=false;
+        for (i=0; i<lgArray-1; i++)
+        {
+            if (strcmp(arr[i], "..")!=0)
+                if (strcmp(arr[i], arr[i+1])>0)
+                {
+                    strcpy(temp, arr[i]);
+                    strcpy(arr[i], arr[i+1]);
+                    strcpy(arr[i+1], temp);
+                    sortat=true;
+                }
+        }
+
+    }
+    while (sortat);
+}
+
+void sortareDupaNumeDesc(char **arr, int lgArray)
+{
+    int i;
+    char temp[201];
+    bool sortat;
+    do
+    {
+        sortat=false;
+        for (i=0; i<lgArray-1; i++)
+        {
+            if (strcmp(arr[i], "..")!=0)
+                if (strcmp(arr[i], arr[i+1])<0)
+                {
+                    strcpy(temp, arr[i]);
+                    strcpy(arr[i], arr[i+1]);
+                    strcpy(arr[i+1], temp);
+                    sortat=true;
+                }
+        }
+
+    }
+    while (sortat);
+}
 
 void splashScreen()
 {
     readimagefile("SplashArt.jpg", 0, 0, 1024, 768);
-    delay(100);
+    delay(1000);
 }
 
 bool fisiere_exista(const char* fisier)
@@ -417,7 +523,7 @@ void HUD()
     ///F8 Delete
     outtextxy(555, 740, " [F8] Delete ");
     ///ESC iesirea din program
-    outtextxy(665, 740, " [ESC] Exit ");
+    outtextxy(665, 740, " [Alt+F4] Exit ");
 
     ///SORTARE ASCENDING
     setbkcolor(COLOR(220, 220, 220));
@@ -439,7 +545,7 @@ void HUD()
     setbkcolor(COLOR(86, 252, 252));
     outtextxy(445, 42, "    Date    ");
 
-    ///SORTARE ASCENDING
+    ///SORTARE desCENDING
     setcolor(BLACK);
     setbkcolor(COLOR(220, 220, 220));
     outtextxy(527, 42, " Sort by (Desc.): ");
@@ -478,7 +584,7 @@ void HUD()
     bar3d(537, 689, 1014, 709, 0, 0);
 
     /// Info Bar
-    bar3d(750, 738, 1014, 758, 0, 0);
+    bar3d(760, 738, 1014, 758, 0, 0);
 }
 
 /// Aloca memorie pentru o matrice NxM
@@ -510,11 +616,18 @@ void utilizareaAplicatiei()
     char** intreagaStanga = init_lista(202, 257);
     char** intreagaDreapta = init_lista(202, 257);
 
+    char renameFileString[101];
+    char tastaIntrodusaRename=0, c;
+    int lenRenameFileString=0;
+    int coordXRename;
+
     int nr_foldereStanga, nr_fisiereStanga;
     int nr_foldereDreapta, nr_fisiereDreapta;
 
     ///tastele apasate
-    bool loop=true, mousePress=false, tastaEsc=false, tastaTab=false, tastaDown=false, tastaUp=false,tastaEnter=false,careFereastra=false; ///false e stanga si true e dreapta
+    bool loop=true, loopRename=false, mousePress=false, tastaEsc=false, tastaTab=false,
+         tastaDown=false, tastaUp=false,tastaEnter=false,careFereastra=false,
+         hotKeyCtrlR=false, tastaBack=false; ///false e stanga si true e dreapta
     bool copiere=false;
     bool tasta_stergere=false;
     bool redenumire=false;
@@ -553,7 +666,6 @@ void utilizareaAplicatiei()
 
     while (loop)
     {
-
         ///copiere
         if(GetAsyncKeyState(VK_F5))
         {
@@ -659,7 +771,8 @@ void utilizareaAplicatiei()
                     free(folder);
 
                 }
-                else{
+                else
+                {
                     char *folder =(char*) malloc(256);
 
                     strcpy(folder,caleDreapta);
@@ -678,7 +791,8 @@ void utilizareaAplicatiei()
 
             }
         }
-        else {
+        else
+        {
 
             newfolder=false;
         }
@@ -872,22 +986,465 @@ void utilizareaAplicatiei()
                 }
             }
         }
-            else
-            {
-                deplasare=false;
-            }
+        else
+        {
+            deplasare=false;
+        }
 
-            ///Edit
-            if(GetAsyncKeyState(VK_F4))
+        ///Edit
+        if(GetAsyncKeyState(VK_F4))
+        {
+            if(!editare)
             {
-                if(!editare)
+                editare=true;
+
+                if (careFereastra==false)///stanga
                 {
-                    editare=true;
 
+
+                    ///am selectat un fisier
+                    if(viewCounterStanga>=nr_foldereStanga)
+                    {
+                        char *fisier= (char*)malloc(256);
+                        strcpy(fisier,"notepad.exe \"");
+                        strcat(fisier,caleStanga);
+
+                        char *nume_fisier=fisiereStanga[viewCounterStanga-nr_foldereStanga];
+
+                        strcat(fisier,"\\");
+                        strcat(fisier,nume_fisier);
+                        strcat(fisier,"\"");
+
+                        system(fisier); ///deschide
+                        free(fisier);
+
+                    }
+                    else
+                    {
+                        ///edit pe un folder
+                        int msgboxID = MessageBoxA(NULL,
+                                                   "Please select a file", "Edit",
+                                                   MB_ICONEXCLAMATION | MB_OK);
+
+                    }
+                }
+                else if(careFereastra==true)
+                {
+                    if(viewCounterDreapta>=nr_foldereDreapta)
+                    {
+                        ///enter pe un fisier
+                        char *fisier= (char*)malloc(256);
+                        strcpy(fisier,"notepad.exe \"");
+                        strcat(fisier,caleDreapta);
+
+                        char *nume_fisier=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
+
+                        strcat(fisier,"\\");
+                        strcat(fisier,nume_fisier);
+                        strcat(fisier,"\"");
+
+                        system(fisier);
+                        free(fisier);
+                    }
+                    else
+                    {
+                        ///edit pe un folder
+                        int msgboxID = MessageBoxA(NULL,
+                                                   "Please select a file", "Edit",
+                                                   MB_ICONEXCLAMATION | MB_OK);
+                    }
+                }
+            }
+        }
+        else
+        {
+            editare=false;
+        }
+
+
+        ///Enter
+        if(GetAsyncKeyState(VK_RETURN))
+        {
+
+            if (!tastaEnter)
+            {
+                tastaEnter=true;
+
+                if (careFereastra==false)///stanga
+                {
+
+
+                    ///am selectat un fisier
+                    if(viewCounterStanga>=nr_foldereStanga)
+                    {
+                        char *fisier= (char*)malloc(256);
+                        strcpy(fisier,"\"");
+                        strcat(fisier,caleStanga);
+
+                        char *nume_fisier=fisiereStanga[viewCounterStanga-nr_foldereStanga];
+
+                        strcat(fisier,"\\");
+                        strcat(fisier,nume_fisier);
+                        strcat(fisier,"\"");
+
+                        system(fisier); ///deschide
+                        free(fisier);
+
+                    }
+                    else
+                    {
+                        ///enter pe un folder
+                        if (caleStanga[0] != NULL)
+                        {
+                            strcat(caleStanga, "\\");
+                        }
+                        strcat(caleStanga,foldereStanga[viewCounterStanga]);
+                        reindexare_Stanga();
+                        outtextxy(12, 691, caleStanga);
+                    }
+                }
+                else if(careFereastra==true)
+                {
+                    if(viewCounterDreapta>=nr_foldereDreapta)
+                    {
+                        ///enter pe un fisier
+                        char *fisier= (char*)malloc(256);
+                        strcpy(fisier,"\"");
+                        strcat(fisier,caleDreapta);
+
+                        char *nume_fisier=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
+
+                        strcat(fisier,"\\");
+                        strcat(fisier,nume_fisier);
+                        strcat(fisier,"\"");
+
+                        system(fisier);
+                        free(fisier);
+                    }
+                    else
+                    {
+                        ///enter pe un folder
+                        if (caleDreapta[0] != NULL)
+                        {
+                            strcat(caleDreapta, "\\");
+                        }
+                        strcat(caleDreapta,foldereDreapta[viewCounterDreapta]);
+
+                        reindexare_Dreapta();
+                        outtextxy(540, 691, caleDreapta);
+                    }
+                }
+            }
+        }
+        else
+        {
+            tastaEnter=false;
+        }
+
+        ///Edit
+        if(GetAsyncKeyState(VK_F3))
+        {
+            if(!vizualizare)
+            {
+                vizualizare=true;
+                if (careFereastra==false)///stanga
+                {
+
+
+                    ///am selectat un fisier
+                    if(viewCounterStanga>=nr_foldereStanga)
+                    {
+                        char *fisier= (char*)malloc(256);
+                        strcpy(fisier,"\"");
+                        strcat(fisier,caleStanga);
+
+                        char *nume_fisier=fisiereStanga[viewCounterStanga-nr_foldereStanga];
+
+                        strcat(fisier,"\\");
+                        strcat(fisier,nume_fisier);
+                        strcat(fisier,"\"");
+
+                        system(fisier); ///deschide
+                        free(fisier);
+
+                    }
+                    else
+                    {
+                        ///edit pe un folder
+                        int msgboxID = MessageBoxA(NULL,
+                                                   "Please select a file", "View",
+                                                   MB_ICONEXCLAMATION | MB_OK);
+
+                    }
+                }
+                else if(careFereastra==true)
+                {
+                    if(viewCounterDreapta>=nr_foldereDreapta)
+                    {
+                        ///enter pe un fisier
+                        char *fisier= (char*)malloc(256);
+                        strcpy(fisier,"\"");
+                        strcat(fisier,caleDreapta);
+
+                        char *nume_fisier=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
+
+                        strcat(fisier,"\\");
+                        strcat(fisier,nume_fisier);
+                        strcat(fisier,"\"");
+
+                        system(fisier);
+                        free(fisier);
+                    }
+                    else
+                    {
+                        ///edit pe un folder
+                        int msgboxID = MessageBoxA(NULL,
+                                                   "Please select a file", "View",
+                                                   MB_ICONEXCLAMATION | MB_OK);
+                    }
+                }
+
+            }
+        }
+        else
+        {
+            vizualizare=false;
+        }
+
+
+
+        ///modific selected
+        ///DownArrow
+        if (GetAsyncKeyState(VK_DOWN))
+        {
+            if (!tastaDown)
+            {
+                tastaDown=true;
+
+                if (careFereastra==false && viewCounterStanga+1<nr_foldereStanga+nr_fisiereStanga)
+                {
+                    viewCounterStanga++;
+                    if (viewCounterStanga==panaUndeAfisezStanga[nivStivaStanga])
+                    {
+                        if (panaUndeAfisezStanga[nivStivaStanga]+29<nrFoldereFisiereStanga)
+                        {
+                            nivStivaStanga++;
+                            panaUndeAfisezStanga[nivStivaStanga]=panaUndeAfisezStanga[nivStivaStanga-1]+29;
+                        }
+                        else
+                            nivStivaStanga++,panaUndeAfisezStanga[nivStivaStanga]=nrFoldereFisiereStanga;
+                        deUndeAfisezStanga[nivStivaStanga]=viewCounterStanga;
+                        clear_stanga();
+                    }
+                    afisare(intreagaStanga, deUndeAfisezStanga[nivStivaStanga], panaUndeAfisezStanga[nivStivaStanga], viewCounterStanga, 15);
+
+                }
+                else if(careFereastra==true && viewCounterDreapta+1<nr_foldereDreapta+nr_fisiereDreapta)
+                {
+                    viewCounterDreapta++;
+                    if (viewCounterDreapta==panaUndeAfisezDreapta[nivStivaDreapta])
+                    {
+                        if (panaUndeAfisezDreapta[nivStivaDreapta]+29<nrFoldereFisiereDreapta)
+                        {
+                            nivStivaDreapta++;
+                            panaUndeAfisezDreapta[nivStivaDreapta]=panaUndeAfisezDreapta[nivStivaDreapta-1]+29;
+                        }
+                        else
+                            nivStivaDreapta++, panaUndeAfisezDreapta[nivStivaDreapta]=nrFoldereFisiereDreapta;
+                        deUndeAfisezDreapta[nivStivaDreapta]=viewCounterDreapta;
+                        clear_dreapta();
+                    }
+                    afisare(intreagaDreapta, deUndeAfisezDreapta[nivStivaDreapta], panaUndeAfisezDreapta[nivStivaDreapta], viewCounterDreapta, 542);
+
+                }
+            }
+        }
+        else
+        {
+            tastaDown=false;
+        }
+
+        ///UpArrow
+        if (GetAsyncKeyState(VK_UP))
+        {
+            if (!tastaUp)
+            {
+                tastaUp=true;
+
+                if (careFereastra==false && viewCounterStanga-1>=0)
+                {
+                    viewCounterStanga--;
+                    if (nivStivaStanga>0 && viewCounterStanga==deUndeAfisezStanga[nivStivaStanga]-1)
+                    {
+                        nivStivaStanga--;
+                        clear_stanga();
+                    }
+                    afisare(intreagaStanga, deUndeAfisezStanga[nivStivaStanga], panaUndeAfisezStanga[nivStivaStanga], viewCounterStanga, 15);
+                }
+                else if(careFereastra==true && viewCounterDreapta-1>=0)
+                {
+                    viewCounterDreapta--;
+                    if (nivStivaDreapta>0 && viewCounterDreapta==deUndeAfisezDreapta[nivStivaDreapta]-1)
+                    {
+                        nivStivaDreapta--;
+                        clear_dreapta();
+                    }
+                    afisare(intreagaDreapta, deUndeAfisezDreapta[nivStivaDreapta], panaUndeAfisezDreapta[nivStivaDreapta], viewCounterDreapta, 542);
+                }
+            }
+        }
+        else
+        {
+            tastaUp=false;
+        }
+
+
+
+        if (GetAsyncKeyState(VK_LBUTTON))
+        {
+            if (!mousePress)
+            {
+                mousePress=true;
+                clickX=mousex();
+                clickY=mousey();
+                if (clickX>=665 && clickX<=761 && clickY>=740 && clickY<=756)
+                    ///Am apasat cu mouse-ul butonul de iesire
+                    loop=false;
+
+
+                ///Am apasat pe butonul Sortare ASC dupa Nume
+                if (clickX>=195 && clickX<=277 && clickY>=42 && clickY<=58 )
+                {
+                    if (careFereastra==false)
+                    {
+                        sortareDupaNumeAsc(foldereStanga, nr_foldereStanga);
+                        sortareDupaNumeAsc(fisiereStanga, nr_fisiereStanga);
+                        initializareVectorDeNumeFoldereFisiere(intreagaStanga, foldereStanga, fisiereStanga, nr_foldereStanga, nr_fisiereStanga);
+                        clear_stanga();
+                        nivStivaStanga=0;
+                        deUndeAfisezStanga[0]=0;
+                        viewCounterStanga=0;
+                        if(nrFoldereFisiereStanga>29) panaUndeAfisezStanga[nivStivaStanga]=29;
+                        else panaUndeAfisezStanga[nivStivaStanga]=nrFoldereFisiereStanga;
+                        afisare(intreagaStanga, deUndeAfisezStanga[nivStivaStanga], panaUndeAfisezStanga[nivStivaStanga], viewCounterStanga, 15);
+                    }
+                    else if(careFereastra==true)
+                    {
+                        sortareDupaNumeAsc(foldereDreapta, nr_foldereDreapta);
+                        sortareDupaNumeAsc(fisiereDreapta, nr_fisiereDreapta);
+                        initializareVectorDeNumeFoldereFisiere(intreagaDreapta, foldereDreapta, fisiereDreapta, nr_foldereDreapta, nr_fisiereDreapta);
+                        clear_dreapta();
+                        nivStivaDreapta=0;
+                        deUndeAfisezDreapta[0]=0;
+                        viewCounterDreapta=0;
+                        if(nrFoldereFisiereDreapta>29) panaUndeAfisezDreapta[nivStivaDreapta]=29;
+                        else panaUndeAfisezDreapta[nivStivaDreapta]=nrFoldereFisiereDreapta;
+                        afisare(intreagaDreapta, deUndeAfisezDreapta[nivStivaDreapta], panaUndeAfisezDreapta[nivStivaDreapta], viewCounterDreapta, 542);
+
+                    }
+                }
+
+
+                ///Am apasat pe butonul Sortare DESC dupa Nume
+                if (clickX>=642 && clickX<=724 && clickY>=42 && clickY<=58 )
+                {
+                    if (careFereastra==false)
+                    {
+                        sortareDupaNumeDesc(foldereStanga, nr_foldereStanga);
+                        sortareDupaNumeDesc(fisiereStanga, nr_fisiereStanga);
+                        initializareVectorDeNumeFoldereFisiere(intreagaStanga, foldereStanga, fisiereStanga, nr_foldereStanga, nr_fisiereStanga);
+                        clear_stanga();
+                        nivStivaStanga=0;
+                        deUndeAfisezStanga[0]=0;
+                        viewCounterStanga=0;
+                        if(nrFoldereFisiereStanga>29) panaUndeAfisezStanga[nivStivaStanga]=29;
+                        else panaUndeAfisezStanga[nivStivaStanga]=nrFoldereFisiereStanga;
+                        afisare(intreagaStanga, deUndeAfisezStanga[nivStivaStanga], panaUndeAfisezStanga[nivStivaStanga], viewCounterStanga, 15);
+                    }
+                    else if(careFereastra==true)
+                    {
+                        sortareDupaNumeDesc(foldereDreapta, nr_foldereDreapta);
+                        sortareDupaNumeDesc(fisiereDreapta, nr_fisiereDreapta);
+                        initializareVectorDeNumeFoldereFisiere(intreagaDreapta, foldereDreapta, fisiereDreapta, nr_foldereDreapta, nr_fisiereDreapta);
+                        clear_dreapta();
+                        nivStivaDreapta=0;
+                        deUndeAfisezDreapta[0]=0;
+                        viewCounterDreapta=0;
+                        if(nrFoldereFisiereDreapta>29) panaUndeAfisezDreapta[nivStivaDreapta]=29;
+                        else panaUndeAfisezDreapta[nivStivaDreapta]=nrFoldereFisiereDreapta;
+                        afisare(intreagaDreapta, deUndeAfisezDreapta[nivStivaDreapta], panaUndeAfisezDreapta[nivStivaDreapta], viewCounterDreapta, 542);
+
+                    }
+                }
+
+
+                ///Am apasat pe butonul F3
+                if (clickX>=10 && clickX<=86 && clickY>=740 && clickY<=756 )
+                {
                     if (careFereastra==false)///stanga
                     {
 
 
+                        ///am selectat un fisier
+                        if(viewCounterStanga>=nr_foldereStanga)
+                        {
+                            char *fisier= (char*)malloc(256);
+                            strcpy(fisier,"\"");
+                            strcat(fisier,caleStanga);
+
+                            char *nume_fisier=fisiereStanga[viewCounterStanga-nr_foldereStanga];
+
+                            strcat(fisier,"\\");
+                            strcat(fisier,nume_fisier);
+                            strcat(fisier,"\"");
+
+                            system(fisier); ///deschide
+                            free(fisier);
+
+                        }
+                        else
+                        {
+                            ///edit pe un folder
+                            int msgboxID = MessageBoxA(NULL,
+                                                       "Please select a file", "View",
+                                                       MB_ICONEXCLAMATION | MB_OK);
+
+                        }
+                    }
+                    else if(careFereastra==true)
+                    {
+                        if(viewCounterDreapta>=nr_foldereDreapta)
+                        {
+                            ///enter pe un fisier
+                            char *fisier= (char*)malloc(256);
+                            strcpy(fisier,"\"");
+                            strcat(fisier,caleDreapta);
+
+                            char *nume_fisier=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
+
+                            strcat(fisier,"\\");
+                            strcat(fisier,nume_fisier);
+                            strcat(fisier,"\"");
+
+                            system(fisier);
+                            free(fisier);
+                        }
+                        else
+                        {
+                            ///edit pe un folder
+                            int msgboxID = MessageBoxA(NULL,
+                                                       "Please select a file", "View",
+                                                       MB_ICONEXCLAMATION | MB_OK);
+                        }
+                    }
+                }
+
+
+                ///Am apasat pe butonul F4
+                if (clickX>=110 && clickX<=185 && clickY>=740 && clickY<=756 )
+                {
+                    if (careFereastra==false)///stanga
+                    {
                         ///am selectat un fisier
                         if(viewCounterStanga>=nr_foldereStanga)
                         {
@@ -909,8 +1466,8 @@ void utilizareaAplicatiei()
                         {
                             ///edit pe un folder
                             int msgboxID = MessageBoxA(NULL,
-                                                   "Please select a file", "Edit",
-                                                   MB_ICONEXCLAMATION | MB_OK);
+                                                       "Please select a file", "Edit",
+                                                       MB_ICONEXCLAMATION | MB_OK);
 
                         }
                     }
@@ -936,179 +1493,310 @@ void utilizareaAplicatiei()
                         {
                             ///edit pe un folder
                             int msgboxID = MessageBoxA(NULL,
-                                                   "Please select a file", "Edit",
-                                                   MB_ICONEXCLAMATION | MB_OK);
+                                                       "Please select a file", "Edit",
+                                                       MB_ICONEXCLAMATION | MB_OK);
                         }
                     }
                 }
-            }
-            else
-            {
-                editare=false;
-            }
 
 
-            ///Enter
-            if(GetAsyncKeyState(VK_RETURN))
-            {
-
-                if (!tastaEnter)
+                ///Am apasat pe butonul F5
+                if (clickX>=205 && clickX<=280 && clickY>=740 && clickY<=756 )
                 {
-                    tastaEnter=true;
-
-                    if (careFereastra==false)///stanga
+                    if(careFereastra==false)
                     {
-
-
-                        ///am selectat un fisier
-                        if(viewCounterStanga>=nr_foldereStanga)
+                        char *numefisierfolder;
+                        if(viewCounterStanga<nr_foldereStanga)
                         {
-                            char *fisier= (char*)malloc(256);
-                            strcpy(fisier,"\"");
-                            strcat(fisier,caleStanga);
 
-                            char *nume_fisier=fisiereStanga[viewCounterStanga-nr_foldereStanga];
-
-                            strcat(fisier,"\\");
-                            strcat(fisier,nume_fisier);
-                            strcat(fisier,"\"");
-
-                            system(fisier); ///deschide
-                            free(fisier);
+                            numefisierfolder=foldereStanga[viewCounterStanga];
 
                         }
+
                         else
                         {
-                            ///enter pe un folder
-                            if (caleStanga[0] != NULL)
-                            {
-                                strcat(caleStanga, "\\");
-                            }
-                            strcat(caleStanga,foldereStanga[viewCounterStanga]);
+                            numefisierfolder=fisiereStanga[viewCounterStanga-nr_foldereStanga];
+                        }
+                        char *folder= (char*)malloc(256);
 
+
+                        strcpy(folder,caleStanga);
+
+
+                        bool ok=true;
+                        strcat(folder,"\\");
+                        strcat(folder,numefisierfolder);
+
+                        if(ok)
+                        {
+                            copierefoldere(folder, caleDreapta);
+                            reindexare_Dreapta();
                             reindexare_Stanga();
                         }
+                        free(folder);
+
                     }
-                    else if(careFereastra==true)
+                    else
                     {
-                        if(viewCounterDreapta>=nr_foldereDreapta)
+                        char *numefisierfolder;
+                        if(viewCounterDreapta<nr_foldereDreapta)
                         {
-                            ///enter pe un fisier
-                            char *fisier= (char*)malloc(256);
-                            strcpy(fisier,"\"");
-                            strcat(fisier,caleDreapta);
 
-                            char *nume_fisier=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
+                            numefisierfolder=foldereDreapta[viewCounterDreapta];
 
-                            strcat(fisier,"\\");
-                            strcat(fisier,nume_fisier);
-                            strcat(fisier,"\"");
-
-                            system(fisier);
-                            free(fisier);
                         }
+
                         else
                         {
-                            ///enter pe un folder
-                            if (caleDreapta[0] != NULL)
-                            {
-                                strcat(caleDreapta, "\\");
-                            }
-                            strcat(caleDreapta,foldereDreapta[viewCounterDreapta]);
+                            numefisierfolder=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
+                        }
+                        char *folder= (char*)malloc(256);
 
+
+                        strcpy(folder,caleDreapta);
+
+
+                        bool ok=true;
+                        strcat(folder,"\\");
+                        strcat(folder,numefisierfolder);
+                        if(ok)
+                        {
+                            copierefoldere(folder, caleStanga);
+                            reindexare_Stanga();
                             reindexare_Dreapta();
                         }
+
+                        free(folder);
+
                     }
                 }
-            }
-            else
-            {
-                tastaEnter=false;
-            }
 
-            ///Edit
-            if(GetAsyncKeyState(VK_F3))
-            {
-                if(!vizualizare)
+
+                ///Am apasat pe butonul F6
+                if (clickX>=310 && clickX<=385 && clickY>=740 && clickY<=756)
                 {
-                    vizualizare=true;
-                    if (careFereastra==false)///stanga
+                    if(careFereastra==false)
                     {
-
-
-                        ///am selectat un fisier
-                        if(viewCounterStanga>=nr_foldereStanga)
+                        char *numefisierfolder;
+                        if(viewCounterStanga<nr_foldereStanga)
                         {
-                            char *fisier= (char*)malloc(256);
-                            strcpy(fisier,"\"");
-                            strcat(fisier,caleStanga);
 
-                            char *nume_fisier=fisiereStanga[viewCounterStanga-nr_foldereStanga];
-
-                            strcat(fisier,"\\");
-                            strcat(fisier,nume_fisier);
-                            strcat(fisier,"\"");
-
-                            system(fisier); ///deschide
-                            free(fisier);
+                            numefisierfolder=foldereStanga[viewCounterStanga];
 
                         }
+
                         else
                         {
-                            ///edit pe un folder
-                            int msgboxID = MessageBoxA(NULL,
-                                                   "Please select a file", "View",
-                                                   MB_ICONEXCLAMATION | MB_OK);
-
+                            numefisierfolder=fisiereStanga[viewCounterStanga-nr_foldereStanga];
                         }
+                        char *folder= (char*)malloc(256);
+
+
+                        strcpy(folder,caleStanga);
+
+
+                        bool ok=true;
+                        strcat(folder,"\\");
+                        strcat(folder,numefisierfolder);
+
+                        if(ok)
+                        {
+                            copierefoldere(folder, caleDreapta);
+                            stergere(folder);
+                            reindexare_Dreapta();
+                            reindexare_Stanga();
+                        }
+                        free(folder);
                     }
-                    else if(careFereastra==true)
+                    else
                     {
-                        if(viewCounterDreapta>=nr_foldereDreapta)
+                        char *numefisierfolder;
+                        if(viewCounterDreapta<nr_foldereDreapta)
                         {
-                            ///enter pe un fisier
-                            char *fisier= (char*)malloc(256);
-                            strcpy(fisier,"\"");
-                            strcat(fisier,caleDreapta);
 
-                            char *nume_fisier=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
+                            numefisierfolder=foldereDreapta[viewCounterDreapta];
 
-                            strcat(fisier,"\\");
-                            strcat(fisier,nume_fisier);
-                            strcat(fisier,"\"");
-
-                            system(fisier);
-                            free(fisier);
                         }
+
                         else
                         {
-                            ///edit pe un folder
-                            int msgboxID = MessageBoxA(NULL,
-                                                   "Please select a file", "View",
-                                                   MB_ICONEXCLAMATION | MB_OK);
+                            numefisierfolder=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
                         }
+                        char *folder= (char*)malloc(256);
+
+
+                        strcpy(folder,caleDreapta);
+
+
+                        bool ok=true;
+                        strcat(folder,"\\");
+                        strcat(folder,numefisierfolder);
+                        if(ok)
+                        {
+                            copierefoldere(folder, caleStanga);
+                            stergere(folder);
+                            reindexare_Stanga();
+                            reindexare_Dreapta();
+                        }
+
+                        free(folder);
                     }
 
                 }
-            }
-            else {
-                vizualizare=false;
-            }
 
-
-
-            ///modific selected
-            ///DownArrow
-            if (GetAsyncKeyState(VK_DOWN))
-            {
-                if (!tastaDown)
+                ///Am apasat pe butonul F7
+                if (clickX>=415 && clickX<=524 && clickY>=740 && clickY<=756)
                 {
-                    tastaDown=true;
-
-                    if (careFereastra==false && viewCounterStanga+1<nr_foldereStanga+nr_fisiereStanga)
+                    if(careFereastra==false)
                     {
-                        viewCounterStanga++;
-                        if (viewCounterStanga==panaUndeAfisezStanga[nivStivaStanga])
+                        char *folder =(char*) malloc(256);
+
+                        strcpy(folder,caleStanga);
+                        strcat(folder,"\\");
+                        strcat(folder,"NewFolder");
+
+                        CreateDirectoryA(folder,NULL);
+
+                        reindexare_Dreapta();
+                        reindexare_Stanga();
+
+
+                        free(folder);
+
+                    }
+                    else
+                    {
+                        char *folder =(char*) malloc(256);
+
+                        strcpy(folder,caleDreapta);
+                        strcat(folder,"\\");
+                        strcat(folder,"NewFolder");
+
+                        CreateDirectoryA(folder,NULL);
+
+                        reindexare_Stanga();
+                        reindexare_Dreapta();
+
+                        free(folder);
+                    }
+                }
+
+                ///Am apasat pe butonul F8
+                if (clickX>=555 && clickX<=644 && clickY>=740 && clickY<=756 )
+                {
+                    if(careFereastra==false)
+                    {
+                        char *numefisierfolder;
+                        if(viewCounterStanga<nr_foldereStanga)
+                        {
+
+                            numefisierfolder=foldereStanga[viewCounterStanga];
+
+                        }
+
+                        else
+                        {
+                            numefisierfolder=fisiereStanga[viewCounterStanga-nr_foldereStanga];
+                        }
+                        char *folder= (char*)malloc(256);
+
+
+                        strcpy(folder,caleStanga);
+
+
+                        bool ok=false;
+                        strcat(folder,"\\");
+                        strcat(folder,numefisierfolder);
+                        if(exista(folder))
+                        {
+
+                            int msgboxID = MessageBoxA(NULL,
+                                                       "Are you sure?\nDo you want to remove the file or directory?", "Delete",
+                                                       MB_ICONEXCLAMATION | MB_YESNO);
+
+                            if (msgboxID == IDYES)
+                            {
+                                ok = true;
+                            }
+
+                        }
+                        if(ok)
+                        {
+                            stergere(folder);
+                            reindexare_Dreapta();
+                            reindexare_Stanga();
+                        }
+                        free(folder);
+
+
+                    }
+
+                    else
+                    {
+                        char *numefisierfolder;
+                        if(viewCounterDreapta<nr_foldereDreapta)
+                        {
+
+                            numefisierfolder=foldereDreapta[viewCounterDreapta];
+
+                        }
+
+                        else
+                        {
+                            numefisierfolder=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
+                        }
+                        char *folder= (char*)malloc(256);
+
+
+                        strcpy(folder,caleDreapta);
+
+
+                        bool ok=false;
+                        strcat(folder,"\\");
+                        strcat(folder,numefisierfolder);
+                        if(exista(folder))
+                        {
+
+                            int msgboxID = MessageBoxA(NULL,
+                                                       "Are you sure?\nDo you want to remove the file or directory?", "Delete",
+                                                       MB_ICONEXCLAMATION | MB_YESNO);
+
+                            if (msgboxID == IDYES)
+                            {
+                                ok = true;
+                            }
+
+                        }
+                        if(ok)
+                        {
+                            stergere(folder);
+                            reindexare_Stanga();
+                            reindexare_Dreapta();
+                        }
+
+                        free(folder);
+
+
+
+                    }
+                }
+                ///am apasat mai sus stanga
+                if (clickX>=498 && clickX<=525 && clickY>=84 && clickY<=100)
+                {
+                    if (careFereastra==false)
+                        if (deUndeAfisezStanga[nivStivaStanga]!=0)
+                        {
+                            nivStivaStanga--;
+                            viewCounterStanga=deUndeAfisezStanga[nivStivaStanga];
+                            clear_stanga();
+                            afisare(intreagaStanga, deUndeAfisezStanga[nivStivaStanga], panaUndeAfisezStanga[nivStivaStanga], deUndeAfisezStanga[nivStivaStanga], 15);
+                        }
+                }
+                ///am apasat mai jos stanga
+                if (clickX>=498 && clickX<=525 && clickY>=668 && clickY<=684)
+                {
+                    if (careFereastra==false)
+                        if (panaUndeAfisezStanga[nivStivaStanga]<nrFoldereFisiereStanga)
                         {
                             if (panaUndeAfisezStanga[nivStivaStanga]+29<nrFoldereFisiereStanga)
                             {
@@ -1116,17 +1804,31 @@ void utilizareaAplicatiei()
                                 panaUndeAfisezStanga[nivStivaStanga]=panaUndeAfisezStanga[nivStivaStanga-1]+29;
                             }
                             else
+                            {
                                 nivStivaStanga++,panaUndeAfisezStanga[nivStivaStanga]=nrFoldereFisiereStanga;
-                            deUndeAfisezStanga[nivStivaStanga]=viewCounterStanga;
+                            }
+                            deUndeAfisezStanga[nivStivaStanga]=viewCounterStanga=panaUndeAfisezStanga[nivStivaStanga-1];
                             clear_stanga();
+                            afisare(intreagaStanga, deUndeAfisezStanga[nivStivaStanga], panaUndeAfisezStanga[nivStivaStanga], viewCounterStanga, 15);
                         }
-                        afisare(intreagaStanga, deUndeAfisezStanga[nivStivaStanga], panaUndeAfisezStanga[nivStivaStanga], viewCounterStanga, 15);
-
-                    }
-                    else if(careFereastra==true && viewCounterDreapta+1<nr_foldereDreapta+nr_fisiereDreapta)
-                    {
-                        viewCounterDreapta++;
-                        if (viewCounterDreapta==panaUndeAfisezDreapta[nivStivaDreapta])
+                }
+                ///am apasat mai sus dreapta
+                if (clickX>=520 && clickX<=547 && clickY>=84 && clickY<=100)
+                {
+                    if (careFereastra==true)
+                        if (deUndeAfisezDreapta[nivStivaDreapta]!=0)
+                        {
+                            nivStivaDreapta--;
+                            viewCounterDreapta=deUndeAfisezDreapta[nivStivaDreapta];
+                            clear_dreapta();
+                            afisare(intreagaDreapta, deUndeAfisezDreapta[nivStivaDreapta], panaUndeAfisezDreapta[nivStivaDreapta], deUndeAfisezDreapta[nivStivaDreapta], 542);
+                        }
+                }
+                ///am apasat mai jos dreapta
+                if (clickX>=520 && clickX<=547 && clickY>=668 && clickY<=684)
+                {
+                    if (careFereastra==true)
+                        if (panaUndeAfisezDreapta[nivStivaDreapta]<nrFoldereFisiereDreapta)
                         {
                             if (panaUndeAfisezDreapta[nivStivaDreapta]+29<nrFoldereFisiereDreapta)
                             {
@@ -1134,133 +1836,189 @@ void utilizareaAplicatiei()
                                 panaUndeAfisezDreapta[nivStivaDreapta]=panaUndeAfisezDreapta[nivStivaDreapta-1]+29;
                             }
                             else
-                                nivStivaDreapta++, panaUndeAfisezDreapta[nivStivaDreapta]=nrFoldereFisiereDreapta;
-                            deUndeAfisezDreapta[nivStivaDreapta]=viewCounterDreapta;
+                            {
+                                nivStivaDreapta++,panaUndeAfisezDreapta[nivStivaDreapta]=nrFoldereFisiereDreapta;
+                            }
+                            deUndeAfisezDreapta[nivStivaDreapta]=viewCounterDreapta=panaUndeAfisezDreapta[nivStivaDreapta-1];
                             clear_dreapta();
+                            afisare(intreagaDreapta, deUndeAfisezDreapta[nivStivaDreapta], panaUndeAfisezDreapta[nivStivaDreapta], viewCounterDreapta, 542);
                         }
-                        afisare(intreagaDreapta, deUndeAfisezDreapta[nivStivaDreapta], panaUndeAfisezDreapta[nivStivaDreapta], viewCounterDreapta, 542);
-
-                    }
                 }
-            }
-            else
-            {
-                tastaDown=false;
-            }
-
-            ///UpArrow
-            if (GetAsyncKeyState(VK_UP))
-            {
-                if (!tastaUp)
-                {
-                    tastaUp=true;
-
-                    if (careFereastra==false && viewCounterStanga-1>=0)
-                    {
-                        viewCounterStanga--;
-                        if (nivStivaStanga>0 && viewCounterStanga==deUndeAfisezStanga[nivStivaStanga]-1)
-                        {
-                            nivStivaStanga--;
-                            clear_stanga();
-                        }
-                        afisare(intreagaStanga, deUndeAfisezStanga[nivStivaStanga], panaUndeAfisezStanga[nivStivaStanga], viewCounterStanga, 15);
-                    }
-                    else if(careFereastra==true && viewCounterDreapta-1>=0)
-                    {
-                        viewCounterDreapta--;
-                        if (nivStivaDreapta>0 && viewCounterDreapta==deUndeAfisezDreapta[nivStivaDreapta]-1)
-                        {
-                            nivStivaDreapta--;
-                            clear_dreapta();
-                        }
-                        afisare(intreagaDreapta, deUndeAfisezDreapta[nivStivaDreapta], panaUndeAfisezDreapta[nivStivaDreapta], viewCounterDreapta, 542);
-                    }
-                }
-            }
-            else
-            {
-                tastaUp=false;
-            }
-
-
-
-            if (GetAsyncKeyState(VK_LBUTTON))
-            {
-                if (!mousePress)
-                {
-                    mousePress=true;
-                    clickX=mousex();
-                    clickY=mousey();
-                    if (clickX>=665 && clickX<=761 && clickY>=740 && clickY<=756)
-                        ///Am apasat cu mouse-ul butonul ESC
-                        loop=false;
-                }
-            }
-            else
-            {
-                mousePress=false;
-            }
-
-            ///ESC
-            if (GetAsyncKeyState(VK_ESCAPE))
-            {
-                if (!tastaEsc)
-                {
-                    tastaEsc=true;
-                    loop=false;
-                }
-            }
-            else
-            {
-                tastaEsc = false;
-            }
-
-            ///TAB
-            if (GetAsyncKeyState(VK_TAB))
-            {
-                if (!tastaTab)
-                {
-                    tastaTab=true;
-
-                    if (careFereastra==false)
-                    {
-                        careFereastra=true;
-                        setcolor(DARKGRAY);
-                        rectangle(10, 80,  496, 687);
-                        setcolor(COLOR(255, 0, 0));
-                        rectangle(537, 80, 1013, 687);
-                    }
-                    else
-                    {
-                        careFereastra=false;
-                        setcolor(COLOR(255, 0, 0));
-                        rectangle(10, 80,  496, 687);
-                        setcolor(DARKGRAY);
-                        rectangle(537, 80, 1013, 687);
-                    }
-                }
-            }
-            else
-            {
-                tastaTab=false;
             }
         }
+        else
+        {
+            mousePress=false;
+        }
 
-        ///Eliberam memoria
-        free(foldereStanga);
-        free(fisiereStanga);
-        free(foldereDreapta);
-        free(fisiereDreapta);
-        free(intreagaStanga);
-        free(intreagaDreapta);
+        ///TAB
+        if (GetAsyncKeyState(VK_TAB))
+        {
+            if (!tastaTab)
+            {
+                tastaTab=true;
+
+                if (careFereastra==false)
+                {
+                    careFereastra=true;
+                    setcolor(DARKGRAY);
+                    rectangle(10, 80,  496, 687);
+                    setcolor(COLOR(255, 0, 0));
+                    rectangle(537, 80, 1013, 687);
+                }
+                else
+                {
+                    careFereastra=false;
+                    setcolor(COLOR(255, 0, 0));
+                    rectangle(10, 80,  496, 687);
+                    setcolor(DARKGRAY);
+                    rectangle(537, 80, 1013, 687);
+                }
+            }
+        }
+        else
+        {
+            tastaTab=false;
+        }
+        ///rename
+        if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState('R'))
+        {
+            if (!hotKeyCtrlR)
+            {
+                hotKeyCtrlR=true;
+                if (careFereastra==false)
+                {
+                    coordXRename=42;
+                    lenRenameFileString=0;
+                    renameFileString[0]=0;
+                    readimagefile("RenameBoxSized.jpg", 30, 305, 475, 395);
+                    setcolor(BLACK);
+                    setbkcolor(COLOR(220, 220, 220));
+                    outtextxy(40, 330," Rename file or directory: ");
+                    setbkcolor(WHITE);
+                    loopRename=true;
+                    while (loopRename)
+                    {
+                        setcolor(BLACK);
+                        tastaIntrodusaRename=getch();
+                        if (lenRenameFileString<41)
+                        {
+                            if (    tastaIntrodusaRename>='a' && tastaIntrodusaRename<='z' ||
+                                    tastaIntrodusaRename>='A' && tastaIntrodusaRename<='Z' ||
+                                    tastaIntrodusaRename>='0' && tastaIntrodusaRename<='9' ||
+                                    tastaIntrodusaRename==' ' || tastaIntrodusaRename=='_' ||
+                                    tastaIntrodusaRename=='-' || tastaIntrodusaRename==',' ||
+                                    tastaIntrodusaRename=='(' || tastaIntrodusaRename==')' ||
+                                    tastaIntrodusaRename=='.')
+                            {
+                                renameFileString[lenRenameFileString]=tastaIntrodusaRename;
+                                lenRenameFileString++;
+                                renameFileString[lenRenameFileString]=0;
+                                outtextxy(coordXRename, 356, renameFileString);
+                            }
+                        }
+                        if (tastaIntrodusaRename==8 && lenRenameFileString>0) ///am introdus backspace
+                        {
+                            lenRenameFileString--;
+                            renameFileString[lenRenameFileString]=0;
+                            setcolor(WHITE);
+                            setbkcolor(WHITE);
+                            setfillstyle(SOLID_FILL, WHITE);
+                            bar(coordXRename, 356, 455, 372);
+                            setcolor(BLACK);
+                            outtextxy(coordXRename, 356, renameFileString);
+                        }
+                        if (GetAsyncKeyState(VK_RETURN))
+                        {
+                            ///aici vom utiliza sirul de caractere pentru a redenumi folderul sau fisierul
+                        }
+                        if (GetAsyncKeyState(VK_ESCAPE))
+                        {
+                            clear_stanga();
+                            afisare(intreagaStanga, deUndeAfisezStanga[nivStivaStanga], panaUndeAfisezStanga[nivStivaStanga], viewCounterStanga, 15);
+                            loopRename=false;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    coordXRename=564;
+                    lenRenameFileString=0;
+                    renameFileString[0]=0;
+                    readimagefile("RenameBoxSized.jpg", 552, 305, 997, 395);
+                    setcolor(BLACK);
+                    setbkcolor(COLOR(220, 220, 220));
+                    outtextxy(562, 330," Rename file or directory: ");
+                    setbkcolor(WHITE);
+                    loopRename=true;
+                    while (loopRename)
+                    {
+                        setcolor(BLACK);
+                        tastaIntrodusaRename=(char)getch();
+
+                        if(lenRenameFileString<41)
+                        {
+                            if (    tastaIntrodusaRename>='a' && tastaIntrodusaRename<='z' ||
+                                    tastaIntrodusaRename>='A' && tastaIntrodusaRename<='Z' ||
+                                    tastaIntrodusaRename>='0' && tastaIntrodusaRename<='9' ||
+                                    tastaIntrodusaRename==' ' || tastaIntrodusaRename=='_' ||
+                                    tastaIntrodusaRename=='-' || tastaIntrodusaRename==',' ||
+                                    tastaIntrodusaRename=='(' || tastaIntrodusaRename==')' ||
+                                    tastaIntrodusaRename=='.')
+                            {
+                                renameFileString[lenRenameFileString]=tastaIntrodusaRename;
+                                lenRenameFileString++;
+                                renameFileString[lenRenameFileString]=0;
+                                outtextxy(coordXRename, 356, renameFileString);
+                            }
+                        }
+                        if (tastaIntrodusaRename==8 && lenRenameFileString>0) ///am introdus backspace
+                        {
+                            lenRenameFileString--;
+                            renameFileString[lenRenameFileString]=0;
+                            setcolor(WHITE);
+                            setbkcolor(WHITE);
+                            setfillstyle(SOLID_FILL, WHITE);
+                            bar(coordXRename, 356, 984, 372);
+                            setcolor(BLACK);
+                            outtextxy(coordXRename, 356, renameFileString);
+                        }
+                        if (GetAsyncKeyState(VK_RETURN))
+                        {
+                            ///aici vom utiliza sirul de caractere pentru a redenumi folderul sau fisierul
+                        }
+                        if (GetAsyncKeyState(VK_ESCAPE))
+                        {
+                            clear_dreapta();
+                            afisare(intreagaDreapta, deUndeAfisezDreapta[nivStivaDreapta], panaUndeAfisezDreapta[nivStivaDreapta], viewCounterDreapta, 542);
+                            loopRename=false;
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+                hotKeyCtrlR=false;
+        }
+
     }
 
-    int main()
-    {
-        initwindow(1024, 768, "My Commander");
-        splashScreen();
-        HUD();
-        utilizareaAplicatiei();
-        closegraph();
-        return 0;
-    }
+    ///Eliberam memoria
+    free(foldereStanga);
+    free(fisiereStanga);
+    free(foldereDreapta);
+    free(fisiereDreapta);
+    free(intreagaStanga);
+    free(intreagaDreapta);
+}
+
+int main()
+{
+    initwindow(1024, 768, "My Commander");
+    splashScreen();
+    HUD();
+    utilizareaAplicatiei();
+    closegraph();
+    return 0;
+}
