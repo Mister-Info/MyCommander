@@ -11,7 +11,7 @@
 ///                "Y88P"
 
 
-///LISTA DE BUGURI: DE FACUT HACKCOMMANDER XD
+
 
 ///Sa vedem cum facem cu extensiile, size-ul si date-ul Razvan
 
