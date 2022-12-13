@@ -11,11 +11,14 @@
 ///                "Y88P"
 
 
+///LISTA DE BUGURI: DE FACUT HACKCOMMANDER XD
 
-///*** TO DO ***
 ///Sa vedem cum facem cu extensiile, size-ul si date-ul Razvan
-///Selectarea a mai multor fisiere foldere
+
 ///Functionalitatea butonului help, leftArrow, rightArrow Razvan
+
+
+///Selectarea a mai multor fisiere foldere
 
 
 #include <iostream>
@@ -579,7 +582,7 @@ void utilizareaAplicatiei()
     char** intreagaStanga = init_lista(202, 257);
     char** intreagaDreapta = init_lista(202, 257);
 
-    char renameFileString[101];
+    char* renameFileString=(char *)malloc(256);
     char tastaIntrodusaRename=0, c;
     int lenRenameFileString=0;
     int coordXRename;
@@ -604,7 +607,7 @@ void utilizareaAplicatiei()
                                                         deUndeAfisezDreapta[7], panaUndeAfisezDreapta[7], nivStivaDreapta=0;
     int viewCounterStanga=0, viewCounterDreapta=0; ///folderul/fisierul selectat
     int clickX, clickY;///coordonate mouse
-    char caleStanga[257], caleDreapta[257];
+    char caleStanga[4096], caleDreapta[4096];
 
     ///la inceput vom afisa discurile locale(adica, avem cale goala)
     caleStanga[0]=NULL;
@@ -1927,7 +1930,39 @@ void utilizareaAplicatiei()
 
                         if (GetAsyncKeyState(VK_RETURN))
                         {
-                            ///aici vom utiliza sirul de caractere pentru a redenumi folderul sau fisierul
+
+                            char *numefisierfolder;
+                        if(viewCounterStanga<nr_foldereStanga)
+                        {
+                            numefisierfolder=foldereStanga[viewCounterStanga];
+                        }
+
+                        else
+                        {
+                            numefisierfolder=fisiereStanga[viewCounterStanga-nr_foldereStanga];
+                        }
+
+
+
+                            char *destinatie=(char *)malloc(256);
+                            char *sursa=(char *)malloc(256);
+                            strcpy(destinatie,caleStanga);
+                            strcat(destinatie,"\\");
+                            strcat(destinatie,renameFileString);
+                            strcpy(sursa,caleStanga);
+                            strcat(sursa,"\\");
+                            strcat(sursa,numefisierfolder);
+
+
+                            MoveFileExA(sursa, destinatie, MOVEFILE_WRITE_THROUGH);
+                            free(destinatie);
+                            free(sursa);
+                            tastaEnter=true;
+                            clear_stanga();
+                            reindexare_Dreapta();
+                            reindexare_Stanga();
+                            loopRename=false;
+                            break;
                         }
                         if (GetAsyncKeyState(VK_ESCAPE))
                         {
@@ -2007,7 +2042,37 @@ void utilizareaAplicatiei()
                         }
                         if (GetAsyncKeyState(VK_RETURN))
                         {
-                            ///aici vom utiliza sirul de caractere pentru a redenumi folderul sau fisierul
+
+                             char *numefisierfolder;
+                        if(viewCounterDreapta<nr_foldereDreapta)
+                        {
+                            numefisierfolder=foldereDreapta[viewCounterDreapta];
+                        }
+
+                        else
+                        {
+                            numefisierfolder=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
+                        }
+
+                            char *destinatie=(char *)malloc(256);
+                            char *sursa=(char *)malloc(256);
+                            strcpy(destinatie,caleDreapta);
+                            strcat(destinatie,"\\");
+                            strcat(destinatie,renameFileString);
+                            strcpy(sursa,caleDreapta);
+                            strcat(sursa,"\\");
+                            strcat(sursa,numefisierfolder);
+
+
+                            MoveFileExA(sursa, destinatie, MOVEFILE_WRITE_THROUGH);
+                            free(destinatie);
+                            free(sursa);
+                            tastaEnter=true;
+                            clear_stanga();
+                            reindexare_Stanga();
+                            reindexare_Dreapta();
+                            loopRename=false;
+                            break;
                         }
                         if (GetAsyncKeyState(VK_ESCAPE))
                         {
