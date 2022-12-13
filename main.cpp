@@ -11,19 +11,11 @@
 ///                "Y88P"
 
 
-///*** SECTIUNE DE BUGURI ***
-
-///Atunci cand apas down, up, left, right se scrie in casuta de rename chiar daca nu e deschisa :(
-///Cand incerc sa sortez cu quicksort pocneste tot, am pus provizoriu un bubble amarat
-///Cand deschizi cu mouse-ul view-ul se tot deschid ferestre
-///Scrolul de pe mouse trebuie conditionat sa nu mearga atunci cand te vezi local discurile
-///To be contiuned... Avem nevoie de testeri
-
 
 ///*** TO DO ***
-///Sa vedem cum facem cu extensiile, size-ul si date-ul
+///Sa vedem cum facem cu extensiile, size-ul si date-ul Razvan
 ///Selectarea a mai multor fisiere foldere
-///Functionalitatea butonului help, leftArrow, rightArrow
+///Functionalitatea butonului help, leftArrow, rightArrow Razvan
 
 
 #include <iostream>
@@ -38,37 +30,8 @@
 
 
 using namespace std;
-/*
-int divideQuickSortAsc(char ** arr, int st, int en){
-char pivot[201], temp[201];
-for (int i=0; i<201; i++) pivot[i]=0, temp[201]=0;
-strcpy(pivot, arr[en]);
-int index=st;
-for (int i=st; i<en; i++){
-    if (strcmp(arr[i], pivot)<0){
-       strcpy(temp, arr[i]);
-       strcpy(arr[i], arr[index]);
-       strcpy(arr[index], temp);
-       index++;
-    }
-}
-strcpy(temp, arr[en]);
-strcpy(arr[en], arr[index]);
-strcpy(arr[index], temp);
 
-return index;
-}
-
-void sortareDupaNumeAsc(char ** arr, int st, int en){
-int d;
-if (st<en){
-   d=divideQuickSortAsc(arr, st, en);
-   sortareDupaNumeAsc(arr, st, (d-1));
-   sortareDupaNumeAsc(arr, (d-1), en);
-}
-}
-*/
-
+///exista functia qsort()
 void sortareDupaNumeAsc(char **arr, int lgArray)
 {
     int i;
@@ -120,7 +83,7 @@ void sortareDupaNumeDesc(char **arr, int lgArray)
 void splashScreen()
 {
     readimagefile("SplashArt.jpg", 0, 0, 1024, 768);
-    delay(1000);
+    delay(100);
 }
 
 bool fisiere_exista(const char* fisier)
@@ -626,8 +589,8 @@ void utilizareaAplicatiei()
 
     ///tastele apasate
     bool loop=true, loopRename=false, mousePress=false, tastaEsc=false, tastaTab=false,
-         tastaDown=false, tastaUp=false,tastaEnter=false,careFereastra=false,
-         hotKeyCtrlR=false, tastaBack=false; ///false e stanga si true e dreapta
+         tastaDown=false, tastaUp=false,tastaEnter=false,careFereastra=false, ///false e stanga si true e dreapta
+         hotKeyCtrlR=false, tastaBack=false;
     bool copiere=false;
     bool tasta_stergere=false;
     bool redenumire=false;
@@ -747,7 +710,7 @@ void utilizareaAplicatiei()
         }
 
 
-
+        ///NewFolder
         if(GetAsyncKeyState(VK_F7))
         {
             if(!newfolder)
@@ -793,7 +756,6 @@ void utilizareaAplicatiei()
         }
         else
         {
-
             newfolder=false;
         }
 
@@ -899,9 +861,6 @@ void utilizareaAplicatiei()
                     }
 
                     free(folder);
-
-
-
                 }
             }
         }
@@ -923,9 +882,7 @@ void utilizareaAplicatiei()
                     char *numefisierfolder;
                     if(viewCounterStanga<nr_foldereStanga)
                     {
-
                         numefisierfolder=foldereStanga[viewCounterStanga];
-
                     }
 
                     else
@@ -944,10 +901,21 @@ void utilizareaAplicatiei()
 
                     if(ok)
                     {
-                        copierefoldere(folder, caleDreapta);
-                        stergere(folder);
-                        reindexare_Dreapta();
-                        reindexare_Stanga();
+
+                       if(strcmp(caleStanga,caleDreapta)!=0)
+                        {
+                            copierefoldere(folder, caleDreapta);
+                            stergere(folder);
+                            reindexare_Dreapta();
+                            reindexare_Stanga();
+                        }
+                        else{
+
+                            MessageBoxA(NULL,"Error, you can't move the file/directory in the same location!", "Move",
+                                                   MB_ICONERROR | MB_OK);
+
+                        }
+
                     }
                     free(folder);
                 }
@@ -956,9 +924,7 @@ void utilizareaAplicatiei()
                     char *numefisierfolder;
                     if(viewCounterDreapta<nr_foldereDreapta)
                     {
-
                         numefisierfolder=foldereDreapta[viewCounterDreapta];
-
                     }
 
                     else
@@ -976,10 +942,19 @@ void utilizareaAplicatiei()
                     strcat(folder,numefisierfolder);
                     if(ok)
                     {
-                        copierefoldere(folder, caleStanga);
-                        stergere(folder);
-                        reindexare_Stanga();
-                        reindexare_Dreapta();
+
+                         if(strcmp(caleStanga,caleDreapta)!=0)
+                        {
+                            copierefoldere(folder, caleStanga);
+                            stergere(folder);
+                            reindexare_Stanga();
+                            reindexare_Dreapta();
+                        }
+                        else{
+                            MessageBoxA(NULL,"Error, you can't move the file/directory in the same location!", "Move",
+                                                   MB_ICONERROR | MB_OK);
+                        }
+
                     }
 
                     free(folder);
@@ -1049,9 +1024,7 @@ void utilizareaAplicatiei()
                     else
                     {
                         ///edit pe un folder
-                        int msgboxID = MessageBoxA(NULL,
-                                                   "Please select a file", "Edit",
-                                                   MB_ICONEXCLAMATION | MB_OK);
+                         MessageBoxA(NULL,"Please select a file", "Edit", MB_ICONERROR | MB_OK);
                     }
                 }
             }
@@ -1141,7 +1114,7 @@ void utilizareaAplicatiei()
             tastaEnter=false;
         }
 
-        ///Edit
+        ///View
         if(GetAsyncKeyState(VK_F3))
         {
             if(!vizualizare)
@@ -1170,10 +1143,8 @@ void utilizareaAplicatiei()
                     }
                     else
                     {
-                        ///edit pe un folder
-                        int msgboxID = MessageBoxA(NULL,
-                                                   "Please select a file", "View",
-                                                   MB_ICONEXCLAMATION | MB_OK);
+                        ///view pe un folder
+                        MessageBoxA(NULL, "Please select a file", "View", MB_ICONERROR | MB_OK);
 
                     }
                 }
@@ -1197,13 +1168,10 @@ void utilizareaAplicatiei()
                     }
                     else
                     {
-                        ///edit pe un folder
-                        int msgboxID = MessageBoxA(NULL,
-                                                   "Please select a file", "View",
-                                                   MB_ICONEXCLAMATION | MB_OK);
+                        ///view pe un folder
+                         MessageBoxA(NULL,"Please select a file", "View", MB_ICONEXCLAMATION | MB_OK);
                     }
                 }
-
             }
         }
         else
@@ -1404,11 +1372,7 @@ void utilizareaAplicatiei()
                         }
                         else
                         {
-                            ///edit pe un folder
-                            int msgboxID = MessageBoxA(NULL,
-                                                       "Please select a file", "View",
-                                                       MB_ICONEXCLAMATION | MB_OK);
-
+                            MessageBoxA(NULL,"Please select a file", "View",MB_ICONEXCLAMATION | MB_OK);
                         }
                     }
                     else if(careFereastra==true)
@@ -1431,10 +1395,7 @@ void utilizareaAplicatiei()
                         }
                         else
                         {
-                            ///edit pe un folder
-                            int msgboxID = MessageBoxA(NULL,
-                                                       "Please select a file", "View",
-                                                       MB_ICONEXCLAMATION | MB_OK);
+                            MessageBoxA(NULL,"Please select a file", "View", MB_ICONEXCLAMATION | MB_OK);
                         }
                     }
                 }
@@ -1465,9 +1426,7 @@ void utilizareaAplicatiei()
                         else
                         {
                             ///edit pe un folder
-                            int msgboxID = MessageBoxA(NULL,
-                                                       "Please select a file", "Edit",
-                                                       MB_ICONEXCLAMATION | MB_OK);
+                            MessageBoxA(NULL,"Please select a file", "Edit",MB_ICONEXCLAMATION | MB_OK);
 
                         }
                     }
@@ -1492,9 +1451,7 @@ void utilizareaAplicatiei()
                         else
                         {
                             ///edit pe un folder
-                            int msgboxID = MessageBoxA(NULL,
-                                                       "Please select a file", "Edit",
-                                                       MB_ICONEXCLAMATION | MB_OK);
+                            MessageBoxA(NULL,"Please select a file", "Edit",MB_ICONEXCLAMATION | MB_OK);
                         }
                     }
                 }
@@ -1508,9 +1465,7 @@ void utilizareaAplicatiei()
                         char *numefisierfolder;
                         if(viewCounterStanga<nr_foldereStanga)
                         {
-
                             numefisierfolder=foldereStanga[viewCounterStanga];
-
                         }
 
                         else
@@ -1601,10 +1556,19 @@ void utilizareaAplicatiei()
 
                         if(ok)
                         {
+                             if(strcmp(caleStanga,caleDreapta)!=0)
+                        {
                             copierefoldere(folder, caleDreapta);
                             stergere(folder);
                             reindexare_Dreapta();
                             reindexare_Stanga();
+                        }
+                        else{
+
+                            MessageBoxA(NULL,"Error, you can't move the file/directory in the same location!", "Move",
+                                                   MB_ICONERROR | MB_OK);
+
+                        }
                         }
                         free(folder);
                     }
@@ -1824,6 +1788,7 @@ void utilizareaAplicatiei()
                             afisare(intreagaDreapta, deUndeAfisezDreapta[nivStivaDreapta], panaUndeAfisezDreapta[nivStivaDreapta], deUndeAfisezDreapta[nivStivaDreapta], 542);
                         }
                 }
+
                 ///am apasat mai jos dreapta
                 if (clickX>=520 && clickX<=547 && clickY>=668 && clickY<=684)
                 {
@@ -1885,12 +1850,16 @@ void utilizareaAplicatiei()
         {
             if (!hotKeyCtrlR)
             {
+
                 hotKeyCtrlR=true;
                 if (careFereastra==false)
                 {
                     coordXRename=42;
                     lenRenameFileString=0;
                     renameFileString[0]=0;
+                        while(kbhit())
+                            getch();///curata bufferul de la getch()
+
                     readimagefile("RenameBoxSized.jpg", 30, 305, 475, 395);
                     setcolor(BLACK);
                     setbkcolor(COLOR(220, 220, 220));
@@ -1900,10 +1869,37 @@ void utilizareaAplicatiei()
                     while (loopRename)
                     {
                         setcolor(BLACK);
+
+
                         tastaIntrodusaRename=getch();
+
+
                         if (lenRenameFileString<41)
                         {
-                            if (    tastaIntrodusaRename>='a' && tastaIntrodusaRename<='z' ||
+
+                            ///https://stackoverflow.com/questions/10463201/getch-and-arrow-codes
+
+                            if(tastaIntrodusaRename==0||tastaIntrodusaRename==224)
+                            {
+                                int c=getch();
+                                if(c==72)
+                                {
+                                    ///sageata sus
+                                }
+                                else if(c==80)
+                                {
+                                    ///sageata jos
+                                }
+                                else if(c==75)
+                                {
+                                    ///sageata stanga
+                                }
+                                else if(c==77)
+                                {
+                                    ///sageata dreapta
+                                }
+                            }
+                            else if (tastaIntrodusaRename>='a' && tastaIntrodusaRename<='z' ||
                                     tastaIntrodusaRename>='A' && tastaIntrodusaRename<='Z' ||
                                     tastaIntrodusaRename>='0' && tastaIntrodusaRename<='9' ||
                                     tastaIntrodusaRename==' ' || tastaIntrodusaRename=='_' ||
@@ -1928,6 +1924,7 @@ void utilizareaAplicatiei()
                             setcolor(BLACK);
                             outtextxy(coordXRename, 356, renameFileString);
                         }
+
                         if (GetAsyncKeyState(VK_RETURN))
                         {
                             ///aici vom utiliza sirul de caractere pentru a redenumi folderul sau fisierul
@@ -1946,6 +1943,8 @@ void utilizareaAplicatiei()
                     coordXRename=564;
                     lenRenameFileString=0;
                     renameFileString[0]=0;
+                    while(kbhit())
+                            getch();///curata bufferul de la getch()
                     readimagefile("RenameBoxSized.jpg", 552, 305, 997, 395);
                     setcolor(BLACK);
                     setbkcolor(COLOR(220, 220, 220));
@@ -1959,7 +1958,29 @@ void utilizareaAplicatiei()
 
                         if(lenRenameFileString<41)
                         {
-                            if (    tastaIntrodusaRename>='a' && tastaIntrodusaRename<='z' ||
+
+                            if(tastaIntrodusaRename==0||tastaIntrodusaRename==224)
+                            {
+                                int c=getch();
+                                if(c==72)
+                                {
+                                    ///sageata sus
+                                }
+                                else if(c==80)
+                                {
+                                    ///sageata jos
+                                }
+                                else if(c==75)
+                                {
+                                    ///sageata stanga
+                                }
+                                else if(c==77)
+                                {
+                                    ///sageata dreapta
+                                }
+                            }
+
+                          else  if (    tastaIntrodusaRename>='a' && tastaIntrodusaRename<='z' ||
                                     tastaIntrodusaRename>='A' && tastaIntrodusaRename<='Z' ||
                                     tastaIntrodusaRename>='0' && tastaIntrodusaRename<='9' ||
                                     tastaIntrodusaRename==' ' || tastaIntrodusaRename=='_' ||

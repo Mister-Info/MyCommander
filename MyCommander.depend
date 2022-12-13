@@ -11,3 +11,15 @@
 
 1670311157 f:\anul1\introducere_in_programare\mycommander\mycommander\macro.h
 
+1670961844 source:c:\users\admin\desktop\my commander\mycommander\main.cpp
+	<iostream>
+	<cstdlib>
+	<stdlib.h>
+	<cstring>
+	<windows.h>
+	<graphics.h>
+	<winbgim.h>
+	"macro.h"
+
+1670259750 c:\users\admin\desktop\my commander\mycommander\macro.h
+
