@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1670885310 source:f:\anul1\introducere_in_programare\mycommander\mycommander\main.cpp
+1671015961 source:f:\anul1\introducere_in_programare\mycommander\mycommander\main.cpp
 	<iostream>
 	<cstdlib>
 	<stdlib.h>
@@ -10,16 +10,4 @@
 	"macro.h"
 
 1670311157 f:\anul1\introducere_in_programare\mycommander\mycommander\macro.h
-
-1670964571 source:c:\users\admin\desktop\my commander\mycommander\main.cpp
-	<iostream>
-	<cstdlib>
-	<stdlib.h>
-	<cstring>
-	<windows.h>
-	<graphics.h>
-	<winbgim.h>
-	"macro.h"
-
-1670259750 c:\users\admin\desktop\my commander\mycommander\macro.h
 
