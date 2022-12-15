@@ -14,7 +14,7 @@
 
 
 
-///TODO: select: stergere, move si sa restrictionez edit+view
+///TODO: select: move si sa restrictionez edit+view
 
 
 
@@ -1070,7 +1070,7 @@ void utilizareaAplicatiei()
     while (loop)
     {
 
-
+        ///selectare
         if(GetAsyncKeyState(VK_LSHIFT))
         {
             if(!selectare)
@@ -1154,7 +1154,8 @@ void utilizareaAplicatiei()
                     {
                         copiereStanga(viewCounterStanga);
                     }
-
+                reindexare_Dreapta();
+                reindexare_Stanga();
 
                 }
                 else
@@ -1168,9 +1169,10 @@ void utilizareaAplicatiei()
                     }
                     else
                     {
-                        copiereDreapta(viewCounterStanga);
+                        copiereDreapta(viewCounterDreapta);
                     }
-
+                reindexare_Stanga();
+                reindexare_Dreapta();
                 }
             }
         }
@@ -1220,6 +1222,7 @@ void utilizareaAplicatiei()
 
                     free(folder);
                 }
+
             }
         }
         else
@@ -1237,91 +1240,39 @@ void utilizareaAplicatiei()
 
                 if(careFereastra==false)
                 {
-                    char *numefisierfolder;
-                    if(viewCounterStanga<nr_foldereStanga)
+                   if(nr_selectii_stanga>0)
                     {
-                        numefisierfolder=foldereStanga[viewCounterStanga];
-                    }
 
+                        for(int i=0; i<nr_selectii_stanga; ++i)
+                        {
+                            stergereStanga(selectie_stanga[i]);
+                        }
+                    }
                     else
                     {
-                        numefisierfolder=fisiereStanga[viewCounterStanga-nr_foldereStanga];
+                        stergereStanga(viewCounterStanga);
                     }
-                    char *folder= (char*)malloc(256);
-
-
-                    strcpy(folder,caleStanga);
-
-
-                    bool ok=false;
-                    strcat(folder,"\\");
-                    strcat(folder,numefisierfolder);
-                    if(exista(folder))
-                    {
-
-                        int msgboxID = MessageBoxA(NULL,
-                                                   "Are you sure?\nDo you want to remove the file or directory?", "Delete",
-                                                   MB_ICONEXCLAMATION | MB_YESNO);
-
-                        if (msgboxID == IDYES)
-                        {
-                            ok = true;
-                        }
-
-                    }
-                    if(ok)
-                    {
-                        stergere(folder);
-                        reindexare_Dreapta();
-                        reindexare_Stanga();
-                    }
-                    free(folder);
-
-
+                    reindexare_Dreapta();
+                    reindexare_Stanga();
                 }
 
                 else
                 {
-                    char *numefisierfolder;
-                    if(viewCounterDreapta<nr_foldereDreapta)
+                    if(nr_selectii_dreapta>0)
                     {
-                        numefisierfolder=foldereDreapta[viewCounterDreapta];
-                    }
 
+                        for(int i=0; i<nr_selectii_dreapta; ++i)
+                        {
+                            stergereDreapta(selectie_dreapta[i]);
+                        }
+                    }
                     else
                     {
-                        numefisierfolder=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
+                        stergereDreapta(viewCounterDreapta);
                     }
-                    char *folder= (char*)malloc(256);
+                    reindexare_Stanga();
+                    reindexare_Dreapta();
 
-
-                    strcpy(folder,caleDreapta);
-
-
-                    bool ok=false;
-                    strcat(folder,"\\");
-                    strcat(folder,numefisierfolder);
-                    if(exista(folder))
-                    {
-
-                        int msgboxID = MessageBoxA(NULL,
-                                                   "Are you sure?\nDo you want to remove the file or directory?", "Delete",
-                                                   MB_ICONEXCLAMATION | MB_YESNO);
-
-                        if (msgboxID == IDYES)
-                        {
-                            ok = true;
-                        }
-
-                    }
-                    if(ok)
-                    {
-                        stergere(folder);
-                        reindexare_Stanga();
-                        reindexare_Dreapta();
-                    }
-
-                    free(folder);
                 }
             }
         }
@@ -2216,6 +2167,8 @@ void utilizareaAplicatiei()
                             copiereStanga(viewCounterStanga);
                         }
 
+                        reindexare_Dreapta();
+                        reindexare_Stanga();
 
                     }
                     else
@@ -2229,9 +2182,10 @@ void utilizareaAplicatiei()
                         }
                         else
                         {
-                            copiereDreapta(viewCounterStanga);
+                            copiereDreapta(viewCounterDreapta);
                         }
-
+                        reindexare_Stanga();
+                        reindexare_Dreapta();
                     }
                 }
 
@@ -2359,97 +2313,41 @@ void utilizareaAplicatiei()
                 if (clickX>=555 && clickX<=555+textwidth(" [F8] Delete ") && clickY>=740 && clickY<=756 )
                 {
                     if(careFereastra==false)
+                {
+                   if(nr_selectii_stanga>0)
                     {
-                        char *numefisierfolder;
-                        if(viewCounterStanga<nr_foldereStanga)
+
+                        for(int i=0; i<nr_selectii_stanga; ++i)
                         {
-
-                            numefisierfolder=foldereStanga[viewCounterStanga];
-
+                            stergereStanga(selectie_stanga[i]);
                         }
-
-                        else
-                        {
-                            numefisierfolder=fisiereStanga[viewCounterStanga-nr_foldereStanga];
-                        }
-                        char *folder= (char*)malloc(256);
-
-
-                        strcpy(folder,caleStanga);
-
-
-                        bool ok=false;
-                        strcat(folder,"\\");
-                        strcat(folder,numefisierfolder);
-                        if(exista(folder))
-                        {
-
-                            int msgboxID = MessageBoxA(NULL,
-                                                       "Are you sure?\nDo you want to remove the file or directory?", "Delete",
-                                                       MB_ICONEXCLAMATION | MB_YESNO);
-
-                            if (msgboxID == IDYES)
-                            {
-                                ok = true;
-                            }
-
-                        }
-                        if(ok)
-                        {
-                            stergere(folder);
-                            reindexare_Dreapta();
-                            reindexare_Stanga();
-                        }
-                        free(folder);
-
-
                     }
-
                     else
                     {
-                        char *numefisierfolder;
-                        if(viewCounterDreapta<nr_foldereDreapta)
-                        {
-
-                            numefisierfolder=foldereDreapta[viewCounterDreapta];
-
-                        }
-
-                        else
-                        {
-                            numefisierfolder=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
-                        }
-                        char *folder= (char*)malloc(256);
-
-
-                        strcpy(folder,caleDreapta);
-
-
-                        bool ok=false;
-                        strcat(folder,"\\");
-                        strcat(folder,numefisierfolder);
-                        if(exista(folder))
-                        {
-
-                            int msgboxID = MessageBoxA(NULL,
-                                                       "Are you sure?\nDo you want to remove the file or directory?", "Delete",
-                                                       MB_ICONEXCLAMATION | MB_YESNO);
-
-                            if (msgboxID == IDYES)
-                            {
-                                ok = true;
-                            }
-
-                        }
-                        if(ok)
-                        {
-                            stergere(folder);
-                            reindexare_Stanga();
-                            reindexare_Dreapta();
-                        }
-
-                        free(folder);
+                        stergereStanga(viewCounterStanga);
                     }
+                    reindexare_Dreapta();
+                    reindexare_Stanga();
+                }
+
+                else
+                {
+                    if(nr_selectii_dreapta>0)
+                    {
+
+                        for(int i=0; i<nr_selectii_dreapta; ++i)
+                        {
+                            stergereDreapta(selectie_dreapta[i]);
+                        }
+                    }
+                    else
+                    {
+                        stergereDreapta(viewCounterDreapta);
+                    }
+                    reindexare_Stanga();
+                    reindexare_Dreapta();
+
+                }
                 }
                 ///am apasat mai sus stanga
                 if (clickX>=498 && clickX<=525 && clickY>=84 && clickY<=100)
