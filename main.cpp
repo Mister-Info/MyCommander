@@ -12,9 +12,10 @@
 ///                "Y88P"
 
 
-///LISTA DE BUGURI: DE FACUT HACKCOMMANDER XD
 
-///Selectarea a mai multor fisiere foldere
+
+///TODO: select: stergere, move si sa restrictionez edit+view
+
 
 
 #include <iostream>
@@ -1335,6 +1336,9 @@ void utilizareaAplicatiei()
         {
             if(!deplasare)
             {
+
+
+
                 deplasare=true;
                 if(careFereastra==false)
                 {
@@ -2675,6 +2679,12 @@ void utilizareaAplicatiei()
                 hotKeyCtrlR=true;
                 if (careFereastra==false)
                 {
+                   if(nr_fisiereStanga>0)
+                    {
+                        MessageBoxA(NULL, "Cannot rename multiple files", "Rename",
+                                                   MB_ICONERROR | MB_OK);
+                    }
+                    else{
                     coordXRename=42;
                     lenRenameFileString=0;
                     renameFileString[0]=0;
@@ -2791,8 +2801,17 @@ void utilizareaAplicatiei()
                         }
                     }
                 }
+            }
                 else
                 {
+
+                     if(nr_fisiereDreapta>0)
+                    {
+                        MessageBoxA(NULL, "Cannot rename multiple files", "Rename",
+                                                   MB_ICONERROR | MB_OK);
+                    }
+
+                    else{
                     coordXRename=564;
                     lenRenameFileString=0;
                     renameFileString[0]=0;
@@ -2900,6 +2919,8 @@ void utilizareaAplicatiei()
                             break;
                         }
                     }
+                }
+
                 }
             }
             else
