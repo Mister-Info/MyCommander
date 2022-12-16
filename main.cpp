@@ -1086,6 +1086,7 @@ void utilizareaAplicatiei()
                 selectare=true;
                 if(careFereastra==false)
                 {
+                    if(viewCounterStanga!=0||nr_foldereStanga==0||strcmp(foldereStanga[0],"..")!=0){
                     bool gasit=false;
                     for(int i=0; i<nr_selectii_stanga; ++i)
                     {
@@ -1102,12 +1103,15 @@ void utilizareaAplicatiei()
                     }
                     if(!gasit)
                     {
+
                         selectie_stanga[nr_selectii_stanga++]=viewCounterStanga;
                     }
                     afisare(intreagaStanga, foldFisExtStanga, foldFisDateStanga[viewCounterStanga], foldFisSizeStanga[viewCounterStanga], deUndeAfisezStanga[nivStivaStanga], panaUndeAfisezStanga[nivStivaStanga], viewCounterStanga, 15,selectie_stanga,nr_selectii_stanga);
+                    }
                 }
                 else
                 {
+                    if(viewCounterDreapta!=0||nr_foldereDreapta==0||strcmp(foldereDreapta[0],"..")!=0){
                     bool gasit=false;
                     for(int i=0; i<nr_selectii_dreapta; ++i)
                     {
@@ -1127,6 +1131,7 @@ void utilizareaAplicatiei()
                         selectie_dreapta[nr_selectii_dreapta++]=viewCounterDreapta;
                     }
                     afisare(intreagaDreapta, foldFisExtDreapta, foldFisDateDreapta[viewCounterDreapta], foldFisSizeDreapta[viewCounterDreapta], deUndeAfisezDreapta[nivStivaDreapta], panaUndeAfisezDreapta[nivStivaDreapta], viewCounterDreapta, 542,selectie_dreapta, nr_selectii_dreapta);
+                    }
                 }
 
             }
@@ -1741,6 +1746,7 @@ void utilizareaAplicatiei()
 
                 if (careFereastra==false)
                 {
+
                     clear_stanga();
                     caleStanga[0]=NULL;
                     viewCounterStanga=0;
@@ -1767,6 +1773,7 @@ void utilizareaAplicatiei()
                 }
                 else if (careFereastra==true)
                 {
+
                     clear_dreapta();
                     caleDreapta[0]=NULL;
                     viewCounterDreapta=0;
@@ -1812,6 +1819,7 @@ void utilizareaAplicatiei()
                 {
                     if (careFereastra==false)
                     {
+                        nr_selectii_stanga=0;
                         sortareDupaNumeAsc(fisiereStanga, extensieFisiereStanga, candAfostCreatFisiereStanga, marimeFisiereStanga, nr_fisiereStanga);
                         initializareVectorDeNumeFoldereFisiere(intreagaStanga, foldFisExtStanga,foldFisSizeStanga, foldFisDateStanga,foldereStanga,fisiereStanga, extensieFoldereStanga, extensieFisiereStanga, marimeFoldereStanga, marimeFisiereStanga,candAfostCreatFoldereStanga,candAfostCreatFisiereStanga,nr_foldereStanga,nr_fisiereStanga);
                         clear_stanga();
@@ -1824,6 +1832,7 @@ void utilizareaAplicatiei()
                     }
                     else if(careFereastra==true)
                     {
+                        nr_selectii_dreapta=0;
                         sortareDupaNumeAsc(fisiereDreapta, extensieFisiereDreapta, candAfostCreatFisiereDreapta, marimeFisiereDreapta, nr_fisiereDreapta);
                         initializareVectorDeNumeFoldereFisiere(intreagaDreapta, foldFisExtDreapta,foldFisSizeDreapta, foldFisDateDreapta,foldereDreapta,fisiereDreapta, extensieFoldereDreapta, extensieFisiereDreapta, marimeFoldereDreapta, marimeFisiereDreapta,candAfostCreatFoldereDreapta,candAfostCreatFisiereDreapta,nr_foldereDreapta,nr_fisiereDreapta);
                         clear_dreapta();
@@ -1842,6 +1851,7 @@ void utilizareaAplicatiei()
                 {
                     if (careFereastra==false)
                     {
+                        nr_selectii_stanga=0;
                         sortareDupaExtensieAsc(fisiereStanga, extensieFisiereStanga, candAfostCreatFisiereStanga, marimeFisiereStanga, nr_fisiereStanga);
                         initializareVectorDeNumeFoldereFisiere(intreagaStanga, foldFisExtStanga,foldFisSizeStanga, foldFisDateStanga,foldereStanga,fisiereStanga,extensieFoldereStanga,extensieFisiereStanga, marimeFoldereStanga, marimeFisiereStanga,candAfostCreatFoldereStanga,candAfostCreatFisiereStanga,nr_foldereStanga,nr_fisiereStanga);
                         clear_stanga();
@@ -1854,6 +1864,7 @@ void utilizareaAplicatiei()
                     }
                     else if(careFereastra==true)
                     {
+                        nr_selectii_dreapta=0;
                         sortareDupaExtensieAsc(fisiereDreapta, extensieFisiereDreapta, candAfostCreatFisiereDreapta, marimeFisiereDreapta, nr_fisiereDreapta);
                         initializareVectorDeNumeFoldereFisiere(intreagaDreapta,foldFisExtDreapta,foldFisSizeDreapta, foldFisDateDreapta,foldereDreapta,fisiereDreapta,extensieFoldereDreapta,extensieFisiereDreapta, marimeFoldereDreapta, marimeFisiereDreapta,candAfostCreatFoldereDreapta,candAfostCreatFisiereDreapta,nr_foldereDreapta,nr_fisiereDreapta);
                         clear_dreapta();
@@ -1871,6 +1882,7 @@ void utilizareaAplicatiei()
                 {
                     if (careFereastra==false)
                     {
+                        nr_selectii_stanga=0;
                         sortareDupaSizeAsc(fisiereStanga, extensieFisiereStanga, candAfostCreatFisiereStanga, marimeFisiereStanga, nr_fisiereStanga);
                         initializareVectorDeNumeFoldereFisiere(intreagaStanga,foldFisExtStanga,foldFisSizeStanga, foldFisDateStanga,foldereStanga,fisiereStanga,extensieFoldereStanga,extensieFisiereStanga, marimeFoldereStanga, marimeFisiereStanga,candAfostCreatFoldereStanga,candAfostCreatFisiereStanga,nr_foldereStanga,nr_fisiereStanga);
                         clear_stanga();
@@ -1883,6 +1895,7 @@ void utilizareaAplicatiei()
                     }
                     else if(careFereastra==true)
                     {
+                        nr_selectii_dreapta=0;
                         sortareDupaSizeAsc(fisiereDreapta, extensieFisiereDreapta, candAfostCreatFisiereDreapta, marimeFisiereDreapta, nr_fisiereDreapta);
                         initializareVectorDeNumeFoldereFisiere(intreagaDreapta,foldFisExtDreapta,foldFisSizeDreapta, foldFisDateDreapta,foldereDreapta,fisiereDreapta,extensieFoldereDreapta,extensieFisiereDreapta, marimeFoldereDreapta, marimeFisiereDreapta,candAfostCreatFoldereDreapta,candAfostCreatFisiereDreapta,nr_foldereDreapta,nr_fisiereDreapta);
                         clear_dreapta();
@@ -1900,6 +1913,7 @@ void utilizareaAplicatiei()
                 {
                     if (careFereastra==false)
                     {
+                        nr_selectii_stanga=0;
                         sortareDupaDateAsc(fisiereStanga, extensieFisiereStanga, candAfostCreatFisiereStanga, marimeFisiereStanga, nr_fisiereStanga);
                         initializareVectorDeNumeFoldereFisiere(intreagaStanga,foldFisExtStanga,foldFisSizeStanga, foldFisDateStanga,foldereStanga,fisiereStanga, extensieFoldereStanga, extensieFisiereStanga, marimeFoldereStanga, marimeFisiereStanga,candAfostCreatFoldereStanga,candAfostCreatFisiereStanga,nr_foldereStanga,nr_fisiereStanga);
                         clear_stanga();
@@ -1912,6 +1926,7 @@ void utilizareaAplicatiei()
                     }
                     else if(careFereastra==true)
                     {
+                        nr_selectii_dreapta=0;
                         sortareDupaDateAsc(fisiereDreapta, extensieFisiereDreapta, candAfostCreatFisiereDreapta, marimeFisiereDreapta, nr_fisiereDreapta);
                         initializareVectorDeNumeFoldereFisiere(intreagaDreapta,foldFisExtDreapta,foldFisSizeDreapta, foldFisDateDreapta,foldereDreapta,fisiereDreapta,extensieFoldereDreapta,extensieFisiereDreapta, marimeFoldereDreapta, marimeFisiereDreapta,candAfostCreatFoldereDreapta,candAfostCreatFisiereDreapta,nr_foldereDreapta,nr_fisiereDreapta);
                         clear_dreapta();
@@ -1932,6 +1947,7 @@ void utilizareaAplicatiei()
                 {
                     if (careFereastra==false)
                     {
+                        nr_selectii_stanga=0;
                         sortareDupaNumeDesc(fisiereStanga, extensieFisiereStanga, candAfostCreatFisiereStanga, marimeFisiereStanga, nr_fisiereStanga);
                         initializareVectorDeNumeFoldereFisiere(intreagaStanga,foldFisExtStanga,foldFisSizeStanga, foldFisDateStanga,foldereStanga,fisiereStanga,extensieFoldereStanga,extensieFisiereStanga, marimeFoldereStanga, marimeFisiereStanga,candAfostCreatFoldereStanga,candAfostCreatFisiereStanga,nr_foldereStanga,nr_fisiereStanga);
                         clear_stanga();
@@ -1944,6 +1960,7 @@ void utilizareaAplicatiei()
                     }
                     else if(careFereastra==true)
                     {
+                        nr_selectii_dreapta=0;
                         sortareDupaNumeDesc(fisiereDreapta, extensieFisiereDreapta, candAfostCreatFisiereDreapta, marimeFisiereDreapta, nr_fisiereDreapta);
                         initializareVectorDeNumeFoldereFisiere(intreagaDreapta, foldFisExtDreapta,foldFisSizeDreapta, foldFisDateDreapta,foldereDreapta,fisiereDreapta,extensieFoldereDreapta,extensieFisiereDreapta, marimeFoldereDreapta, marimeFisiereDreapta,candAfostCreatFoldereDreapta,candAfostCreatFisiereDreapta,nr_foldereDreapta,nr_fisiereDreapta);
                         clear_dreapta();
@@ -1962,6 +1979,7 @@ void utilizareaAplicatiei()
                 {
                     if (careFereastra==false)
                     {
+                        nr_selectii_stanga=0;
                         sortareDupaExtensieDesc(fisiereStanga, extensieFisiereStanga, candAfostCreatFisiereStanga, marimeFisiereStanga, nr_fisiereStanga);
                         initializareVectorDeNumeFoldereFisiere(intreagaStanga,foldFisExtStanga,foldFisSizeStanga, foldFisDateStanga,foldereStanga,fisiereStanga,extensieFoldereStanga,extensieFisiereStanga, marimeFoldereStanga, marimeFisiereStanga,candAfostCreatFoldereStanga,candAfostCreatFisiereStanga,nr_foldereStanga,nr_fisiereStanga);
                         clear_stanga();
@@ -1974,6 +1992,7 @@ void utilizareaAplicatiei()
                     }
                     else if(careFereastra==true)
                     {
+                        nr_selectii_dreapta=0;
                         sortareDupaExtensieDesc(fisiereDreapta, extensieFisiereDreapta, candAfostCreatFisiereDreapta, marimeFisiereDreapta, nr_fisiereDreapta);
                         initializareVectorDeNumeFoldereFisiere(intreagaDreapta,foldFisExtDreapta,foldFisSizeDreapta, foldFisDateDreapta,foldereDreapta,fisiereDreapta,extensieFoldereDreapta,extensieFisiereDreapta, marimeFoldereDreapta, marimeFisiereDreapta,candAfostCreatFoldereDreapta,candAfostCreatFisiereDreapta,nr_foldereDreapta,nr_fisiereDreapta);
                         clear_dreapta();
@@ -1991,6 +2010,7 @@ void utilizareaAplicatiei()
                 {
                     if (careFereastra==false)
                     {
+                        nr_selectii_stanga=0;
                         sortareDupaSizeDesc(fisiereStanga, extensieFisiereStanga, candAfostCreatFisiereStanga, marimeFisiereStanga, nr_fisiereStanga);
                         initializareVectorDeNumeFoldereFisiere(intreagaStanga,foldFisExtStanga,foldFisSizeStanga, foldFisDateStanga,foldereStanga,fisiereStanga,extensieFoldereStanga,extensieFisiereStanga, marimeFoldereStanga, marimeFisiereStanga,candAfostCreatFoldereStanga,candAfostCreatFisiereStanga,nr_foldereStanga,nr_fisiereStanga);
                         clear_stanga();
@@ -2003,6 +2023,7 @@ void utilizareaAplicatiei()
                     }
                     else if(careFereastra==true)
                     {
+                        nr_selectii_dreapta=0;
                         sortareDupaSizeDesc(fisiereDreapta, extensieFisiereDreapta, candAfostCreatFisiereDreapta, marimeFisiereDreapta, nr_fisiereDreapta);
                         initializareVectorDeNumeFoldereFisiere(intreagaDreapta,foldFisExtDreapta,foldFisSizeDreapta, foldFisDateDreapta,foldereDreapta,fisiereDreapta,extensieFoldereDreapta,extensieFisiereDreapta, marimeFoldereDreapta, marimeFisiereDreapta,candAfostCreatFoldereDreapta,candAfostCreatFisiereDreapta,nr_foldereDreapta,nr_fisiereDreapta);
                         clear_dreapta();
@@ -2020,6 +2041,7 @@ void utilizareaAplicatiei()
                 {
                     if (careFereastra==false)
                     {
+                        nr_selectii_stanga=0;
                         sortareDupaDateDesc(fisiereStanga, extensieFisiereStanga, candAfostCreatFisiereStanga, marimeFisiereStanga, nr_fisiereStanga);
                         initializareVectorDeNumeFoldereFisiere(intreagaStanga,foldFisExtStanga,foldFisSizeStanga, foldFisDateStanga,foldereStanga,fisiereStanga,extensieFoldereStanga,extensieFisiereStanga, marimeFoldereStanga, marimeFisiereStanga,candAfostCreatFoldereStanga,candAfostCreatFisiereStanga,nr_foldereStanga,nr_fisiereStanga);
                         clear_stanga();
@@ -2032,6 +2054,7 @@ void utilizareaAplicatiei()
                     }
                     else if(careFereastra==true)
                     {
+                        nr_selectii_dreapta=0;
                         sortareDupaDateDesc(fisiereDreapta, extensieFisiereDreapta, candAfostCreatFisiereDreapta, marimeFisiereDreapta, nr_fisiereDreapta);
                         initializareVectorDeNumeFoldereFisiere(intreagaDreapta,foldFisExtDreapta,foldFisSizeDreapta, foldFisDateDreapta,foldereDreapta,fisiereDreapta,extensieFoldereDreapta,extensieFisiereDreapta, marimeFoldereDreapta, marimeFisiereDreapta,candAfostCreatFoldereDreapta,candAfostCreatFisiereDreapta,nr_foldereDreapta,nr_fisiereDreapta);
                         clear_dreapta();
@@ -2247,79 +2270,36 @@ void utilizareaAplicatiei()
                 {
                     if(careFereastra==false)
                     {
-                        char *numefisierfolder;
-                        if(viewCounterStanga<nr_foldereStanga)
+                         if(nr_selectii_stanga>0)
+                    {
+
+                        for(int i=0; i<nr_selectii_stanga; ++i)
                         {
 
-                            numefisierfolder=foldereStanga[viewCounterStanga];
-
+                            moveStanga(selectie_stanga[i]);
                         }
-
-                        else
-                        {
-                            numefisierfolder=fisiereStanga[viewCounterStanga-nr_foldereStanga];
-                        }
-                        char *folder= (char*)malloc(256);
-
-
-                        strcpy(folder,caleStanga);
-
-
-                        bool ok=true;
-                        strcat(folder,"\\");
-                        strcat(folder,numefisierfolder);
-
-                        if(ok)
-                        {
-                            if(strcmp(caleStanga,caleDreapta)!=0)
-                            {
-                                copierefoldere(folder, caleDreapta);
-                                stergere(folder);
-                                reindexare_Dreapta();
-                                reindexare_Stanga();
-                            }
-                            else
-                            {
-
-                                MessageBoxA(NULL,"Error, you can't move the file/directory in the same location!", "Move",
-                                            MB_ICONERROR | MB_OK);
-
-                            }
-                        }
-                        free(folder);
+                    }
+                    else {
+                        moveStanga(viewCounterStanga);
+                    }
+                    reindexare_Dreapta();
+                    reindexare_Stanga();
                     }
                     else
                     {
-                        char *numefisierfolder;
-                        if(viewCounterDreapta<nr_foldereDreapta)
+                        if(nr_selectii_dreapta>0)
+                    {
+
+                        for(int i=0; i<nr_selectii_dreapta; ++i)
                         {
-
-                            numefisierfolder=foldereDreapta[viewCounterDreapta];
-
+                            moveDreapta(selectie_dreapta[i]);
                         }
-
-                        else
-                        {
-                            numefisierfolder=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
-                        }
-                        char *folder= (char*)malloc(256);
-
-
-                        strcpy(folder,caleDreapta);
-
-
-                        bool ok=true;
-                        strcat(folder,"\\");
-                        strcat(folder,numefisierfolder);
-                        if(ok)
-                        {
-                            copierefoldere(folder, caleStanga);
-                            stergere(folder);
-                            reindexare_Stanga();
-                            reindexare_Dreapta();
-                        }
-
-                        free(folder);
+                    }
+                    else {
+                        moveDreapta(viewCounterDreapta);
+                    }
+                    reindexare_Stanga();
+                    reindexare_Dreapta();
                     }
 
                 }
@@ -2507,7 +2487,7 @@ void utilizareaAplicatiei()
 
                     if (careFereastra==false)
                     {
-
+                        nr_selectii_stanga=0;
                         clear_stanga();
                         caleStanga[0]=NULL;
                         viewCounterStanga=0;
@@ -2534,6 +2514,7 @@ void utilizareaAplicatiei()
                     }
                     else if (careFereastra==true)
                     {
+
                         nr_selectii_dreapta=0;
                         clear_dreapta();
                         caleDreapta[0]=NULL;
@@ -2579,7 +2560,6 @@ void utilizareaAplicatiei()
                     careFereastra=true;
                     if(nr_selectii_stanga>0){
                     reindexare_Stanga();
-
                     }
 
                     setcolor(DARKGRAY);
