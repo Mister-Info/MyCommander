@@ -14,7 +14,7 @@
 
 
 
-///TODO: select: move si sa restrictionez edit+view
+///TODO: select: move
 
 
 
@@ -1154,8 +1154,8 @@ void utilizareaAplicatiei()
                     {
                         copiereStanga(viewCounterStanga);
                     }
-                reindexare_Dreapta();
-                reindexare_Stanga();
+                    reindexare_Dreapta();
+                    reindexare_Stanga();
 
                 }
                 else
@@ -1171,8 +1171,8 @@ void utilizareaAplicatiei()
                     {
                         copiereDreapta(viewCounterDreapta);
                     }
-                reindexare_Stanga();
-                reindexare_Dreapta();
+                    reindexare_Stanga();
+                    reindexare_Dreapta();
                 }
             }
         }
@@ -1240,7 +1240,7 @@ void utilizareaAplicatiei()
 
                 if(careFereastra==false)
                 {
-                   if(nr_selectii_stanga>0)
+                    if(nr_selectii_stanga>0)
                     {
 
                         for(int i=0; i<nr_selectii_stanga; ++i)
@@ -1390,62 +1390,81 @@ void utilizareaAplicatiei()
             {
                 editare=true;
 
+
                 if (careFereastra==false)///stanga
                 {
 
-
-                    ///am selectat un fisier
-                    if(viewCounterStanga>=nr_foldereStanga)
+                    if(nr_selectii_stanga>0)
                     {
-                        char *fisier= (char*)malloc(256);
-                        strcpy(fisier,"notepad.exe \"");
-                        strcat(fisier,caleStanga);
-
-                        char *nume_fisier=fisiereStanga[viewCounterStanga-nr_foldereStanga];
-
-                        strcat(fisier,"\\");
-                        strcat(fisier,nume_fisier);
-                        strcat(fisier,"\"");
-
-                        system(fisier); ///deschide
-                        free(fisier);
-
+                        MessageBoxA(NULL, "Cannot edit multiple files", "Edit",
+                                    MB_ICONERROR | MB_OK);
                     }
                     else
                     {
-                        ///edit pe un folder
-                        int msgboxID = MessageBoxA(NULL,
-                                                   "Please select a file", "Edit",
-                                                   MB_ICONEXCLAMATION | MB_OK);
+                        ///am selectat un fisier
+                        if(viewCounterStanga>=nr_foldereStanga)
+                        {
+                            char *fisier= (char*)malloc(256);
+                            strcpy(fisier,"notepad.exe \"");
+                            strcat(fisier,caleStanga);
 
+                            char *nume_fisier=fisiereStanga[viewCounterStanga-nr_foldereStanga];
+
+                            strcat(fisier,"\\");
+                            strcat(fisier,nume_fisier);
+                            strcat(fisier,"\"");
+
+                            system(fisier); ///deschide
+                            free(fisier);
+
+                        }
+                        else
+                        {
+                            ///edit pe un folder
+                            int msgboxID = MessageBoxA(NULL,
+                                                       "Please select a file", "Edit",
+                                                       MB_ICONEXCLAMATION | MB_OK);
+
+                        }
                     }
                 }
                 else if(careFereastra==true)
                 {
-                    if(viewCounterDreapta>=nr_foldereDreapta)
+
+                    if(nr_selectii_dreapta>0)
                     {
-                        ///enter pe un fisier
-                        char *fisier= (char*)malloc(256);
-                        strcpy(fisier,"notepad.exe \"");
-                        strcat(fisier,caleDreapta);
-
-                        char *nume_fisier=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
-
-                        strcat(fisier,"\\");
-                        strcat(fisier,nume_fisier);
-                        strcat(fisier,"\"");
-
-                        system(fisier);
-                        free(fisier);
+                        MessageBoxA(NULL, "Cannot edit multiple files", "Edit",
+                                    MB_ICONERROR | MB_OK);
                     }
                     else
                     {
-                        ///edit pe un folder
-                        MessageBoxA(NULL,"Please select a file", "Edit", MB_ICONERROR | MB_OK);
+
+                        if(viewCounterDreapta>=nr_foldereDreapta)
+                        {
+                            ///enter pe un fisier
+                            char *fisier= (char*)malloc(256);
+                            strcpy(fisier,"notepad.exe \"");
+                            strcat(fisier,caleDreapta);
+
+                            char *nume_fisier=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
+
+                            strcat(fisier,"\\");
+                            strcat(fisier,nume_fisier);
+                            strcat(fisier,"\"");
+
+                            system(fisier);
+                            free(fisier);
+                        }
+                        else
+                        {
+                            ///edit pe un folder
+                            MessageBoxA(NULL,"Please select a file", "Edit", MB_ICONEXCLAMATION | MB_OK);
+                        }
                     }
                 }
             }
         }
+
         else
         {
             editare=false;
@@ -1453,7 +1472,7 @@ void utilizareaAplicatiei()
 
 
         ///Enter
-        if(GetAsyncKeyState(VK_RETURN) || GetAsyncKeyState(VK_RIGHT))
+       if(GetAsyncKeyState(VK_RETURN) || GetAsyncKeyState(VK_RIGHT))
         {
 
             if (!tastaEnter)
@@ -1463,7 +1482,12 @@ void utilizareaAplicatiei()
                 if (careFereastra==false)///stanga
                 {
 
-
+                    if(nr_selectii_stanga>0)
+                    {
+                        MessageBoxA(NULL, "Cannot open multiple files/directory", "Open",
+                                    MB_ICONERROR | MB_OK);
+                    }
+                    else{
                     ///am selectat un fisier
                     if(viewCounterStanga>=nr_foldereStanga)
                     {
@@ -1512,8 +1536,19 @@ void utilizareaAplicatiei()
                             outtextxy(12, 691, "Path too large");
                     }
                 }
+            }
                 else if(careFereastra==true)
                 {
+
+
+                    if(nr_selectii_dreapta>0)
+                    {
+                        MessageBoxA(NULL, "Cannot open multiple files/directory", "Open",
+                                    MB_ICONERROR | MB_OK);
+                    }
+
+
+                    else{
                     if(viewCounterDreapta>=nr_foldereDreapta)
                     {
                         ///enter pe un fisier
@@ -1561,6 +1596,7 @@ void utilizareaAplicatiei()
                         else
                             outtextxy(540, 691, "Path too large");
                     }
+                    }
                 }
             }
         }
@@ -1579,52 +1615,71 @@ void utilizareaAplicatiei()
                 {
 
 
-                    ///am selectat un fisier
-                    if(viewCounterStanga>=nr_foldereStanga)
+                    if(nr_selectii_stanga>0)
                     {
-                        char *fisier= (char*)malloc(256);
-                        strcpy(fisier,"\"");
-                        strcat(fisier,caleStanga);
-
-                        char *nume_fisier=fisiereStanga[viewCounterStanga-nr_foldereStanga];
-
-                        strcat(fisier,"\\");
-                        strcat(fisier,nume_fisier);
-                        strcat(fisier,"\"");
-
-                        system(fisier); ///deschide
-                        free(fisier);
-
+                        MessageBoxA(NULL, "Cannot view multiple files", "View",
+                                    MB_ICONERROR | MB_OK);
                     }
                     else
                     {
-                        ///view pe un folder
-                        MessageBoxA(NULL, "Please select a file", "View", MB_ICONERROR | MB_OK);
 
+                        ///am selectat un fisier
+                        if(viewCounterStanga>=nr_foldereStanga)
+                        {
+                            char *fisier= (char*)malloc(256);
+                            strcpy(fisier,"\"");
+                            strcat(fisier,caleStanga);
+
+                            char *nume_fisier=fisiereStanga[viewCounterStanga-nr_foldereStanga];
+
+                            strcat(fisier,"\\");
+                            strcat(fisier,nume_fisier);
+                            strcat(fisier,"\"");
+
+                            system(fisier); ///deschide
+                            free(fisier);
+
+                        }
+                        else
+                        {
+                            ///view pe un folder
+                            MessageBoxA(NULL, "Please select a file", "View", MB_ICONERROR | MB_OK);
+
+                        }
                     }
                 }
                 else if(careFereastra==true)
                 {
-                    if(viewCounterDreapta>=nr_foldereDreapta)
+
+                    if(nr_selectii_dreapta>0)
                     {
-                        ///enter pe un fisier
-                        char *fisier= (char*)malloc(256);
-                        strcpy(fisier,"\"");
-                        strcat(fisier,caleDreapta);
-
-                        char *nume_fisier=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
-
-                        strcat(fisier,"\\");
-                        strcat(fisier,nume_fisier);
-                        strcat(fisier,"\"");
-
-                        system(fisier);
-                        free(fisier);
+                        MessageBoxA(NULL, "Cannot view multiple files", "View",
+                                    MB_ICONERROR | MB_OK);
                     }
+
                     else
                     {
-                        ///view pe un folder
-                        MessageBoxA(NULL,"Please select a file", "View", MB_ICONEXCLAMATION | MB_OK);
+                        if(viewCounterDreapta>=nr_foldereDreapta)
+                        {
+                            ///enter pe un fisier
+                            char *fisier= (char*)malloc(256);
+                            strcpy(fisier,"\"");
+                            strcat(fisier,caleDreapta);
+
+                            char *nume_fisier=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
+
+                            strcat(fisier,"\\");
+                            strcat(fisier,nume_fisier);
+                            strcat(fisier,"\"");
+
+                            system(fisier);
+                            free(fisier);
+                        }
+                        else
+                        {
+                            ///view pe un folder
+                            MessageBoxA(NULL,"Please select a file", "View", MB_ICONEXCLAMATION | MB_OK);
+                        }
                     }
                 }
             }
@@ -2041,51 +2096,68 @@ void utilizareaAplicatiei()
                 {
                     if (careFereastra==false)///stanga
                     {
-
-
-                        ///am selectat un fisier
-                        if(viewCounterStanga>=nr_foldereStanga)
+                        if(nr_selectii_stanga>0)
                         {
-                            char *fisier= (char*)malloc(256);
-                            strcpy(fisier,"\"");
-                            strcat(fisier,caleStanga);
-
-                            char *nume_fisier=fisiereStanga[viewCounterStanga-nr_foldereStanga];
-
-                            strcat(fisier,"\\");
-                            strcat(fisier,nume_fisier);
-                            strcat(fisier,"\"");
-
-                            system(fisier); ///deschide
-                            free(fisier);
-
+                            MessageBoxA(NULL, "Cannot view multiple files", "View",
+                                        MB_ICONERROR | MB_OK);
                         }
+
                         else
                         {
-                            MessageBoxA(NULL,"Please select a file", "View",MB_ICONEXCLAMATION | MB_OK);
+                            ///am selectat un fisier
+                            if(viewCounterStanga>=nr_foldereStanga)
+                            {
+                                char *fisier= (char*)malloc(256);
+                                strcpy(fisier,"\"");
+                                strcat(fisier,caleStanga);
+
+                                char *nume_fisier=fisiereStanga[viewCounterStanga-nr_foldereStanga];
+
+                                strcat(fisier,"\\");
+                                strcat(fisier,nume_fisier);
+                                strcat(fisier,"\"");
+
+                                system(fisier); ///deschide
+                                free(fisier);
+
+                            }
+                            else
+                            {
+                                MessageBoxA(NULL,"Please select a file", "View",MB_ICONEXCLAMATION | MB_OK);
+                            }
                         }
                     }
                     else if(careFereastra==true)
                     {
-                        if(viewCounterDreapta>=nr_foldereDreapta)
+
+                        if(nr_selectii_dreapta>0)
                         {
-                            ///enter pe un fisier
-                            char *fisier= (char*)malloc(256);
-                            strcpy(fisier,"\"");
-                            strcat(fisier,caleDreapta);
-
-                            char *nume_fisier=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
-
-                            strcat(fisier,"\\");
-                            strcat(fisier,nume_fisier);
-                            strcat(fisier,"\"");
-
-                            system(fisier);
-                            free(fisier);
+                            MessageBoxA(NULL, "Cannot view multiple files", "View",
+                                        MB_ICONERROR | MB_OK);
                         }
+
                         else
                         {
-                            MessageBoxA(NULL,"Please select a file", "View", MB_ICONEXCLAMATION | MB_OK);
+                            if(viewCounterDreapta>=nr_foldereDreapta)
+                            {
+                                ///enter pe un fisier
+                                char *fisier= (char*)malloc(256);
+                                strcpy(fisier,"\"");
+                                strcat(fisier,caleDreapta);
+
+                                char *nume_fisier=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
+
+                                strcat(fisier,"\\");
+                                strcat(fisier,nume_fisier);
+                                strcat(fisier,"\"");
+
+                                system(fisier);
+                                free(fisier);
+                            }
+                            else
+                            {
+                                MessageBoxA(NULL,"Please select a file", "View", MB_ICONEXCLAMATION | MB_OK);
+                            }
                         }
                     }
                 }
@@ -2094,54 +2166,79 @@ void utilizareaAplicatiei()
                 ///Am apasat pe butonul F4
                 if (clickX>=110 && clickX<=110+textwidth(" [F4] Edit ") && clickY>=740 && clickY<=756 )
                 {
+
                     if (careFereastra==false)///stanga
                     {
-                        ///am selectat un fisier
-                        if(viewCounterStanga>=nr_foldereStanga)
+
+
+                        if(nr_selectii_stanga>0)
                         {
-                            char *fisier= (char*)malloc(256);
-                            strcpy(fisier,"notepad.exe \"");
-                            strcat(fisier,caleStanga);
-
-                            char *nume_fisier=fisiereStanga[viewCounterStanga-nr_foldereStanga];
-
-                            strcat(fisier,"\\");
-                            strcat(fisier,nume_fisier);
-                            strcat(fisier,"\"");
-
-                            system(fisier); ///deschide
-                            free(fisier);
-
+                            MessageBoxA(NULL, "Cannot edit multiple files", "Edit",
+                                        MB_ICONERROR | MB_OK);
                         }
+
                         else
                         {
-                            ///edit pe un folder
-                            MessageBoxA(NULL,"Please select a file", "Edit",MB_ICONEXCLAMATION | MB_OK);
+                            ///am selectat un fisier
+                            if(viewCounterStanga>=nr_foldereStanga)
+                            {
+                                char *fisier= (char*)malloc(256);
+                                strcpy(fisier,"notepad.exe \"");
+                                strcat(fisier,caleStanga);
 
+                                char *nume_fisier=fisiereStanga[viewCounterStanga-nr_foldereStanga];
+
+                                strcat(fisier,"\\");
+                                strcat(fisier,nume_fisier);
+                                strcat(fisier,"\"");
+
+                                system(fisier); ///deschide
+                                free(fisier);
+
+                            }
+                            else
+                            {
+                                ///edit pe un folder
+                                MessageBoxA(NULL,"Please select a file", "Edit",MB_ICONEXCLAMATION | MB_OK);
+
+                            }
                         }
                     }
                     else if(careFereastra==true)
                     {
-                        if(viewCounterDreapta>=nr_foldereDreapta)
+
+                        if(nr_selectii_dreapta>0)
                         {
-                            ///enter pe un fisier
-                            char *fisier= (char*)malloc(256);
-                            strcpy(fisier,"notepad.exe \"");
-                            strcat(fisier,caleDreapta);
-
-                            char *nume_fisier=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
-
-                            strcat(fisier,"\\");
-                            strcat(fisier,nume_fisier);
-                            strcat(fisier,"\"");
-
-                            system(fisier);
-                            free(fisier);
+                            MessageBoxA(NULL, "Cannot edit multiple files", "Edit",
+                                        MB_ICONERROR | MB_OK);
                         }
+
                         else
                         {
-                            ///edit pe un folder
-                            MessageBoxA(NULL,"Please select a file", "Edit",MB_ICONEXCLAMATION | MB_OK);
+                            ///am selectat un fisier
+                            if(viewCounterDreapta>=nr_foldereDreapta)
+                            {
+                                char *fisier= (char*)malloc(256);
+                                strcpy(fisier,"notepad.exe \"");
+                                strcat(fisier,caleDreapta);
+
+                                char *nume_fisier=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
+
+                                strcat(fisier,"\\");
+                                strcat(fisier,nume_fisier);
+                                strcat(fisier,"\"");
+
+                                system(fisier); ///deschide
+                                free(fisier);
+
+                            }
+                            else
+                            {
+                                ///edit pe un folder
+                                MessageBoxA(NULL,"Please select a file", "Edit",MB_ICONEXCLAMATION | MB_OK);
+
+                            }
+
                         }
                     }
                 }
@@ -2313,41 +2410,41 @@ void utilizareaAplicatiei()
                 if (clickX>=555 && clickX<=555+textwidth(" [F8] Delete ") && clickY>=740 && clickY<=756 )
                 {
                     if(careFereastra==false)
-                {
-                   if(nr_selectii_stanga>0)
                     {
-
-                        for(int i=0; i<nr_selectii_stanga; ++i)
+                        if(nr_selectii_stanga>0)
                         {
-                            stergereStanga(selectie_stanga[i]);
+
+                            for(int i=0; i<nr_selectii_stanga; ++i)
+                            {
+                                stergereStanga(selectie_stanga[i]);
+                            }
                         }
+                        else
+                        {
+                            stergereStanga(viewCounterStanga);
+                        }
+                        reindexare_Dreapta();
+                        reindexare_Stanga();
                     }
+
                     else
                     {
-                        stergereStanga(viewCounterStanga);
-                    }
-                    reindexare_Dreapta();
-                    reindexare_Stanga();
-                }
-
-                else
-                {
-                    if(nr_selectii_dreapta>0)
-                    {
-
-                        for(int i=0; i<nr_selectii_dreapta; ++i)
+                        if(nr_selectii_dreapta>0)
                         {
-                            stergereDreapta(selectie_dreapta[i]);
-                        }
-                    }
-                    else
-                    {
-                        stergereDreapta(viewCounterDreapta);
-                    }
-                    reindexare_Stanga();
-                    reindexare_Dreapta();
 
-                }
+                            for(int i=0; i<nr_selectii_dreapta; ++i)
+                            {
+                                stergereDreapta(selectie_dreapta[i]);
+                            }
+                        }
+                        else
+                        {
+                            stergereDreapta(viewCounterDreapta);
+                        }
+                        reindexare_Stanga();
+                        reindexare_Dreapta();
+
+                    }
                 }
                 ///am apasat mai sus stanga
                 if (clickX>=498 && clickX<=525 && clickY>=84 && clickY<=100)
@@ -2577,247 +2674,249 @@ void utilizareaAplicatiei()
                 hotKeyCtrlR=true;
                 if (careFereastra==false)
                 {
-                   if(nr_fisiereStanga>0)
+                    if(nr_selectii_stanga>0)
                     {
                         MessageBoxA(NULL, "Cannot rename multiple files", "Rename",
-                                                   MB_ICONERROR | MB_OK);
+                                    MB_ICONERROR | MB_OK);
                     }
-                    else{
-                    coordXRename=42;
-                    lenRenameFileString=0;
-                    renameFileString[0]=0;
-                    while(kbhit())
-                        getch();///curata bufferul de la getch()
-
-                    readimagefile("RenameBoxSized.jpg", 30, 305, 475, 395);
-                    setcolor(BLACK);
-                    setbkcolor(COLOR(220, 220, 220));
-                    outtextxy(40, 330," Rename file or directory: ");
-                    setbkcolor(WHITE);
-                    loopRename=true;
-                    while (loopRename)
+                    else
                     {
+                        coordXRename=42;
+                        lenRenameFileString=0;
+                        renameFileString[0]=0;
+                        while(kbhit())
+                            getch();///curata bufferul de la getch()
+
+                        readimagefile("RenameBoxSized.jpg", 30, 305, 475, 395);
                         setcolor(BLACK);
-
-
-                        tastaIntrodusaRename=getch();
-
-
-                        if (lenRenameFileString<41)
+                        setbkcolor(COLOR(220, 220, 220));
+                        outtextxy(40, 330," Rename file or directory: ");
+                        setbkcolor(WHITE);
+                        loopRename=true;
+                        while (loopRename)
                         {
+                            setcolor(BLACK);
 
-                            ///https://stackoverflow.com/questions/10463201/getch-and-arrow-codes
 
-                            if(tastaIntrodusaRename==0||tastaIntrodusaRename==224)
+                            tastaIntrodusaRename=getch();
+
+
+                            if (lenRenameFileString<41)
                             {
-                                int c=getch();
-                                if(c==72)
+
+                                ///https://stackoverflow.com/questions/10463201/getch-and-arrow-codes
+
+                                if(tastaIntrodusaRename==0||tastaIntrodusaRename==224)
                                 {
-                                    ///sageata sus
+                                    int c=getch();
+                                    if(c==72)
+                                    {
+                                        ///sageata sus
+                                    }
+                                    else if(c==80)
+                                    {
+                                        ///sageata jos
+                                    }
+                                    else if(c==75)
+                                    {
+                                        ///sageata stanga
+                                    }
+                                    else if(c==77)
+                                    {
+                                        ///sageata dreapta
+                                    }
                                 }
-                                else if(c==80)
+                                else if (tastaIntrodusaRename>='a' && tastaIntrodusaRename<='z' ||
+                                         tastaIntrodusaRename>='A' && tastaIntrodusaRename<='Z' ||
+                                         tastaIntrodusaRename>='0' && tastaIntrodusaRename<='9' ||
+                                         tastaIntrodusaRename==' ' || tastaIntrodusaRename=='_' ||
+                                         tastaIntrodusaRename=='-' || tastaIntrodusaRename==',' ||
+                                         tastaIntrodusaRename=='(' || tastaIntrodusaRename==')' ||
+                                         tastaIntrodusaRename=='.')
                                 {
-                                    ///sageata jos
-                                }
-                                else if(c==75)
-                                {
-                                    ///sageata stanga
-                                }
-                                else if(c==77)
-                                {
-                                    ///sageata dreapta
+                                    renameFileString[lenRenameFileString]=tastaIntrodusaRename;
+                                    lenRenameFileString++;
+                                    renameFileString[lenRenameFileString]=0;
+                                    outtextxy(coordXRename, 356, renameFileString);
                                 }
                             }
-                            else if (tastaIntrodusaRename>='a' && tastaIntrodusaRename<='z' ||
-                                     tastaIntrodusaRename>='A' && tastaIntrodusaRename<='Z' ||
-                                     tastaIntrodusaRename>='0' && tastaIntrodusaRename<='9' ||
-                                     tastaIntrodusaRename==' ' || tastaIntrodusaRename=='_' ||
-                                     tastaIntrodusaRename=='-' || tastaIntrodusaRename==',' ||
-                                     tastaIntrodusaRename=='(' || tastaIntrodusaRename==')' ||
-                                     tastaIntrodusaRename=='.')
+                            if (tastaIntrodusaRename==8 && lenRenameFileString>0) ///am introdus backspace
                             {
-                                renameFileString[lenRenameFileString]=tastaIntrodusaRename;
-                                lenRenameFileString++;
+                                lenRenameFileString--;
                                 renameFileString[lenRenameFileString]=0;
+                                setcolor(WHITE);
+                                setbkcolor(WHITE);
+                                setfillstyle(SOLID_FILL, WHITE);
+                                bar(coordXRename, 356, 455, 372);
+                                setcolor(BLACK);
                                 outtextxy(coordXRename, 356, renameFileString);
                             }
-                        }
-                        if (tastaIntrodusaRename==8 && lenRenameFileString>0) ///am introdus backspace
-                        {
-                            lenRenameFileString--;
-                            renameFileString[lenRenameFileString]=0;
-                            setcolor(WHITE);
-                            setbkcolor(WHITE);
-                            setfillstyle(SOLID_FILL, WHITE);
-                            bar(coordXRename, 356, 455, 372);
-                            setcolor(BLACK);
-                            outtextxy(coordXRename, 356, renameFileString);
-                        }
 
-                        if (GetAsyncKeyState(VK_RETURN))
-                        {
-
-                            char *numefisierfolder;
-                            if(viewCounterStanga<nr_foldereStanga)
+                            if (GetAsyncKeyState(VK_RETURN))
                             {
-                                numefisierfolder=foldereStanga[viewCounterStanga];
-                            }
 
-                            else
+                                char *numefisierfolder;
+                                if(viewCounterStanga<nr_foldereStanga)
+                                {
+                                    numefisierfolder=foldereStanga[viewCounterStanga];
+                                }
+
+                                else
+                                {
+                                    numefisierfolder=fisiereStanga[viewCounterStanga-nr_foldereStanga];
+                                }
+
+
+
+                                char *destinatie=(char *)malloc(256);
+                                char *sursa=(char *)malloc(256);
+                                strcpy(destinatie,caleStanga);
+                                strcat(destinatie,"\\");
+                                strcat(destinatie,renameFileString);
+                                strcpy(sursa,caleStanga);
+                                strcat(sursa,"\\");
+                                strcat(sursa,numefisierfolder);
+
+
+                                MoveFileExA(sursa, destinatie, MOVEFILE_WRITE_THROUGH);
+                                free(destinatie);
+                                free(sursa);
+                                tastaEnter=true;
+                                clear_stanga();
+                                reindexare_Dreapta();
+                                reindexare_Stanga();
+                                loopRename=false;
+                                break;
+                            }
+                            if (GetAsyncKeyState(VK_ESCAPE))
                             {
-                                numefisierfolder=fisiereStanga[viewCounterStanga-nr_foldereStanga];
+                                clear_stanga();
+                                afisare(intreagaStanga,foldFisExtStanga, foldFisDateStanga[viewCounterStanga], foldFisSizeStanga[viewCounterStanga], deUndeAfisezStanga[nivStivaStanga], panaUndeAfisezStanga[nivStivaStanga], viewCounterStanga, 15,selectie_stanga,nr_selectii_stanga);
+                                loopRename=false;
+                                break;
                             }
-
-
-
-                            char *destinatie=(char *)malloc(256);
-                            char *sursa=(char *)malloc(256);
-                            strcpy(destinatie,caleStanga);
-                            strcat(destinatie,"\\");
-                            strcat(destinatie,renameFileString);
-                            strcpy(sursa,caleStanga);
-                            strcat(sursa,"\\");
-                            strcat(sursa,numefisierfolder);
-
-
-                            MoveFileExA(sursa, destinatie, MOVEFILE_WRITE_THROUGH);
-                            free(destinatie);
-                            free(sursa);
-                            tastaEnter=true;
-                            clear_stanga();
-                            reindexare_Dreapta();
-                            reindexare_Stanga();
-                            loopRename=false;
-                            break;
-                        }
-                        if (GetAsyncKeyState(VK_ESCAPE))
-                        {
-                            clear_stanga();
-                            afisare(intreagaStanga,foldFisExtStanga, foldFisDateStanga[viewCounterStanga], foldFisSizeStanga[viewCounterStanga], deUndeAfisezStanga[nivStivaStanga], panaUndeAfisezStanga[nivStivaStanga], viewCounterStanga, 15,selectie_stanga,nr_selectii_stanga);
-                            loopRename=false;
-                            break;
                         }
                     }
                 }
-            }
                 else
                 {
 
-                     if(nr_fisiereDreapta>0)
+                    if(nr_selectii_dreapta>0)
                     {
                         MessageBoxA(NULL, "Cannot rename multiple files", "Rename",
-                                                   MB_ICONERROR | MB_OK);
+                                    MB_ICONERROR | MB_OK);
                     }
 
-                    else{
-                    coordXRename=564;
-                    lenRenameFileString=0;
-                    renameFileString[0]=0;
-                    while(kbhit())
-                        getch();///curata bufferul de la getch()
-                    readimagefile("RenameBoxSized.jpg", 552, 305, 997, 395);
-                    setcolor(BLACK);
-                    setbkcolor(COLOR(220, 220, 220));
-                    outtextxy(562, 330," Rename file or directory: ");
-                    setbkcolor(WHITE);
-                    loopRename=true;
-                    while (loopRename)
+                    else
                     {
+                        coordXRename=564;
+                        lenRenameFileString=0;
+                        renameFileString[0]=0;
+                        while(kbhit())
+                            getch();///curata bufferul de la getch()
+                        readimagefile("RenameBoxSized.jpg", 552, 305, 997, 395);
                         setcolor(BLACK);
-                        tastaIntrodusaRename=(char)getch();
-
-                        if(lenRenameFileString<41)
+                        setbkcolor(COLOR(220, 220, 220));
+                        outtextxy(562, 330," Rename file or directory: ");
+                        setbkcolor(WHITE);
+                        loopRename=true;
+                        while (loopRename)
                         {
+                            setcolor(BLACK);
+                            tastaIntrodusaRename=(char)getch();
 
-                            if(tastaIntrodusaRename==0||tastaIntrodusaRename==224)
+                            if(lenRenameFileString<41)
                             {
-                                int c=getch();
-                                if(c==72)
+
+                                if(tastaIntrodusaRename==0||tastaIntrodusaRename==224)
                                 {
-                                    ///sageata sus
+                                    int c=getch();
+                                    if(c==72)
+                                    {
+                                        ///sageata sus
+                                    }
+                                    else if(c==80)
+                                    {
+                                        ///sageata jos
+                                    }
+                                    else if(c==75)
+                                    {
+                                        ///sageata stanga
+                                    }
+                                    else if(c==77)
+                                    {
+                                        ///sageata dreapta
+                                    }
                                 }
-                                else if(c==80)
+
+                                else  if (    tastaIntrodusaRename>='a' && tastaIntrodusaRename<='z' ||
+                                              tastaIntrodusaRename>='A' && tastaIntrodusaRename<='Z' ||
+                                              tastaIntrodusaRename>='0' && tastaIntrodusaRename<='9' ||
+                                              tastaIntrodusaRename==' ' || tastaIntrodusaRename=='_' ||
+                                              tastaIntrodusaRename=='-' || tastaIntrodusaRename==',' ||
+                                              tastaIntrodusaRename=='(' || tastaIntrodusaRename==')' ||
+                                              tastaIntrodusaRename=='.')
                                 {
-                                    ///sageata jos
-                                }
-                                else if(c==75)
-                                {
-                                    ///sageata stanga
-                                }
-                                else if(c==77)
-                                {
-                                    ///sageata dreapta
+                                    renameFileString[lenRenameFileString]=tastaIntrodusaRename;
+                                    lenRenameFileString++;
+                                    renameFileString[lenRenameFileString]=0;
+                                    outtextxy(coordXRename, 356, renameFileString);
                                 }
                             }
-
-                            else  if (    tastaIntrodusaRename>='a' && tastaIntrodusaRename<='z' ||
-                                          tastaIntrodusaRename>='A' && tastaIntrodusaRename<='Z' ||
-                                          tastaIntrodusaRename>='0' && tastaIntrodusaRename<='9' ||
-                                          tastaIntrodusaRename==' ' || tastaIntrodusaRename=='_' ||
-                                          tastaIntrodusaRename=='-' || tastaIntrodusaRename==',' ||
-                                          tastaIntrodusaRename=='(' || tastaIntrodusaRename==')' ||
-                                          tastaIntrodusaRename=='.')
+                            if (tastaIntrodusaRename==8 && lenRenameFileString>0) ///am introdus backspace
                             {
-                                renameFileString[lenRenameFileString]=tastaIntrodusaRename;
-                                lenRenameFileString++;
+                                lenRenameFileString--;
                                 renameFileString[lenRenameFileString]=0;
+                                setcolor(WHITE);
+                                setbkcolor(WHITE);
+                                setfillstyle(SOLID_FILL, WHITE);
+                                bar(coordXRename, 356, 984, 372);
+                                setcolor(BLACK);
                                 outtextxy(coordXRename, 356, renameFileString);
                             }
-                        }
-                        if (tastaIntrodusaRename==8 && lenRenameFileString>0) ///am introdus backspace
-                        {
-                            lenRenameFileString--;
-                            renameFileString[lenRenameFileString]=0;
-                            setcolor(WHITE);
-                            setbkcolor(WHITE);
-                            setfillstyle(SOLID_FILL, WHITE);
-                            bar(coordXRename, 356, 984, 372);
-                            setcolor(BLACK);
-                            outtextxy(coordXRename, 356, renameFileString);
-                        }
-                        if (GetAsyncKeyState(VK_RETURN))
-                        {
-
-                            char *numefisierfolder;
-                            if(viewCounterDreapta<nr_foldereDreapta)
+                            if (GetAsyncKeyState(VK_RETURN))
                             {
-                                numefisierfolder=foldereDreapta[viewCounterDreapta];
-                            }
 
-                            else
+                                char *numefisierfolder;
+                                if(viewCounterDreapta<nr_foldereDreapta)
+                                {
+                                    numefisierfolder=foldereDreapta[viewCounterDreapta];
+                                }
+
+                                else
+                                {
+                                    numefisierfolder=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
+                                }
+
+                                char *destinatie=(char *)malloc(256);
+                                char *sursa=(char *)malloc(256);
+                                strcpy(destinatie,caleDreapta);
+                                strcat(destinatie,"\\");
+                                strcat(destinatie,renameFileString);
+                                strcpy(sursa,caleDreapta);
+                                strcat(sursa,"\\");
+                                strcat(sursa,numefisierfolder);
+
+
+                                MoveFileExA(sursa, destinatie, MOVEFILE_WRITE_THROUGH);
+                                free(destinatie);
+                                free(sursa);
+                                tastaEnter=true;
+                                clear_stanga();
+                                reindexare_Stanga();
+                                reindexare_Dreapta();
+                                loopRename=false;
+                                break;
+                            }
+                            if (GetAsyncKeyState(VK_ESCAPE))
                             {
-                                numefisierfolder=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
+                                clear_dreapta();
+                                afisare(intreagaDreapta,foldFisExtDreapta, foldFisDateDreapta[viewCounterDreapta], foldFisSizeDreapta[viewCounterDreapta], deUndeAfisezDreapta[nivStivaDreapta], panaUndeAfisezDreapta[nivStivaDreapta], viewCounterDreapta, 542,selectie_dreapta,nr_selectii_dreapta);
+                                loopRename=false;
+                                break;
                             }
-
-                            char *destinatie=(char *)malloc(256);
-                            char *sursa=(char *)malloc(256);
-                            strcpy(destinatie,caleDreapta);
-                            strcat(destinatie,"\\");
-                            strcat(destinatie,renameFileString);
-                            strcpy(sursa,caleDreapta);
-                            strcat(sursa,"\\");
-                            strcat(sursa,numefisierfolder);
-
-
-                            MoveFileExA(sursa, destinatie, MOVEFILE_WRITE_THROUGH);
-                            free(destinatie);
-                            free(sursa);
-                            tastaEnter=true;
-                            clear_stanga();
-                            reindexare_Stanga();
-                            reindexare_Dreapta();
-                            loopRename=false;
-                            break;
-                        }
-                        if (GetAsyncKeyState(VK_ESCAPE))
-                        {
-                            clear_dreapta();
-                            afisare(intreagaDreapta,foldFisExtDreapta, foldFisDateDreapta[viewCounterDreapta], foldFisSizeDreapta[viewCounterDreapta], deUndeAfisezDreapta[nivStivaDreapta], panaUndeAfisezDreapta[nivStivaDreapta], viewCounterDreapta, 542,selectie_dreapta,nr_selectii_dreapta);
-                            loopRename=false;
-                            break;
                         }
                     }
-                }
 
                 }
             }
