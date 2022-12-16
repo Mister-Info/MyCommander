@@ -151,3 +151,88 @@ char *numefisierfolder;\
 
 
 
+
+
+
+ #define  moveStanga(counter)\
+  char *numefisierfolder;\
+                    if(counter<nr_foldereStanga)\
+                    {\
+                        numefisierfolder=foldereStanga[counter];\
+                    }\
+\
+                    else\
+                    {\
+                        numefisierfolder=fisiereStanga[counter-nr_foldereStanga];\
+                    }\
+                    char *folder= (char*)malloc(256);\
+\
+\
+                    strcpy(folder,caleStanga);\
+\
+\
+                    bool ok=true;\
+                    strcat(folder,"\\");\
+                    strcat(folder,numefisierfolder);\
+\
+                    if(ok)\
+                    {\
+\
+                        if(strcmp(caleStanga,caleDreapta)!=0)\
+                        {\
+                            copierefoldere(folder, caleDreapta);\
+                            stergere(folder);\
+                            \
+                        }\
+                        else\
+                        {\
+\
+                            MessageBoxA(NULL,"Error, you can't move the file/directory in the same location!", "Move",\
+                                        MB_ICONERROR | MB_OK);\
+\
+                        }\
+\
+                    }\
+                    free(folder);
+
+
+
+
+  #define moveDreapta(counter)\
+  char *numefisierfolder;\
+                    if(counter<nr_foldereDreapta)\
+                    {\
+                        numefisierfolder=foldereDreapta[counter];\
+                    }\
+\
+                    else\
+                    {\
+                        numefisierfolder=fisiereDreapta[counter-nr_foldereDreapta];\
+                    }\
+                    char *folder= (char*)malloc(256);\
+\
+\
+                    strcpy(folder,caleDreapta);\
+\
+\
+                    bool ok=true;\
+                    strcat(folder,"\\");\
+                    strcat(folder,numefisierfolder);\
+                    if(ok)\
+                    {\
+\
+                        if(strcmp(caleStanga,caleDreapta)!=0)\
+                        {\
+                            copierefoldere(folder, caleStanga);\
+                            stergere(folder);\
+                            \
+                        }\
+                        else\
+                        {\
+                            MessageBoxA(NULL,"Error, you can't move the file/directory in the same location!", "Move",\
+                                        MB_ICONERROR | MB_OK);\
+                        }\
+\
+                    }\
+\
+                    free(folder);

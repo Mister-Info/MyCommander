@@ -14,7 +14,7 @@
 
 
 
-///TODO: select: move
+///TODO: select: move, aici crapa
 
 
 
@@ -1287,94 +1287,40 @@ void utilizareaAplicatiei()
         {
             if(!deplasare)
             {
-
-
-
                 deplasare=true;
                 if(careFereastra==false)
                 {
-
-                    char *numefisierfolder;
-                    if(viewCounterStanga<nr_foldereStanga)
-                    {
-                        numefisierfolder=foldereStanga[viewCounterStanga];
-                    }
-
-                    else
-                    {
-                        numefisierfolder=fisiereStanga[viewCounterStanga-nr_foldereStanga];
-                    }
-                    char *folder= (char*)malloc(256);
-
-
-                    strcpy(folder,caleStanga);
-
-
-                    bool ok=true;
-                    strcat(folder,"\\");
-                    strcat(folder,numefisierfolder);
-
-                    if(ok)
+                    if(nr_selectii_stanga>0)
                     {
 
-                        if(strcmp(caleStanga,caleDreapta)!=0)
-                        {
-                            copierefoldere(folder, caleDreapta);
-                            stergere(folder);
-                            reindexare_Dreapta();
-                            reindexare_Stanga();
-                        }
-                        else
+                        for(int i=0; i<nr_selectii_stanga; ++i)
                         {
 
-                            MessageBoxA(NULL,"Error, you can't move the file/directory in the same location!", "Move",
-                                        MB_ICONERROR | MB_OK);
-
+                            moveStanga(selectie_stanga[i]);
                         }
-
                     }
-                    free(folder);
+                    else {
+                        moveStanga(viewCounterStanga);
+                    }
+                    reindexare_Dreapta();
+                    reindexare_Stanga();
+
                 }
                 else
                 {
-                    char *numefisierfolder;
-                    if(viewCounterDreapta<nr_foldereDreapta)
-                    {
-                        numefisierfolder=foldereDreapta[viewCounterDreapta];
-                    }
-
-                    else
-                    {
-                        numefisierfolder=fisiereDreapta[viewCounterDreapta-nr_foldereDreapta];
-                    }
-                    char *folder= (char*)malloc(256);
-
-
-                    strcpy(folder,caleDreapta);
-
-
-                    bool ok=true;
-                    strcat(folder,"\\");
-                    strcat(folder,numefisierfolder);
-                    if(ok)
+                    if(nr_selectii_dreapta>0)
                     {
 
-                        if(strcmp(caleStanga,caleDreapta)!=0)
+                        for(int i=0; i<nr_selectii_dreapta; ++i)
                         {
-                            copierefoldere(folder, caleStanga);
-                            stergere(folder);
-                            reindexare_Stanga();
-                            reindexare_Dreapta();
+                            moveDreapta(selectie_dreapta[i]);
                         }
-                        else
-                        {
-                            MessageBoxA(NULL,"Error, you can't move the file/directory in the same location!", "Move",
-                                        MB_ICONERROR | MB_OK);
-                        }
-
                     }
-
-                    free(folder);
+                    else {
+                        moveDreapta(viewCounterDreapta);
+                    }
+                    reindexare_Stanga();
+                    reindexare_Dreapta();
                 }
             }
         }
@@ -2548,8 +2494,11 @@ void utilizareaAplicatiei()
                 ///Am apasat pe butonul Local Disks
                 if (clickX>=6 && clickX<=6+textwidth(" Local Disks ") && clickY>=42 && clickY<=58)
                 {
+
+
                     if (careFereastra==false)
                     {
+
                         clear_stanga();
                         caleStanga[0]=NULL;
                         viewCounterStanga=0;
@@ -2576,6 +2525,7 @@ void utilizareaAplicatiei()
                     }
                     else if (careFereastra==true)
                     {
+                        nr_selectii_dreapta=0;
                         clear_dreapta();
                         caleDreapta[0]=NULL;
                         viewCounterDreapta=0;
@@ -2618,8 +2568,10 @@ void utilizareaAplicatiei()
                 {
 
                     careFereastra=true;
+                    if(nr_selectii_stanga>0){
                     reindexare_Stanga();
-                    reindexare_Dreapta();
+
+                    }
 
                     setcolor(DARKGRAY);
                     rectangle(10, 80,  496, 687);
@@ -2644,8 +2596,10 @@ void utilizareaAplicatiei()
                 else
                 {
                     careFereastra=false;
+                    if(nr_selectii_dreapta>0){
                     reindexare_Dreapta();
                     reindexare_Stanga();
+                    }
 
 
                     setcolor(COLOR(255, 0, 0));
