@@ -39,7 +39,7 @@ struct DATE_FILE
 
 void convertSize(char chstring[], long unsigned int marime)
 {
-    char temp[101];
+    char temp[256];
     long unsigned int aux=marime, lg=0, i, j;
     while (aux)
     {
@@ -402,7 +402,7 @@ bool exista(const char* cale)
 
 void afisare(char **listaIntreaga, char **listaExt, DATE_FILE A, unsigned long int siz, int deUndeAfisez, int panaUndeAfisez, int pozitiaCurenta, int x, int *selectat, int nr_selectate)
 {
-    char ch[101];
+    char ch[256];
     int y=110;
     for(int i=deUndeAfisez; i<panaUndeAfisez; i++)
     {
@@ -474,6 +474,7 @@ void initializareVectorDeNumeFoldereFisiere(char **intreagaLista, char**foldFisE
         int nr_foldere,int nr_fisiere)
 {
     int lgLista=0, i, lg=0;
+
     for (i=0; i<nr_foldere; i++)
     {
         lg=strlen(foldere[i]);
@@ -481,6 +482,9 @@ void initializareVectorDeNumeFoldereFisiere(char **intreagaLista, char**foldFisE
         {
             strncpy(intreagaLista[lgLista], foldere[i], 54);
             intreagaLista[lgLista][54]=0;
+
+
+
             strcat(intreagaLista[lgLista], "...");
             foldFisSize[lgLista]=marimeFoldere[i];
             foldFisDate[lgLista]=dataFoldere[i];
@@ -498,6 +502,7 @@ void initializareVectorDeNumeFoldereFisiere(char **intreagaLista, char**foldFisE
     }
     for (i=0; i<nr_fisiere; i++)
     {
+
         lg=strlen(fisiere[i]);
         if (lg>60)
         {
@@ -506,6 +511,9 @@ void initializareVectorDeNumeFoldereFisiere(char **intreagaLista, char**foldFisE
             foldFisSize[lgLista]=marimeFisiere[i];
             foldFisDate[lgLista]=dataFisiere[i];
             strcpy(foldFisExt[lgLista], extFisiere[i]);
+
+
+
             strcat(intreagaLista[lgLista], "...");
             lgLista++;
         }
@@ -617,7 +625,7 @@ void indexare_foldere_fisiere(char cale[],char **foldere, char **fisiere, char**
             candAfostCreatFisiere[nr_fisiere].luna=TIMP_structurat.wMonth;
             candAfostCreatFisiere[nr_fisiere].an=TIMP_structurat.wYear;
             strcpy(temp_ext, cautare.cFileName);
-            for (i=strlen(temp_ext)-1; temp_ext[i]!='.'; i--);
+            for (i=strlen(temp_ext)-1; i>=0&&temp_ext[i]!='.'; i--);
             i++;
             for (j=0; i<strlen(temp_ext); j++)
             {
@@ -976,32 +984,32 @@ char** init_lista(int n, int m)
 void utilizareaAplicatiei()
 {
     ///marimile sunt hardcodate, dar pe viitor voi creste dinamic in functie de numarul de foldere
-    char** foldereStanga = init_lista(101, 257);
-    char** fisiereStanga = init_lista(101, 257);
-    char** extensieFoldereStanga = init_lista (101, 257);
-    char** extensieFisiereStanga = init_lista (101, 257);
-    long unsigned int marimeFoldereStanga[101];
-    long unsigned int marimeFisiereStanga[101];
-    long unsigned int foldFisSizeStanga[202];
-    DATE_FILE candAfostCreatFoldereStanga[101];
-    DATE_FILE candAfostCreatFisiereStanga[101];
-    DATE_FILE foldFisDateStanga[202];
-    char** foldFisExtStanga = init_lista(101, 257);
+    char** foldereStanga = init_lista(256, 257);
+    char** fisiereStanga = init_lista(256, 257);
+    char** extensieFoldereStanga = init_lista(256, 257);
+    char** extensieFisiereStanga = init_lista(256, 257);
+    long unsigned int marimeFoldereStanga[256];
+    long unsigned int marimeFisiereStanga[256];
+    long unsigned int foldFisSizeStanga[256];
+    DATE_FILE candAfostCreatFoldereStanga[256];
+    DATE_FILE candAfostCreatFisiereStanga[256];
+    DATE_FILE foldFisDateStanga[256];
+    char** foldFisExtStanga = init_lista(256, 257);
 
-    char** foldereDreapta = init_lista(101, 257);
-    char** fisiereDreapta = init_lista(101, 257);
-    char** extensieFoldereDreapta = init_lista (101, 257);
-    char** extensieFisiereDreapta = init_lista (101, 257);
-    long unsigned int marimeFoldereDreapta[101];
-    long unsigned int marimeFisiereDreapta[101];
-    long unsigned int foldFisSizeDreapta[202];
-    DATE_FILE candAfostCreatFoldereDreapta[101];
-    DATE_FILE candAfostCreatFisiereDreapta[101];
-    DATE_FILE foldFisDateDreapta[202];
-    char** foldFisExtDreapta= init_lista(101, 257);
+    char** foldereDreapta = init_lista(256, 257);
+    char** fisiereDreapta = init_lista(256, 257);
+    char** extensieFoldereDreapta = init_lista(256, 257);
+    char** extensieFisiereDreapta = init_lista(256, 257);
+    long unsigned int marimeFoldereDreapta[256];
+    long unsigned int marimeFisiereDreapta[256];
+    long unsigned int foldFisSizeDreapta[256];
+    DATE_FILE candAfostCreatFoldereDreapta[256];
+    DATE_FILE candAfostCreatFisiereDreapta[256];
+    DATE_FILE foldFisDateDreapta[256];
+    char** foldFisExtDreapta= init_lista(256, 257);
 
-    char** intreagaStanga = init_lista(202, 257);
-    char** intreagaDreapta = init_lista(202, 257);
+    char** intreagaStanga = init_lista(512, 257);
+    char** intreagaDreapta = init_lista(512, 257);
 
     char* renameFileString=(char *)malloc(256);
     char tastaIntrodusaRename=0, c;
@@ -1461,6 +1469,7 @@ void utilizareaAplicatiei()
                             strcat(caleStanga, "\\");
                         }
                         strcat(caleStanga,foldereStanga[viewCounterStanga]);
+                        nr_selectii_stanga=0;
                         reindexare_Stanga();
                         bar3d(10, 689, 497, 709, 0, 0);
                         char p[201]= {0};
@@ -2579,7 +2588,7 @@ void utilizareaAplicatiei()
                     rectangle(537, 80, 1013, 687);
                     if (intreagaDreapta[0][1]!=':')
                     {
-                        char ch[101];
+                        char ch[256];
                         setcolor(BLACK);
                         setfillstyle(SOLID_FILL, WHITE);
                         setbkcolor(WHITE);
@@ -2608,7 +2617,7 @@ void utilizareaAplicatiei()
                     rectangle(537, 80, 1013, 687);
                     if (intreagaStanga[0][1]!=':')
                     {
-                        char ch[101];
+                        char ch[256];
                         setcolor(BLACK);
                         setfillstyle(SOLID_FILL, WHITE);
                         setbkcolor(WHITE);
