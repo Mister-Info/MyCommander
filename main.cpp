@@ -2616,7 +2616,11 @@ void utilizareaAplicatiei()
 
                 if (careFereastra==false)
                 {
+
                     careFereastra=true;
+                    reindexare_Stanga();
+                    reindexare_Dreapta();
+
                     setcolor(DARKGRAY);
                     rectangle(10, 80,  496, 687);
                     setcolor(COLOR(255, 0, 0));
@@ -2640,6 +2644,10 @@ void utilizareaAplicatiei()
                 else
                 {
                     careFereastra=false;
+                    reindexare_Dreapta();
+                    reindexare_Stanga();
+
+
                     setcolor(COLOR(255, 0, 0));
                     rectangle(10, 80,  496, 687);
                     setcolor(DARKGRAY);
