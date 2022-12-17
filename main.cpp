@@ -1879,6 +1879,8 @@ void utilizareaAplicatiei()
                     nivStivaStanga=0;
                     deUndeAfisezStanga[0]=0;
                     panaUndeAfisezStanga[0]=0;
+                    nr_foldereStanga=0;
+                    nr_fisiereStanga=0;
                     ///listam discurile locale
                     reindex(caleStanga,foldereStanga,fisiereStanga,
                             extensieFoldereStanga, extensieFisiereStanga, marimeFoldereStanga, marimeFisiereStanga,
@@ -1906,6 +1908,8 @@ void utilizareaAplicatiei()
                     nivStivaDreapta=0;
                     deUndeAfisezDreapta[0]=0;
                     panaUndeAfisezDreapta[0]=0;
+                    nr_foldereDreapta=0;
+                    nr_fisiereDreapta=0;
                     ///listam discurile locale
                     reindex(caleDreapta,foldereDreapta,fisiereDreapta,
                             extensieFoldereDreapta, extensieFisiereDreapta, marimeFoldereDreapta, marimeFisiereDreapta,
@@ -1946,6 +1950,7 @@ void utilizareaAplicatiei()
                 {
                     if (careFereastra==false)
                     {
+                        if (intreagaStanga[0][1]!=':'){
                         nr_selectii_stanga=0;
                         sortareDupaNumeAsc(fisiereStanga, extensieFisiereStanga, candAfostCreatFisiereStanga, marimeFisiereStanga, nr_fisiereStanga);
                         initializareVectorDeNumeFoldereFisiere(intreagaStanga, foldFisExtStanga,foldFisSizeStanga, foldFisDateStanga,foldereStanga,fisiereStanga, extensieFoldereStanga, extensieFisiereStanga, marimeFoldereStanga, marimeFisiereStanga,candAfostCreatFoldereStanga,candAfostCreatFisiereStanga,nr_foldereStanga,nr_fisiereStanga);
@@ -1956,9 +1961,10 @@ void utilizareaAplicatiei()
                         if(nrFoldereFisiereStanga>29) panaUndeAfisezStanga[nivStivaStanga]=29;
                         else panaUndeAfisezStanga[nivStivaStanga]=nrFoldereFisiereStanga;
                         afisare(intreagaStanga, foldFisExtStanga,foldFisDateStanga[viewCounterStanga], foldFisSizeStanga[viewCounterStanga], deUndeAfisezStanga[nivStivaStanga], panaUndeAfisezStanga[nivStivaStanga], viewCounterStanga, 15, selectie_stanga,nr_selectii_stanga);
+                        }
                     }
                     else if(careFereastra==true)
-                    {
+                    {   if (intreagaDreapta[0][1]!=':'){
                         nr_selectii_dreapta=0;
                         sortareDupaNumeAsc(fisiereDreapta, extensieFisiereDreapta, candAfostCreatFisiereDreapta, marimeFisiereDreapta, nr_fisiereDreapta);
                         initializareVectorDeNumeFoldereFisiere(intreagaDreapta, foldFisExtDreapta,foldFisSizeDreapta, foldFisDateDreapta,foldereDreapta,fisiereDreapta, extensieFoldereDreapta, extensieFisiereDreapta, marimeFoldereDreapta, marimeFisiereDreapta,candAfostCreatFoldereDreapta,candAfostCreatFisiereDreapta,nr_foldereDreapta,nr_fisiereDreapta);
@@ -1969,7 +1975,7 @@ void utilizareaAplicatiei()
                         if(nrFoldereFisiereDreapta>29) panaUndeAfisezDreapta[nivStivaDreapta]=29;
                         else panaUndeAfisezDreapta[nivStivaDreapta]=nrFoldereFisiereDreapta;
                         afisare(intreagaDreapta,foldFisExtDreapta,foldFisDateDreapta[viewCounterDreapta], foldFisSizeDreapta[viewCounterDreapta], deUndeAfisezDreapta[nivStivaDreapta], panaUndeAfisezDreapta[nivStivaDreapta], viewCounterDreapta, 542, selectie_dreapta,nr_selectii_dreapta);
-
+                        }
                     }
                 }
 
@@ -1980,7 +1986,7 @@ void utilizareaAplicatiei()
                 if (clickX>=277 && clickX<=277+textwidth("  Extension  ") && clickY>=42 && clickY<=58 )
                 {
                     if (careFereastra==false)
-                    {
+                    {   if (intreagaStanga[0][1]!=':'){
                         nr_selectii_stanga=0;
                         sortareDupaExtensieAsc(fisiereStanga, extensieFisiereStanga, candAfostCreatFisiereStanga, marimeFisiereStanga, nr_fisiereStanga);
                         initializareVectorDeNumeFoldereFisiere(intreagaStanga, foldFisExtStanga,foldFisSizeStanga, foldFisDateStanga,foldereStanga,fisiereStanga,extensieFoldereStanga,extensieFisiereStanga, marimeFoldereStanga, marimeFisiereStanga,candAfostCreatFoldereStanga,candAfostCreatFisiereStanga,nr_foldereStanga,nr_fisiereStanga);
@@ -1991,9 +1997,10 @@ void utilizareaAplicatiei()
                         if(nrFoldereFisiereStanga>29) panaUndeAfisezStanga[nivStivaStanga]=29;
                         else panaUndeAfisezStanga[nivStivaStanga]=nrFoldereFisiereStanga;
                         afisare(intreagaStanga,foldFisExtStanga,foldFisDateStanga[viewCounterStanga], foldFisSizeStanga[viewCounterStanga], deUndeAfisezStanga[nivStivaStanga], panaUndeAfisezStanga[nivStivaStanga], viewCounterStanga, 15, selectie_stanga,nr_selectii_stanga);
+                        }
                     }
                     else if(careFereastra==true)
-                    {
+                    {   if (intreagaDreapta[0][1]!=':'){
                         nr_selectii_dreapta=0;
                         sortareDupaExtensieAsc(fisiereDreapta, extensieFisiereDreapta, candAfostCreatFisiereDreapta, marimeFisiereDreapta, nr_fisiereDreapta);
                         initializareVectorDeNumeFoldereFisiere(intreagaDreapta,foldFisExtDreapta,foldFisSizeDreapta, foldFisDateDreapta,foldereDreapta,fisiereDreapta,extensieFoldereDreapta,extensieFisiereDreapta, marimeFoldereDreapta, marimeFisiereDreapta,candAfostCreatFoldereDreapta,candAfostCreatFisiereDreapta,nr_foldereDreapta,nr_fisiereDreapta);
@@ -2004,7 +2011,7 @@ void utilizareaAplicatiei()
                         if(nrFoldereFisiereDreapta>29) panaUndeAfisezDreapta[nivStivaDreapta]=29;
                         else panaUndeAfisezDreapta[nivStivaDreapta]=nrFoldereFisiereDreapta;
                         afisare(intreagaDreapta,foldFisExtDreapta,foldFisDateDreapta[viewCounterDreapta], foldFisSizeDreapta[viewCounterDreapta], deUndeAfisezDreapta[nivStivaDreapta], panaUndeAfisezDreapta[nivStivaDreapta], viewCounterDreapta, 542, selectie_dreapta,nr_selectii_dreapta);
-
+                        }
                     }
                 }
 
@@ -2016,6 +2023,7 @@ void utilizareaAplicatiei()
                 {
                     if (careFereastra==false)
                     {
+                        if (intreagaStanga[0][1]!=':'){
                         nr_selectii_stanga=0;
                         sortareDupaSizeAsc(fisiereStanga, extensieFisiereStanga, candAfostCreatFisiereStanga, marimeFisiereStanga, nr_fisiereStanga);
                         initializareVectorDeNumeFoldereFisiere(intreagaStanga,foldFisExtStanga,foldFisSizeStanga, foldFisDateStanga,foldereStanga,fisiereStanga,extensieFoldereStanga,extensieFisiereStanga, marimeFoldereStanga, marimeFisiereStanga,candAfostCreatFoldereStanga,candAfostCreatFisiereStanga,nr_foldereStanga,nr_fisiereStanga);
@@ -2026,9 +2034,10 @@ void utilizareaAplicatiei()
                         if(nrFoldereFisiereStanga>29) panaUndeAfisezStanga[nivStivaStanga]=29;
                         else panaUndeAfisezStanga[nivStivaStanga]=nrFoldereFisiereStanga;
                         afisare(intreagaStanga,foldFisExtStanga,foldFisDateStanga[viewCounterStanga], foldFisSizeStanga[viewCounterStanga], deUndeAfisezStanga[nivStivaStanga], panaUndeAfisezStanga[nivStivaStanga], viewCounterStanga, 15, selectie_stanga,nr_selectii_stanga);
+                        }
                     }
                     else if(careFereastra==true)
-                    {
+                    {   if (intreagaDreapta[0][1]!=':'){
                         nr_selectii_dreapta=0;
                         sortareDupaSizeAsc(fisiereDreapta, extensieFisiereDreapta, candAfostCreatFisiereDreapta, marimeFisiereDreapta, nr_fisiereDreapta);
                         initializareVectorDeNumeFoldereFisiere(intreagaDreapta,foldFisExtDreapta,foldFisSizeDreapta, foldFisDateDreapta,foldereDreapta,fisiereDreapta,extensieFoldereDreapta,extensieFisiereDreapta, marimeFoldereDreapta, marimeFisiereDreapta,candAfostCreatFoldereDreapta,candAfostCreatFisiereDreapta,nr_foldereDreapta,nr_fisiereDreapta);
@@ -2039,7 +2048,7 @@ void utilizareaAplicatiei()
                         if(nrFoldereFisiereDreapta>29) panaUndeAfisezDreapta[nivStivaDreapta]=29;
                         else panaUndeAfisezDreapta[nivStivaDreapta]=nrFoldereFisiereDreapta;
                         afisare(intreagaDreapta,foldFisExtDreapta,foldFisDateDreapta[viewCounterDreapta], foldFisSizeDreapta[viewCounterDreapta], deUndeAfisezDreapta[nivStivaDreapta], panaUndeAfisezDreapta[nivStivaDreapta], viewCounterDreapta, 542, selectie_dreapta,nr_selectii_dreapta);
-
+                        }
                     }
                 }
 
@@ -2050,6 +2059,7 @@ void utilizareaAplicatiei()
                 {
                     if (careFereastra==false)
                     {
+                        if (intreagaStanga[0][1]!=':'){
                         nr_selectii_stanga=0;
                         sortareDupaDateAsc(fisiereStanga, extensieFisiereStanga, candAfostCreatFisiereStanga, marimeFisiereStanga, nr_fisiereStanga);
                         initializareVectorDeNumeFoldereFisiere(intreagaStanga,foldFisExtStanga,foldFisSizeStanga, foldFisDateStanga,foldereStanga,fisiereStanga, extensieFoldereStanga, extensieFisiereStanga, marimeFoldereStanga, marimeFisiereStanga,candAfostCreatFoldereStanga,candAfostCreatFisiereStanga,nr_foldereStanga,nr_fisiereStanga);
@@ -2060,9 +2070,10 @@ void utilizareaAplicatiei()
                         if(nrFoldereFisiereStanga>29) panaUndeAfisezStanga[nivStivaStanga]=29;
                         else panaUndeAfisezStanga[nivStivaStanga]=nrFoldereFisiereStanga;
                         afisare(intreagaStanga,foldFisExtStanga,foldFisDateStanga[viewCounterStanga], foldFisSizeStanga[viewCounterStanga], deUndeAfisezStanga[nivStivaStanga], panaUndeAfisezStanga[nivStivaStanga], viewCounterStanga, 15,selectie_stanga,nr_selectii_stanga);
+                        }
                     }
                     else if(careFereastra==true)
-                    {
+                    {   if (intreagaDreapta[0][1]!=':'){
                         nr_selectii_dreapta=0;
                         sortareDupaDateAsc(fisiereDreapta, extensieFisiereDreapta, candAfostCreatFisiereDreapta, marimeFisiereDreapta, nr_fisiereDreapta);
                         initializareVectorDeNumeFoldereFisiere(intreagaDreapta,foldFisExtDreapta,foldFisSizeDreapta, foldFisDateDreapta,foldereDreapta,fisiereDreapta,extensieFoldereDreapta,extensieFisiereDreapta, marimeFoldereDreapta, marimeFisiereDreapta,candAfostCreatFoldereDreapta,candAfostCreatFisiereDreapta,nr_foldereDreapta,nr_fisiereDreapta);
@@ -2073,7 +2084,7 @@ void utilizareaAplicatiei()
                         if(nrFoldereFisiereDreapta>29) panaUndeAfisezDreapta[nivStivaDreapta]=29;
                         else panaUndeAfisezDreapta[nivStivaDreapta]=nrFoldereFisiereDreapta;
                         afisare(intreagaDreapta,foldFisExtDreapta,foldFisDateDreapta[viewCounterDreapta], foldFisSizeDreapta[viewCounterDreapta], deUndeAfisezDreapta[nivStivaDreapta], panaUndeAfisezDreapta[nivStivaDreapta], viewCounterDreapta, 542, selectie_stanga,nr_selectii_stanga);
-
+                        }
                     }
                 }
 
@@ -2083,7 +2094,7 @@ void utilizareaAplicatiei()
                 if (clickX>=642 && clickX<=642+textwidth("    Name    ") && clickY>=42 && clickY<=58 )
                 {
                     if (careFereastra==false)
-                    {
+                    {   if (intreagaStanga[0][1]!=':'){
                         nr_selectii_stanga=0;
                         sortareDupaNumeDesc(fisiereStanga, extensieFisiereStanga, candAfostCreatFisiereStanga, marimeFisiereStanga, nr_fisiereStanga);
                         initializareVectorDeNumeFoldereFisiere(intreagaStanga,foldFisExtStanga,foldFisSizeStanga, foldFisDateStanga,foldereStanga,fisiereStanga,extensieFoldereStanga,extensieFisiereStanga, marimeFoldereStanga, marimeFisiereStanga,candAfostCreatFoldereStanga,candAfostCreatFisiereStanga,nr_foldereStanga,nr_fisiereStanga);
@@ -2094,9 +2105,10 @@ void utilizareaAplicatiei()
                         if(nrFoldereFisiereStanga>29) panaUndeAfisezStanga[nivStivaStanga]=29;
                         else panaUndeAfisezStanga[nivStivaStanga]=nrFoldereFisiereStanga;
                         afisare(intreagaStanga,foldFisExtStanga,foldFisDateStanga[viewCounterStanga], foldFisSizeStanga[viewCounterStanga], deUndeAfisezStanga[nivStivaStanga], panaUndeAfisezStanga[nivStivaStanga], viewCounterStanga, 15,selectie_stanga,nr_selectii_stanga);
+                        }
                     }
                     else if(careFereastra==true)
-                    {
+                    {   if (intreagaDreapta[0][1]!=':'){
                         nr_selectii_dreapta=0;
                         sortareDupaNumeDesc(fisiereDreapta, extensieFisiereDreapta, candAfostCreatFisiereDreapta, marimeFisiereDreapta, nr_fisiereDreapta);
                         initializareVectorDeNumeFoldereFisiere(intreagaDreapta, foldFisExtDreapta,foldFisSizeDreapta, foldFisDateDreapta,foldereDreapta,fisiereDreapta,extensieFoldereDreapta,extensieFisiereDreapta, marimeFoldereDreapta, marimeFisiereDreapta,candAfostCreatFoldereDreapta,candAfostCreatFisiereDreapta,nr_foldereDreapta,nr_fisiereDreapta);
@@ -2107,7 +2119,7 @@ void utilizareaAplicatiei()
                         if(nrFoldereFisiereDreapta>29) panaUndeAfisezDreapta[nivStivaDreapta]=29;
                         else panaUndeAfisezDreapta[nivStivaDreapta]=nrFoldereFisiereDreapta;
                         afisare(intreagaDreapta, foldFisExtDreapta,foldFisDateDreapta[viewCounterDreapta], foldFisSizeDreapta[viewCounterDreapta], deUndeAfisezDreapta[nivStivaDreapta], panaUndeAfisezDreapta[nivStivaDreapta], viewCounterDreapta, 542,selectie_dreapta,nr_selectii_dreapta);
-
+                        }
                     }
                 }
 
@@ -2119,6 +2131,7 @@ void utilizareaAplicatiei()
                 {
                     if (careFereastra==false)
                     {
+                        if (intreagaStanga[0][1]!=':'){
                         nr_selectii_stanga=0;
                         sortareDupaExtensieDesc(fisiereStanga, extensieFisiereStanga, candAfostCreatFisiereStanga, marimeFisiereStanga, nr_fisiereStanga);
                         initializareVectorDeNumeFoldereFisiere(intreagaStanga,foldFisExtStanga,foldFisSizeStanga, foldFisDateStanga,foldereStanga,fisiereStanga,extensieFoldereStanga,extensieFisiereStanga, marimeFoldereStanga, marimeFisiereStanga,candAfostCreatFoldereStanga,candAfostCreatFisiereStanga,nr_foldereStanga,nr_fisiereStanga);
@@ -2129,9 +2142,10 @@ void utilizareaAplicatiei()
                         if(nrFoldereFisiereStanga>29) panaUndeAfisezStanga[nivStivaStanga]=29;
                         else panaUndeAfisezStanga[nivStivaStanga]=nrFoldereFisiereStanga;
                         afisare(intreagaStanga,foldFisExtStanga,foldFisDateStanga[viewCounterStanga], foldFisSizeStanga[viewCounterStanga], deUndeAfisezStanga[nivStivaStanga], panaUndeAfisezStanga[nivStivaStanga], viewCounterStanga, 15,selectie_stanga,nr_selectii_stanga);
+                        }
                     }
                     else if(careFereastra==true)
-                    {
+                    {   if (intreagaDreapta[0][1]!=':'){
                         nr_selectii_dreapta=0;
                         sortareDupaExtensieDesc(fisiereDreapta, extensieFisiereDreapta, candAfostCreatFisiereDreapta, marimeFisiereDreapta, nr_fisiereDreapta);
                         initializareVectorDeNumeFoldereFisiere(intreagaDreapta,foldFisExtDreapta,foldFisSizeDreapta, foldFisDateDreapta,foldereDreapta,fisiereDreapta,extensieFoldereDreapta,extensieFisiereDreapta, marimeFoldereDreapta, marimeFisiereDreapta,candAfostCreatFoldereDreapta,candAfostCreatFisiereDreapta,nr_foldereDreapta,nr_fisiereDreapta);
@@ -2142,7 +2156,7 @@ void utilizareaAplicatiei()
                         if(nrFoldereFisiereDreapta>29) panaUndeAfisezDreapta[nivStivaDreapta]=29;
                         else panaUndeAfisezDreapta[nivStivaDreapta]=nrFoldereFisiereDreapta;
                         afisare(intreagaDreapta,foldFisExtDreapta,foldFisDateDreapta[viewCounterDreapta], foldFisSizeDreapta[viewCounterDreapta], deUndeAfisezDreapta[nivStivaDreapta], panaUndeAfisezDreapta[nivStivaDreapta], viewCounterDreapta, 542, selectie_dreapta,nr_selectii_dreapta);
-
+                        }
                     }
                 }
 
@@ -2153,7 +2167,7 @@ void utilizareaAplicatiei()
                 if (clickX>=818 && clickX<=818+textwidth("    Size    ") && clickY>=42 && clickY<=58 )
                 {
                     if (careFereastra==false)
-                    {
+                    {   if (intreagaStanga[0][1]!=':'){
                         nr_selectii_stanga=0;
                         sortareDupaSizeDesc(fisiereStanga, extensieFisiereStanga, candAfostCreatFisiereStanga, marimeFisiereStanga, nr_fisiereStanga);
                         initializareVectorDeNumeFoldereFisiere(intreagaStanga,foldFisExtStanga,foldFisSizeStanga, foldFisDateStanga,foldereStanga,fisiereStanga,extensieFoldereStanga,extensieFisiereStanga, marimeFoldereStanga, marimeFisiereStanga,candAfostCreatFoldereStanga,candAfostCreatFisiereStanga,nr_foldereStanga,nr_fisiereStanga);
@@ -2164,9 +2178,10 @@ void utilizareaAplicatiei()
                         if(nrFoldereFisiereStanga>29) panaUndeAfisezStanga[nivStivaStanga]=29;
                         else panaUndeAfisezStanga[nivStivaStanga]=nrFoldereFisiereStanga;
                         afisare(intreagaStanga,foldFisExtStanga,foldFisDateStanga[viewCounterStanga], foldFisSizeStanga[viewCounterStanga], deUndeAfisezStanga[nivStivaStanga], panaUndeAfisezStanga[nivStivaStanga], viewCounterStanga, 15, selectie_stanga,nr_selectii_stanga);
+                        }
                     }
                     else if(careFereastra==true)
-                    {
+                    {   if (intreagaDreapta[0][1]!=':'){
                         nr_selectii_dreapta=0;
                         sortareDupaSizeDesc(fisiereDreapta, extensieFisiereDreapta, candAfostCreatFisiereDreapta, marimeFisiereDreapta, nr_fisiereDreapta);
                         initializareVectorDeNumeFoldereFisiere(intreagaDreapta,foldFisExtDreapta,foldFisSizeDreapta, foldFisDateDreapta,foldereDreapta,fisiereDreapta,extensieFoldereDreapta,extensieFisiereDreapta, marimeFoldereDreapta, marimeFisiereDreapta,candAfostCreatFoldereDreapta,candAfostCreatFisiereDreapta,nr_foldereDreapta,nr_fisiereDreapta);
@@ -2177,7 +2192,7 @@ void utilizareaAplicatiei()
                         if(nrFoldereFisiereDreapta>29) panaUndeAfisezDreapta[nivStivaDreapta]=29;
                         else panaUndeAfisezDreapta[nivStivaDreapta]=nrFoldereFisiereDreapta;
                         afisare(intreagaDreapta,foldFisExtDreapta,foldFisDateDreapta[viewCounterDreapta], foldFisSizeDreapta[viewCounterDreapta], deUndeAfisezDreapta[nivStivaDreapta], panaUndeAfisezDreapta[nivStivaDreapta], viewCounterDreapta, 542, selectie_dreapta,nr_selectii_dreapta);
-
+                        }
                     }
                 }
 
@@ -2187,7 +2202,7 @@ void utilizareaAplicatiei()
                 if (clickX>=892 && clickX<=892+textwidth("    Date    ") && clickY>=42 && clickY<=58 )
                 {
                     if (careFereastra==false)
-                    {
+                    {   if (intreagaStanga[0][1]!=':'){
                         nr_selectii_stanga=0;
                         sortareDupaDateDesc(fisiereStanga, extensieFisiereStanga, candAfostCreatFisiereStanga, marimeFisiereStanga, nr_fisiereStanga);
                         initializareVectorDeNumeFoldereFisiere(intreagaStanga,foldFisExtStanga,foldFisSizeStanga, foldFisDateStanga,foldereStanga,fisiereStanga,extensieFoldereStanga,extensieFisiereStanga, marimeFoldereStanga, marimeFisiereStanga,candAfostCreatFoldereStanga,candAfostCreatFisiereStanga,nr_foldereStanga,nr_fisiereStanga);
@@ -2198,9 +2213,10 @@ void utilizareaAplicatiei()
                         if(nrFoldereFisiereStanga>29) panaUndeAfisezStanga[nivStivaStanga]=29;
                         else panaUndeAfisezStanga[nivStivaStanga]=nrFoldereFisiereStanga;
                         afisare(intreagaStanga,foldFisExtStanga,foldFisDateStanga[viewCounterStanga], foldFisSizeStanga[viewCounterStanga], deUndeAfisezStanga[nivStivaStanga], panaUndeAfisezStanga[nivStivaStanga], viewCounterStanga, 15,selectie_stanga,nr_selectii_stanga);
+                        }
                     }
                     else if(careFereastra==true)
-                    {
+                    {   if (intreagaDreapta[0][1]!=':'){
                         nr_selectii_dreapta=0;
                         sortareDupaDateDesc(fisiereDreapta, extensieFisiereDreapta, candAfostCreatFisiereDreapta, marimeFisiereDreapta, nr_fisiereDreapta);
                         initializareVectorDeNumeFoldereFisiere(intreagaDreapta,foldFisExtDreapta,foldFisSizeDreapta, foldFisDateDreapta,foldereDreapta,fisiereDreapta,extensieFoldereDreapta,extensieFisiereDreapta, marimeFoldereDreapta, marimeFisiereDreapta,candAfostCreatFoldereDreapta,candAfostCreatFisiereDreapta,nr_foldereDreapta,nr_fisiereDreapta);
@@ -2211,7 +2227,7 @@ void utilizareaAplicatiei()
                         if(nrFoldereFisiereDreapta>29) panaUndeAfisezDreapta[nivStivaDreapta]=29;
                         else panaUndeAfisezDreapta[nivStivaDreapta]=nrFoldereFisiereDreapta;
                         afisare(intreagaDreapta,foldFisExtDreapta,foldFisDateDreapta[viewCounterDreapta], foldFisSizeDreapta[viewCounterDreapta], deUndeAfisezDreapta[nivStivaDreapta], panaUndeAfisezDreapta[nivStivaDreapta], viewCounterDreapta, 542, selectie_dreapta,nr_selectii_dreapta);
-
+                        }
                     }
                 }
 
@@ -2665,6 +2681,8 @@ void utilizareaAplicatiei()
                         nivStivaStanga=0;
                         deUndeAfisezStanga[0]=0;
                         panaUndeAfisezStanga[0]=0;
+                        nr_foldereStanga=0;
+                        nr_fisiereStanga=0;
                         ///listam discurile locale
                         reindex(caleStanga,foldereStanga,fisiereStanga,
                                 extensieFoldereStanga, extensieFisiereStanga, marimeFoldereStanga, marimeFisiereStanga,
@@ -2693,6 +2711,8 @@ void utilizareaAplicatiei()
                         nivStivaDreapta=0;
                         deUndeAfisezDreapta[0]=0;
                         panaUndeAfisezDreapta[0]=0;
+                        nr_foldereDreapta=0;
+                        nr_fisiereDreapta=0;
                         ///listam discurile locale
                         reindex(caleDreapta,foldereDreapta,fisiereDreapta,
                                 extensieFoldereDreapta, extensieFisiereDreapta, marimeFoldereDreapta, marimeFisiereDreapta,
@@ -3066,6 +3086,7 @@ void utilizareaAplicatiei()
 
 
 }
+
 
 int main()
 {
